@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from 'that/redux/actions';
 import { bindActionCreators } from 'redux';
-
+import HeaderDropdown from "that/components/HeaderDropdown";
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -14,6 +14,6 @@ import {
 
 export default class Header extends Component {
 	render(){
-		return (<View><Text>Header!!</Text></View>);
+		return (<View style={{width:"100%"}}><HeaderDropdown/></View>);
 	}
 }

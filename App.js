@@ -33,11 +33,12 @@ let store = configureStorage({});
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    headerTitle:<Header/>
+   header:null
   }
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View>
+      <Header/>
         <Text>Home!</Text>
       </View>
     );

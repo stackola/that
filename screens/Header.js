@@ -14,6 +14,6 @@ import {
 
 export default class Header extends Component {
 	render(){
-		return (<View><Text>Header!!</Text></View>);
+		return (<View><View style={{height:200, background:'black'}}><Text >Headessr!!</Text></View></View>);
 	}
 }
