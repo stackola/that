@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "225354914635",
+    "firebase_url": "https://that-d75c3.firebaseio.com",
+    "project_id": "that-d75c3",
+    "storage_bucket": "that-d75c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225354914635:android:fae52757860ad350",
+        "android_client_info": {
+          "package_name": "com.thatinc.that"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225354914635-emcmb6004cvpmdtq1tot5ank127i09lb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnY5OStu52ItRg5xRL6ymBDxkB_GQLYjg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
