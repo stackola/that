@@ -14,6 +14,7 @@ import AuthLoadingScreen from "that/screens/AuthLoadingScreen";
 import SignInScreen from "that/screens/SignInScreen";
 import Home from "that/screens/Home";
 import Details from "that/screens/Details";
+import Create from "that/screens/Create";
 
 
 const loggerMiddleware = createLogger({
@@ -49,7 +50,7 @@ class OtherScreen extends React.Component {
 
 
 
-const AppStack = createStackNavigator({ Home: Home, Details: Details });
+const AppStack = createStackNavigator({ Home: Home, Details: Details,Create:Create });
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 
 let Navigator = createAppContainer(createSwitchNavigator(

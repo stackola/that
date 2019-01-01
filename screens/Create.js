@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
-import Post from "that/components/Post";
-import Comments from "that/components/Comments";
-import FloatButton from "that/components/FloatButton";
 import colors from "that/colors";
 
 import {
@@ -14,6 +11,7 @@ import {
 	StyleSheet,
 	ScrollView,
 	View,
+	TextInput,
 	Text
 } from "react-native";
 
@@ -22,7 +20,8 @@ class Details extends Component {
 		headerStyle:{
 			backgroundColor:colors.headerBackground,
 		},
-		headerTintColor:colors.headerFont
+		headerTintColor:colors.headerFont,
+		title: 'Create new gloob'
 	}
 	constructor(props) {
 		super(props);
@@ -34,13 +33,11 @@ class Details extends Component {
 	render() {
 		//We can access the redux store via our props. The available variables are defined in mapStateToProps() in this file
 		return (
-			<View style={{flex:1}}>
 			<ScrollView style={{flex:1, backgroundColor:colors.background}}>
-				<Post/>
-				<Comments/>
-				</ScrollView>
-				<FloatButton/>
-			</View>
+
+				<TextInput multiline={false} placeholder={"Title"} style={{color:colors.text, backgroundColor:colors.inputBackground, margin:4}}/>
+				<TextInput multiline={true} style={{color:colors.text, backgroundColor:'#3c63be', margin:4}}/>
+			</ScrollView>
 		);
 	}
 }

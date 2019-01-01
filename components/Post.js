@@ -7,7 +7,7 @@ import VoteButtons from "that/components/VoteButtons";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import colors from "that/colors"
+import colors from "that/colors";
 import {
 	ActivityIndicator,
 	AsyncStorage,
@@ -20,7 +20,6 @@ import {
 } from "react-native";
 
 export default class Post extends Component {
-	
 	render() {
 		return (
 			<View
@@ -29,11 +28,12 @@ export default class Post extends Component {
 					backgroundColor: colors.backgroundOffset,
 					minHeight: 170,
 					flexDirection: "row",
-					marginBottom:this.props.margin?4:0
+					borderBottomWidth:4,
+					borderColor:colors.seperator
 				}}
 			>
 				<View style={{ flex: 1 }}>
-					<View style={{ flex: 1, alignItems:'center' }}>
+					<View style={{ flex: 1, alignItems: "center" }}>
 						<VoteButtons />
 					</View>
 					<View style={{ marginBottom: 8, alignItems: "center" }}>
@@ -67,17 +67,25 @@ export default class Post extends Component {
 						</Text>
 					</View>
 				</View>
-				<View style={{ flex: 5, padding: 8 }}>
-					<View style={{minHeight: "auto", paddingBottom:8 }}>
+				<TouchableOpacity
+					style={{ flex: 5, padding: 8 }}
+					onPress={() => {
+						if (this.props.onPress) {
+							this.props.onPress();
+						}
+					}}
+				>
+					<View style={{ minHeight: "auto", paddingBottom: 8 }}>
 						<Text
 							style={{
 								fontSize: 15,
 								color: colors.text,
 								fontWeight: "500",
-								paddingRight:12
+								paddingRight: 12
 							}}
 						>
-							Saw this sweet thing a few days ago! What do you think?
+							Saw this sweet thing a few days ago! What do you
+							think?
 						</Text>
 					</View>
 					{this.props.type == "image" && (
@@ -87,7 +95,7 @@ export default class Post extends Component {
 								alignItems: "center",
 								justifyContent: "center",
 								flex: 1,
-								paddingBottom:8
+								paddingBottom: 8
 							}}
 						>
 							<Image
@@ -99,7 +107,12 @@ export default class Post extends Component {
 							/>
 						</View>
 					)}
-					<View style={{flex:1}}><Text style={{color:colors.text}}>Ein Balloon flieg einfach so vorbei{"\n"}ich denke so, was?</Text></View>
+					<View style={{ flex: 1 }}>
+						<Text style={{ color: colors.text }}>
+							Ein Balloon flieg einfach so vorbei{"\n"}ich denke
+							so, was?
+						</Text>
+					</View>
 
 					<View
 						style={{
@@ -111,8 +124,8 @@ export default class Post extends Component {
 						<View
 							style={{
 								flex: 1,
-								marginBottom:8,
-								marginTop:8,
+								marginBottom: 8,
+								marginTop: 8,
 								justifyContent: "center"
 							}}
 						>
@@ -127,7 +140,7 @@ export default class Post extends Component {
 							</Text>
 						</View>
 					</View>
-				</View>
+				</TouchableOpacity>
 			</View>
 		);
 	}

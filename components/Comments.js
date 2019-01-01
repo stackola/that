@@ -1,19 +1,26 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { ActionCreators } from 'that/redux/actions';
-import { bindActionCreators } from 'redux';
-import Comment from "that/components/Comment";
+import React, { Component } from "react";
+import colors from "that/colors";
 import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  StyleSheet,
-  View,
-  Text
-} from 'react-native';
+	ActivityIndicator,
+	AsyncStorage,
+	StatusBar,
+	StyleSheet,
+	View,
+	Text,
+	TouchableOpacity,
+	TouchableHighlight
+} from "react-native";
+import Comment from "that/components/Comment";
 
 export default class Comments extends Component {
-	render(){
-		return (<View style={{}}><Comment/><Comment/></View>);
+	render() {
+		return (
+			<View>
+				<Comment />
+				<Comment />
+				<Comment />
+				<Comment />
+			</View>
+		);
 	}
 }
