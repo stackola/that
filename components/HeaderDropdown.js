@@ -12,7 +12,8 @@ import {
 } from "react-native";
 const style = {
 	text: {
-		fontSize: 15
+		fontSize: 15,
+		color:"white"
 	}
 };
 
@@ -23,9 +24,8 @@ let Item = props => {
 				console.log("pressed");
 			}}
 			style={{
-				backgroundColor: "rgba(255,255,255,0.8)",
-				width: "100%",
-				marginBottom: 6,
+				backgroundColor: "#000a22",
+				width: "100%",			
 				paddingTop: 5,
 				paddingBottom: 20,
 				paddingLeft: 10,
@@ -65,7 +65,7 @@ export default class HeaderDropdown extends Component {
 						paddingBottom: 20,
 						paddingLeft: 10,
 						justifyContent: "center",
-						backgroundColor: "#eee"
+						backgroundColor: "black"
 					}}
 				>
 					<View style={{}}>
@@ -79,7 +79,6 @@ export default class HeaderDropdown extends Component {
 							top: "100%",
 							width: "100%",
 							zIndex: 100,
-							marginTop:6
 						}}
 					>
 						{options.map(o => {

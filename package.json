@@ -22,10 +22,14 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "@mdi/font": "^3.3.92",
+    "mdi-react": "^5.1.0",
     "react": "16.5.0",
     "react-native": "0.57.1",
     "react-native-firebase": "^5.1.1",
     "react-native-gesture-handler": "^1.0.12",
+    "react-native-swipe-list-view": "^1.5.1",
+    "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^3.0.9",
     "react-navigation-backhandler": "^1.2.0",
     "react-redux": "^6.0.0",

@@ -12,7 +12,9 @@ import reducer from 'that/redux/reducers';
 
 import AuthLoadingScreen from "that/screens/AuthLoadingScreen";
 import SignInScreen from "that/screens/SignInScreen";
-import Header from "that/components/Header";
+import Home from "that/screens/Home";
+import Details from "that/screens/Details";
+
 
 const loggerMiddleware = createLogger({
   predicate: (getState, action) => true,
@@ -31,19 +33,7 @@ let store = configureStorage({});
 
 
 
-class HomeScreen extends React.Component {
-  static navigationOptions = {
-   header:null
-  }
-  render() {
-    return (
-      <View>
-      <Header/>
-        <Text>Home!</Text>
-      </View>
-    );
-  }
-}
+
 class OtherScreen extends React.Component {
   render() {
     return (
@@ -59,7 +49,7 @@ class OtherScreen extends React.Component {
 
 
 
-const AppStack = createStackNavigator({ Home: HomeScreen, Other: OtherScreen });
+const AppStack = createStackNavigator({ Home: Home, Details: Details });
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 
 let Navigator = createAppContainer(createSwitchNavigator(

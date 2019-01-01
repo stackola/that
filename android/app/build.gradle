@@ -154,6 +154,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-firebase')
+    compile project(':react-native-vector-icons')
     compile project(':react-native-gesture-handler')
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
@@ -226,3 +228,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

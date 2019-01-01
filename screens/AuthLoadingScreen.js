@@ -17,7 +17,7 @@ export default class AuthLoadingScreen extends React.Component {
   componentDidMount() {
       firebase.auth().signInAnonymously()
         .then(() => {
-        	this.props.navigation.navigate('App');          
+        	this.props.navigation.navigate('Details');          
         });
     }
 
