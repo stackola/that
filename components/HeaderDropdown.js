@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import colors from "that/colors";
 import {
 	ActivityIndicator,
 	AsyncStorage,
@@ -10,12 +10,6 @@ import {
 	TouchableOpacity,
 	TouchableHighlight
 } from "react-native";
-const style = {
-	text: {
-		fontSize: 15,
-		color:"white"
-	}
-};
 
 let Item = props => {
 	return (
@@ -24,8 +18,8 @@ let Item = props => {
 				console.log("pressed");
 			}}
 			style={{
-				backgroundColor: "#000a22",
-				width: "100%",			
+				backgroundColor: colors.dropwdownBackground,
+				width: "100%",
 				paddingTop: 5,
 				paddingBottom: 20,
 				paddingLeft: 10,
@@ -37,7 +31,7 @@ let Item = props => {
 			}}
 		>
 			<View style={{}}>
-				<Text style={style.text}>{props.data.name}!</Text>
+				<Text style={{fontSize:15, color:colors.dropdownFont}}>{props.data.name}!</Text>
 			</View>
 		</TouchableOpacity>
 	);
@@ -65,11 +59,18 @@ export default class HeaderDropdown extends Component {
 						paddingBottom: 20,
 						paddingLeft: 10,
 						justifyContent: "center",
-						backgroundColor: "black"
+						backgroundColor: colors.headerBackground
 					}}
 				>
 					<View style={{}}>
-						<Text style={style.text}>Home</Text>
+						<Text
+							style={{
+								fontSize: 15,
+								color: colors.headerFont
+							}}
+						>
+							Home
+						</Text>
 					</View>
 				</TouchableOpacity>
 				{this.state.open && (
@@ -78,7 +79,7 @@ export default class HeaderDropdown extends Component {
 							position: "absolute",
 							top: "100%",
 							width: "100%",
-							zIndex: 100,
+							zIndex: 100
 						}}
 					>
 						{options.map(o => {

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import HeaderDropdown from "that/components/HeaderDropdown";
-
+import colors from "that/colors"
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {
@@ -19,7 +19,7 @@ import {
 export default class VoteButtons extends React.PureComponent {
 	render() {
 		return (
-			<View style={{ flex: 1, maxHeight: 100 }}>
+			<View style={{ width:35, maxHeight: 100, minHeight:80}}>
 				<TouchableOpacity
 					style={{
 						flex: 1,
@@ -27,7 +27,7 @@ export default class VoteButtons extends React.PureComponent {
 						justifyContent: "center"
 					}}
 				>
-					<Icon name={"md-arrow-up"} color="#00ff4d" size={25} />
+					<Icon name={"md-arrow-up"} color={colors.upvote} size={25} />
 				</TouchableOpacity>
 				<View
 					style={{
@@ -47,7 +47,7 @@ export default class VoteButtons extends React.PureComponent {
 						justifyContent: "center"
 					}}
 				>
-					<Icon name={"md-arrow-down"} color="orangered" size={25} />
+					<Icon name={"md-arrow-down"} color={colors.downvote} size={25} />
 				</TouchableOpacity>
 			</View>
 		);

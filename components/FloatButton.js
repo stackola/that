@@ -4,6 +4,7 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import HeaderDropdown from "that/components/HeaderDropdown";
 import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import colors from "that/colors"
 import {
 	ActivityIndicator,
 	AsyncStorage,
@@ -18,7 +19,7 @@ export default class FloatButton extends Component {
 		return (
 			<View
 				style={{
-					backgroundColor: "#FF450099",
+					backgroundColor: colors.floatbutton,
 					width: 60,
 					alignItems:'center',
 					justifyContent:'center',

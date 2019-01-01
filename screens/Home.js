@@ -6,6 +6,7 @@ import Header from "that/components/Header";
 import Post from "that/components/Post";
 import FloatButton from "that/components/FloatButton";
 import { SwipeListView } from "react-native-swipe-list-view";
+import colors from "that/colors";
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -21,20 +22,18 @@ export default class HomeScreen extends React.Component {
   };
   render() {
     return (
-      <View style={{ backgroundColor: "#001955", flex: 1 }}>
+      <View style={{ backgroundColor: colors.background, flex: 1 }}>
         <Header />
         <SwipeListView
           useFlatList
-          disableLeftSwipe={true}
-          data={[{key:1,data:{}}, {key:2,data:{}}, {key:3,data:{}}]}
+          data={[{key:"1",data:{}}, {key:"2",data:{}}, {key:"3",data:{}},{key:"4",data:{}}]}
           closeOnRowBeginSwipe={true}
           swipeToOpenPercent={20}
           swipeToClosePercent={20}
-          renderItem={(data, rowMap) => <Post />}
+          renderItem={(data, rowMap) => <Post margin={true} />}
           renderHiddenItem={(data, rowMap) => (
-            <View>
+            <View style={{backgroundColor:colors.hidden, flex:1, marginBottom:4}}>
               <Text>Left</Text>
-              <Text>Right</Text>
             </View>
           )}
           leftOpenValue={155}

@@ -7,7 +7,7 @@ import VoteButtons from "that/components/VoteButtons";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
-
+import colors from "that/colors"
 import {
 	ActivityIndicator,
 	AsyncStorage,
@@ -20,26 +20,27 @@ import {
 } from "react-native";
 
 export default class Post extends Component {
+	
 	render() {
 		return (
 			<View
 				style={{
 					width: "100%",
-					backgroundColor: "#000f33",
-					marginBottom: 8,
-					minHeight: 200,
-					flexDirection: "row"
+					backgroundColor: colors.backgroundOffset,
+					minHeight: 170,
+					flexDirection: "row",
+					marginBottom:this.props.margin?4:0
 				}}
 			>
 				<View style={{ flex: 1 }}>
-					<View style={{ flex: 1 }}>
+					<View style={{ flex: 1, alignItems:'center' }}>
 						<VoteButtons />
 					</View>
 					<View style={{ marginBottom: 8, alignItems: "center" }}>
 						<Text
 							style={{
 								fontSize: 10,
-								color: "#ccc"
+								color: colors.textMinor
 							}}
 						>
 							27 min
@@ -49,7 +50,7 @@ export default class Post extends Component {
 						<Text
 							style={{
 								fontSize: 10,
-								color: "#ccc"
+								color: colors.textMinor
 							}}
 						>
 							<MDIcon size={9} name={"eye"} /> 452
@@ -59,7 +60,7 @@ export default class Post extends Component {
 						<Text
 							style={{
 								fontSize: 10,
-								color: "#ccc"
+								color: colors.textMinor
 							}}
 						>
 							<MDIcon size={9} name={"message"} /> 4
@@ -67,28 +68,38 @@ export default class Post extends Component {
 					</View>
 				</View>
 				<View style={{ flex: 5, padding: 8 }}>
-					<View style={{ flex: 1, minHeight: 30 }}>
+					<View style={{minHeight: "auto", paddingBottom:8 }}>
 						<Text
 							style={{
 								fontSize: 15,
-								color: "white",
-								fontWeight: "500"
+								color: colors.text,
+								fontWeight: "500",
+								paddingRight:12
 							}}
 						>
-							Saw this sweet thing a few days ago
+							Saw this sweet thing a few days ago! What do you think?
 						</Text>
 					</View>
-					{this.props.type != "image" && (
-						<View style={{ overflow: "hidden" }}>
+					{this.props.type == "image" && (
+						<View
+							style={{
+								overflow: "hidden",
+								alignItems: "center",
+								justifyContent: "center",
+								flex: 1,
+								paddingBottom:8
+							}}
+						>
 							<Image
 								source={{
 									uri: "https://i.imgur.com/GA5T5S9.jpg"
 								}}
-								style={{ height: 150, width: 100 }}
-								resizeMode="contain"
+								style={{ width: "100%", height: 400 }}
+								resizeMode="cover"
 							/>
 						</View>
 					)}
+					<View style={{flex:1}}><Text style={{color:colors.text}}>Ein Balloon flieg einfach so vorbei{"\n"}ich denke so, was?</Text></View>
 
 					<View
 						style={{
@@ -100,17 +111,19 @@ export default class Post extends Component {
 						<View
 							style={{
 								flex: 1,
-								minHeight: 50
+								marginBottom:8,
+								marginTop:8,
+								justifyContent: "center"
 							}}
 						>
 							<Text
 								style={{
 									textAlign: "right",
-									color: "#ccc",
+									color: colors.textMinor,
 									fontSize: 12
 								}}
 							>
-								Von @Willi in #Funny
+								Von @admin in /lustig
 							</Text>
 						</View>
 					</View>
