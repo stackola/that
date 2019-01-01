@@ -22,6 +22,10 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
+  constructor(p){
+    super(p);
+    this.state={creating:false}
+  }
   render() {
     return (
       <View style={{ backgroundColor: colors.background, flex: 1 }}>
@@ -61,10 +65,12 @@ export default class HomeScreen extends React.Component {
         />
         <FloatButton
           onPress={() => {
-            this.props.navigation.navigate("Create");
+            this.setState({creating:true});
           }}
         />
-        <CreationForm/>
+        {this.state.creating&&
+        <CreationForm onClose={()=>{this.setState({creating:false})}}/>
+        }
       </View>
     );
   }

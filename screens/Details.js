@@ -35,7 +35,7 @@ class Details extends Component {
 		//We can access the redux store via our props. The available variables are defined in mapStateToProps() in this file
 		return (
 			<View style={{flex:1}}>
-			<ScrollView style={{flex:1, backgroundColor:colors.background}}>
+			<ScrollView style={{flex:1, backgroundColor:colors.background}} keyboardShouldPersistTaps={"never"}>
 				<Post/>
 				<Comments/>
 				</ScrollView>
