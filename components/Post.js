@@ -143,7 +143,7 @@ export default class Post extends Component {
 						<View
 							style={{
 								flex: 1,
-								marginBottom: 8,
+								marginBottom: 0,
 								marginTop: 8,
 								justifyContent: "center"
 							}}

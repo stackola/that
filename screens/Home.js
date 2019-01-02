@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import Header from "that/components/Header";
-import Post from "that/components/Post";
+
 import FloatButton from "that/components/FloatButton";
 import CreationForm from "that/components/CreationForm";
-import { SwipeListView } from "react-native-swipe-list-view";
+import PostList from "that/components/PostList";
+
 import colors from "that/colors";
 import { withRouter } from "react-navigation";
 
@@ -44,6 +45,7 @@ export default class HomeScreen extends React.Component {
       .doc("cars")
       .collection("posts")
       .onSnapshot(posts => {
+        console.log("oh yea, home updated!");
         this.setState(
           {
             posts: posts._docs.map(d => {
@@ -65,44 +67,8 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={{ backgroundColor: colors.background, flex: 1 }}>
         <Header />
-        <SwipeListView
-          useFlatList
-          data={this.state.posts}
-          keyExtractor={item => {
-            return item.id;
-          }}
-          closeOnRowBeginSwipe={true}
-          swipeToOpenPercent={20}
-          swipeToClosePercent={20}
-          renderItem={(data, rowMap) => {
-            console.log(data);
-            return (
-              <Post
-                data={data.item}
-                onPress={() => {
-                  this.props.navigation.navigate("Details", {
-                    postId: data.item.id,
-                    group: data.item.group
-                  });
-                }}
-                margin={true}
-              />
-            );
-          }}
-          renderHiddenItem={(data, rowMap) => (
-            <View
-              style={{
-                backgroundColor: colors.hidden,
-                flex: 1,
-                marginBottom: 4
-              }}
-            >
-              <Text>Left</Text>
-            </View>
-          )}
-          leftOpenValue={155}
-          rightOpenValue={0}
-        />
+        <PostList navigate={(a,b)=>{this.props.navigation.navigate(a,b)}} posts={this.state.posts}/>
+        
         <FloatButton
           onPress={() => {
             this.setState({ creating: true });

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import colors from "that/colors";
-import { AndroidBackHandler } from 'react-navigation-backhandler';
+import { AndroidBackHandler } from "react-navigation-backhandler";
 
 import {
 	ActivityIndicator,
@@ -33,7 +33,9 @@ let Item = props => {
 			}}
 		>
 			<View style={{}}>
-				<Text style={{fontSize:15, color:colors.dropdownFont}}>{props.data.name}!</Text>
+				<Text style={{ fontSize: 15, color: colors.dropdownFont }}>
+					{props.data.name}!
+				</Text>
 			</View>
 		</TouchableOpacity>
 	);
@@ -43,24 +45,23 @@ export default class HeaderDropdown extends Component {
 		super(p);
 		this.state = { open: false };
 	}
-	onBackButtonPressAndroid (){
-    /*
+	onBackButtonPressAndroid() {
+		/*
     *   Returning `true` from `onBackButtonPressAndroid` denotes that we have handled the event,
     *   and react-navigation's lister will not get called, thus not popping the screen.
     *
     *   Returning `false` will cause the event to bubble up and react-navigation's listener will pop the screen.
     * */
 
-    if (this.state.open) {
-      // do something
-      this.setState({open:false})
-      return true;
-    }
-    else
-    {
-	    return false;
-    }
-  }
+		if (this.state.open) {
+			// do something
+
+			this.setState({ open: false });
+			return true;
+		} else {
+			return false;
+		}
+	}
 	render() {
 		const options = [
 			{ name: "Home", id: "home" },
@@ -69,50 +70,77 @@ export default class HeaderDropdown extends Component {
 			{ name: "Multicopter", id: "multicopter" }
 		];
 		return (
-			<AndroidBackHandler onBackPress={()=>{return this.onBackButtonPressAndroid()}}>
-			<View style={{ width: "100%" }}>
-				<TouchableOpacity
-					onPress={() => {
-						this.setState({ open: !this.state.open });
-					}}
-					style={{
-						height:60,
-						backgroundColor: colors.headerBackground
-					}}
-				>
-					<View style={{flex:1,
-						justifyContent: "center"}}>
-						<Text
-							style={{
-								fontSize: 15,
-								paddingLeft:12,
-								color: colors.headerFont
-							}}
-						>
-							Home
-						</Text>
-					</View>
+			<AndroidBackHandler
+				onBackPress={() => {
+					return this.onBackButtonPressAndroid();
+				}}
+			>
+				<View style={{ width: "100%" }}>
+					<TouchableOpacity
+						onPress={() => {
 
-					<View style={{height:2, backgroundColor:colors.seperator}}></View>
-				</TouchableOpacity>
-				{this.state.open && (
-					<View >
-					<TouchableOpacity onPress={()=>{this.setState({open:false})}} style={{position:"absolute",top:0, left:0,width:"100%", height:100000, zIndex:10}}/>
-					<View
+							this.setState({ open: !this.state.open });
+						}}
 						style={{
-							position: "absolute",
-							top: "100%",
-							width: "100%",
-							zIndex: 100
+							height: 60,
+							backgroundColor: colors.headerBackground
 						}}
 					>
-						{options.map(o => {
-							return <Item key={o.id} data={o} />;
-						})}
-					</View>
-					</View>
-				)}
-			</View>
+						<View
+							style={{
+								flex: 1,
+								justifyContent: "center"
+							}}
+						>
+							<Text
+								style={{
+									fontSize: 15,
+									paddingLeft: 12,
+									color: colors.headerFont
+								}}
+							>
+								Home
+							</Text>
+						</View>
+
+						<View
+							style={{
+								height: 2,
+								backgroundColor: colors.seperator
+							}}
+						/>
+					</TouchableOpacity>
+					{this.state.open && (
+						<View>
+							<TouchableOpacity
+								onPress={() => {
+									
+									this.setState({ open: false });
+								}}
+								style={{
+									position: "absolute",
+									top: 0,
+									left: 0,
+									width: "100%",
+									height: 100000,
+									zIndex: 10
+								}}
+							/>
+							<View
+								style={{
+									position: "absolute",
+									top: "100%",
+									width: "100%",
+									zIndex: 100
+								}}
+							>
+								{options.map(o => {
+									return <Item key={o.id} data={o} />;
+								})}
+							</View>
+						</View>
+					)}
+				</View>
 			</AndroidBackHandler>
 		);
 	}
