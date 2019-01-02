@@ -9,6 +9,10 @@ import { createPost, uploadImage } from "that/lib";
 import ImagePicker from "react-native-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 
+import Entypo from "react-native-vector-icons/Entypo";
+import Ant from "react-native-vector-icons/AntDesign";
+import Feather from "react-native-vector-icons/Feather";
+
 import {
 	ActivityIndicator,
 	AsyncStorage,
@@ -47,8 +51,17 @@ export default class CreationForm extends Component {
 
 	render() {
 		return (
-			<View style={{position:"absolute", zIndex:5, top:0, left:0, width:"100%",height:"100%"}}>
-				<ScrollView
+			<View
+				style={{
+					position: "absolute",
+					zIndex: 5,
+					top: 0,
+					left: 0,
+					width: "100%",
+					height: "100%"
+				}}
+			>
+				<View
 					style={{
 						position: "absolute",
 						width: "96%",
@@ -62,183 +75,239 @@ export default class CreationForm extends Component {
 						paddingTop: 4,
 						height: "95%"
 					}}
-					keyboardShouldPersistTaps={"handled"}
 				>
-					<View style={{ paddingLeft: 12, paddingRight: 12 }}>
-						<TextInput
-							multiline={false}
-							placeholder={"Title"}
-							placeholderTextColor={colors.placeholder}
-							value={this.state.inputs.title}
-							onChangeText={text => this.setInput("title", text)}
-							style={{
-								color: colors.text,
-								backgroundColor: null,
-								borderColor: colors.seperator,
-								borderBottomWidth: 2,
-								margin: 4
-							}}
-						/>
-						<ExpandingTextInput
-							multiline={true}
-							placeholder={"Text"}
-							min={120}
-							max={600}
-							value={this.state.inputs.text}
-							onChangeText={text => this.setInput("text", text)}
-							numberOfLines={4}
-							placeholderTextColor={colors.placeholder}
-							style={{
-								color: colors.text,
-								backgroundColor: null,
-								borderColor: colors.seperator,
-								borderBottomWidth: 2,
-								margin: 4
-							}}
-						/>
-						{!this.state.imageLoading && this.state.picture ? (
-							<View
+					<ScrollView keyboardShouldPersistTaps={"handled"}>
+						<View style={{ paddingLeft: 12, paddingRight: 12 }}>
+							<TextInput
+								multiline={false}
+								placeholder={"Title"}
+								placeholderTextColor={colors.placeholder}
+								value={this.state.inputs.title}
+								onChangeText={text =>
+									this.setInput("title", text)
+								}
 								style={{
-									alignItems: "center",
-									flexDirection: "row"
+									color: colors.text,
+									backgroundColor: null,
+									borderColor: colors.seperator,
+									borderBottomWidth: 2,
+									margin: 4
 								}}
-							>
-								<Image
-									source={{ uri: this.state.picture.url }}
-									style={{ flex: 1, height: 200 }}
-									resizeMode={"contain"}
-								/>
-							</View>
-						) : null}
-						{this.state.imageLoading && !this.state.picture ? (
-							<View style={{ height: 200, alignItems:'center', justifyContent:'center'}}>
-							<View style={{ height:200, width: 150, alignItems:'center', justifyContent:'center', backgroundColor:colors.seperator}}>
-
-								<ActivityIndicator />
-							</View>
-							</View>
-						) : null}
-						{!this.state.imageLoading && !this.state.picture ? (
-							<View style={{ flexDirection: "row" }}>
-								<TouchableOpacity
-									onPress={() => {
-										this.setState(
-											{ imageLoading: true },
-											() => {
-												ImagePicker.launchCamera(
-													options,
-													response => {
-														console.log(response);
-														if (
-															response &&
-															response.path
-														) {
-															uploadImage(
-																response.path,
-																d => {
-																	console.log(
-																		"got response",
-																		d
-																	);
-																	this.setState(
-																		{
-																			picture: d,
-																			imageLoading: false
-																		}
-																	);
-																}
-															);
-														}
-														else
-														{
-															this.setState({imageLoading:false});
-														}
-													}
-												);
-											}
-										);
-									}}
+							/>
+							<ExpandingTextInput
+								multiline={true}
+								placeholder={"Text"}
+								min={120}
+								max={600}
+								value={this.state.inputs.text}
+								onChangeText={text =>
+									this.setInput("text", text)
+								}
+								numberOfLines={4}
+								placeholderTextColor={colors.placeholder}
+								style={{
+									color: colors.text,
+									backgroundColor: null,
+									borderColor: colors.seperator,
+									borderBottomWidth: 2,
+									margin: 4
+								}}
+							/>
+							{!this.state.imageLoading && this.state.picture ? (
+								<View style={{ alignItems: "center" }}>
+									<View
+										style={{
+											flexDirection: "row",
+											marginTop: 8,
+											marginBottom: 8
+										}}
+									>
+										<Image
+											source={{
+												uri: this.state.picture.url
+											}}
+											style={{ flex: 1, height: 200 }}
+											resizeMode={"contain"}
+										/>
+									</View>
+									<TouchableOpacity
+										onPress={() => {
+											this.setState({
+												picture: null,
+												imageLoading: false
+											});
+										}}
+										style={{
+											height: 40,
+											width: 150,
+											backgroundColor: colors.downvote,
+											flex: 1,
+											alignItems: "center",
+											justifyContent: "center"
+										}}
+									>
+										<Text
+											style={{ color: colors.background }}
+										>
+											<Entypo name="cross" size={20} />
+										</Text>
+									</TouchableOpacity>
+								</View>
+							) : null}
+							{this.state.imageLoading && !this.state.picture ? (
+								<View
 									style={{
-										flex: 1,
+										height: 200,
 										alignItems: "center",
-										justifyContent: "center"
+										justifyContent: "center",
+										marginTop: 8,
+										marginBottom: 8
 									}}
 								>
-									<Icon
-										name="ios-camera"
-										color={colors.textMinor}
-										size={50}
-									/>
-								</TouchableOpacity>
-								<TouchableOpacity
-									onPress={() => {
-										this.setState(
-											{ imageLoading: true },
-											() => {
-												ImagePicker.launchImageLibrary(
-													options,
-													response => {
-														console.log(response);
-														if (
-															response &&
-															response.path
-														) {
-															uploadImage(
-																response.path,
-																d => {
-																	console.log(
-																		"got response",
-																		d
-																	);
-																	this.setState(
-																		{
-																			picture: d,
-																			imageLoading: false
-																		}
-																	);
-																}
+									<View
+										style={{
+											height: 200,
+											marginBottom: 40,
+											width: 150,
+											alignItems: "center",
+											justifyContent: "center",
+											backgroundColor: colors.seperator
+										}}
+									>
+										<ActivityIndicator />
+									</View>
+								</View>
+							) : null}
+							{!this.state.imageLoading && !this.state.picture ? (
+								<View style={{ flexDirection: "row" }}>
+									<TouchableOpacity
+										onPress={() => {
+											this.setState(
+												{ imageLoading: true },
+												() => {
+													ImagePicker.launchCamera(
+														options,
+														response => {
+															console.log(
+																response
 															);
+															if (
+																response &&
+																response.path
+															) {
+																uploadImage(
+																	response.path,
+																	d => {
+																		console.log(
+																			"got response",
+																			d
+																		);
+																		this.setState(
+																			{
+																				picture: d,
+																				imageLoading: false
+																			}
+																		);
+																	}
+																);
+															} else {
+																this.setState({
+																	imageLoading: false
+																});
+															}
 														}
-														else
-														{
-															this.setState({imageLoading:false});
+													);
+												}
+											);
+										}}
+										style={{
+											flex: 1,
+											alignItems: "center",
+											justifyContent: "center"
+										}}
+									>
+										<Icon
+											name="ios-camera"
+											color={colors.textMinor}
+											size={50}
+										/>
+									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => {
+											this.setState(
+												{ imageLoading: true },
+												() => {
+													ImagePicker.launchImageLibrary(
+														options,
+														response => {
+															console.log(
+																response
+															);
+															if (
+																response &&
+																response.path
+															) {
+																uploadImage(
+																	response.path,
+																	d => {
+																		console.log(
+																			"got response",
+																			d
+																		);
+																		this.setState(
+																			{
+																				picture: d,
+																				imageLoading: false
+																			}
+																		);
+																	}
+																);
+															} else {
+																this.setState({
+																	imageLoading: false
+																});
+															}
 														}
-													}
-												);
-											}
-										);
-									}}
-									style={{
-										flex: 1,
-										alignItems: "center",
-										justifyContent: "center"
-									}}
-								>
-									<Icon
-										name="md-images"
-										color={colors.textMinor}
-										size={50}
-									/>
-								</TouchableOpacity>
-							</View>
-						) : null}
+													);
+												}
+											);
+										}}
+										style={{
+											flex: 1,
+											alignItems: "center",
+											justifyContent: "center"
+										}}
+									>
+										<Icon
+											name="md-images"
+											color={colors.textMinor}
+											size={50}
+										/>
+									</TouchableOpacity>
+								</View>
+							) : null}
 
-						<TextInput
-							multiline={false}
-							placeholder={"Wohin"}
-							value={this.state.inputs.group}
-							onChangeText={text => this.setInput("group", text)}
-							placeholderTextColor={colors.placeholder}
-							style={{
-								color: colors.text,
-								backgroundColor: null,
-								borderColor: colors.seperator,
-								borderBottomWidth: 2,
-								margin: 4
-							}}
-						/>
-					</View>
-					<View style={{ flexDirection: "row", alignSelf:'flex-end' }}>
+							<TextInput
+								multiline={false}
+								placeholder={"Wohin"}
+								value={this.state.inputs.group}
+								onChangeText={text =>
+									this.setInput("group", text)
+								}
+								placeholderTextColor={colors.placeholder}
+								style={{
+									color: colors.text,
+									backgroundColor: null,
+									borderColor: colors.seperator,
+									borderBottomWidth: 2,
+									margin: 4
+								}}
+							/>
+						</View>
+					</ScrollView>
+					<View
+						style={{ flexDirection: "row", alignSelf: "flex-end" }}
+					>
 						<TouchableOpacity
 							onPress={() => {
 								this.props.onClose();
@@ -251,8 +320,8 @@ export default class CreationForm extends Component {
 								justifyContent: "center"
 							}}
 						>
-							<Text style={{ color: colors.text }}>
-								Abbrechen
+							<Text style={{ color: colors.background }}>
+								<Entypo name="cross" size={20} />
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
@@ -271,10 +340,12 @@ export default class CreationForm extends Component {
 								});
 							}}
 						>
-							<Text style={{ color: colors.text }}>Feuer</Text>
+							<Text style={{ color: colors.text }}>
+								<Feather name="send" size={20} />
+							</Text>
 						</TouchableOpacity>
 					</View>
-				</ScrollView>
+				</View>
 			</View>
 		);
 	}
