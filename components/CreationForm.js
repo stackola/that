@@ -5,10 +5,8 @@ import { bindActionCreators } from "redux";
 import HeaderDropdown from "that/components/HeaderDropdown";
 import ExpandingTextInput from "that/components/ExpandingTextInput";
 import colors from "that/colors";
-import {createPost} from "that/lib";
-import ImagePicker from 'react-native-image-picker';
-import { RNCamera } from "react-native-camera";
-
+import { createPost, uploadImage } from "that/lib";
+import ImagePicker from "react-native-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {
@@ -17,6 +15,7 @@ import {
 	StatusBar,
 	ScrollView,
 	TextInput,
+	Image,
 	StyleSheet,
 	View,
 	TouchableOpacity,
@@ -24,41 +23,44 @@ import {
 } from "react-native";
 
 const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
+	mediaType: "photo",
+	quality: 0.4
 };
 
 export default class CreationForm extends Component {
 	constructor(p) {
 		super(p);
-		this.state = { inputs: { title: "", text: "", group: ""} };
+		this.state = {
+			inputs: { title: "", text: "", group: "" },
+			picture: null,
+			imageLoading: false
+		};
 	}
 	setInput(key, value) {
 		this.setState({ inputs: { ...this.state.inputs, [key]: value } });
 	}
 	componentDidMount() {
-		this.setState({inputs:{...this.state.inputs, group:this.props.group}});
+		this.setState({
+			inputs: { ...this.state.inputs, group: this.props.group }
+		});
 	}
+
 	render() {
 		return (
-			<View>
+			<View style={{position:"absolute", zIndex:5, top:0, left:0, width:"100%",height:"100%"}}>
 				<ScrollView
 					style={{
 						position: "absolute",
 						width: "96%",
 						marginLeft: "2%",
-						zIndex:5,
+						zIndex: 5,
 						marginRight: "2%",
 						borderTopRightRadius: 14,
 						borderTopLeftRadius: 14,
 						bottom: 0,
 						backgroundColor: colors.overlayBackground,
 						paddingTop: 4,
-						maxHeight: 400
+						height: "95%"
 					}}
 					keyboardShouldPersistTaps={"handled"}
 				>
@@ -68,9 +70,7 @@ export default class CreationForm extends Component {
 							placeholder={"Title"}
 							placeholderTextColor={colors.placeholder}
 							value={this.state.inputs.title}
-							onChangeText={text =>
-								this.setInput("title", text)
-							}
+							onChangeText={text => this.setInput("title", text)}
 							style={{
 								color: colors.text,
 								backgroundColor: null,
@@ -85,9 +85,7 @@ export default class CreationForm extends Component {
 							min={120}
 							max={600}
 							value={this.state.inputs.text}
-							onChangeText={text =>
-								this.setInput("text", text)
-							}
+							onChangeText={text => this.setInput("text", text)}
 							numberOfLines={4}
 							placeholderTextColor={colors.placeholder}
 							style={{
@@ -98,67 +96,138 @@ export default class CreationForm extends Component {
 								margin: 4
 							}}
 						/>
-						<View style={{height:200, overflow:"hidden"}}>
-							<RNCamera
-								ref={ref => {
-									this.camera = ref;
-								}}
+						{!this.state.imageLoading && this.state.picture ? (
+							<View
 								style={{
-									flex: 1,
-									height:200,
-									alignItems: "center"
-								}}
-								type={RNCamera.Constants.Type.back}
-								
-								permissionDialogTitle={
-									"Permission to use camera"
-								}
-								permissionDialogMessage={
-									"We need your permission to use your camera phone"
-								}
-							
-							/>
-						</View>
-						<View style={{ flexDirection: "row" }}>
-							<TouchableOpacity
-								style={{
-									flex: 1,
 									alignItems: "center",
-									justifyContent: "center"
-								}}
-							>								
-								<Icon
-									name="ios-camera"
-									color={colors.textMinor}
-									size={50}
-								/>
-							</TouchableOpacity>
-							<TouchableOpacity
-							onPress={()=>{
-								ImagePicker.launchImageLibrary(options, (response) => {
-								  // Same code as in above section!
-								});
-							}}
-								style={{
-									flex: 1,
-									alignItems: "center",
-									justifyContent: "center"
+									flexDirection: "row"
 								}}
 							>
-								<Icon
-									name="md-images"
-									color={colors.textMinor}
-									size={50}
+								<Image
+									source={{ uri: this.state.picture.url }}
+									style={{ flex: 1, height: 200 }}
+									resizeMode={"contain"}
 								/>
-							</TouchableOpacity>
-						</View>
+							</View>
+						) : null}
+						{this.state.imageLoading && !this.state.picture ? (
+							<View style={{ height: 200, alignItems:'center', justifyContent:'center'}}>
+							<View style={{ height:200, width: 150, alignItems:'center', justifyContent:'center', backgroundColor:colors.seperator}}>
+
+								<ActivityIndicator />
+							</View>
+							</View>
+						) : null}
+						{!this.state.imageLoading && !this.state.picture ? (
+							<View style={{ flexDirection: "row" }}>
+								<TouchableOpacity
+									onPress={() => {
+										this.setState(
+											{ imageLoading: true },
+											() => {
+												ImagePicker.launchCamera(
+													options,
+													response => {
+														console.log(response);
+														if (
+															response &&
+															response.path
+														) {
+															uploadImage(
+																response.path,
+																d => {
+																	console.log(
+																		"got response",
+																		d
+																	);
+																	this.setState(
+																		{
+																			picture: d,
+																			imageLoading: false
+																		}
+																	);
+																}
+															);
+														}
+														else
+														{
+															this.setState({imageLoading:false});
+														}
+													}
+												);
+											}
+										);
+									}}
+									style={{
+										flex: 1,
+										alignItems: "center",
+										justifyContent: "center"
+									}}
+								>
+									<Icon
+										name="ios-camera"
+										color={colors.textMinor}
+										size={50}
+									/>
+								</TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => {
+										this.setState(
+											{ imageLoading: true },
+											() => {
+												ImagePicker.launchImageLibrary(
+													options,
+													response => {
+														console.log(response);
+														if (
+															response &&
+															response.path
+														) {
+															uploadImage(
+																response.path,
+																d => {
+																	console.log(
+																		"got response",
+																		d
+																	);
+																	this.setState(
+																		{
+																			picture: d,
+																			imageLoading: false
+																		}
+																	);
+																}
+															);
+														}
+														else
+														{
+															this.setState({imageLoading:false});
+														}
+													}
+												);
+											}
+										);
+									}}
+									style={{
+										flex: 1,
+										alignItems: "center",
+										justifyContent: "center"
+									}}
+								>
+									<Icon
+										name="md-images"
+										color={colors.textMinor}
+										size={50}
+									/>
+								</TouchableOpacity>
+							</View>
+						) : null}
+
 						<TextInput
 							multiline={false}
 							placeholder={"Wohin"}
 							value={this.state.inputs.group}
-							onChangeText={text =>
-								this.setInput("group", text)
-							}
+							onChangeText={text => this.setInput("group", text)}
 							placeholderTextColor={colors.placeholder}
 							style={{
 								color: colors.text,
@@ -169,7 +238,7 @@ export default class CreationForm extends Component {
 							}}
 						/>
 					</View>
-					<View style={{ flexDirection: "row" }}>
+					<View style={{ flexDirection: "row", alignSelf:'flex-end' }}>
 						<TouchableOpacity
 							onPress={() => {
 								this.props.onClose();
@@ -194,7 +263,13 @@ export default class CreationForm extends Component {
 								alignItems: "center",
 								justifyContent: "center"
 							}}
-							onPress={()=>{createPost({title:this.state.inputs.title, text:this.state.inputs.text, group:this.state.inputs.group })}}
+							onPress={() => {
+								createPost({
+									title: this.state.inputs.title,
+									text: this.state.inputs.text,
+									group: this.state.inputs.group
+								});
+							}}
 						>
 							<Text style={{ color: colors.text }}>Feuer</Text>
 						</TouchableOpacity>

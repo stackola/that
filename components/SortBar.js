@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 let sorts = ["Top", "New"];
-let times = ["1 Hour", "6 Hours", "24 Hours"];
+let times = ["1 hour", "6 hours", "24 hours", "7 days", "30 days", "All time"];
 
 export default class SortBar extends Component {
 	constructor(p) {
@@ -24,7 +24,7 @@ export default class SortBar extends Component {
 		this.state = {
 			open: false,
 			selectedSort: "New",
-			selectedTime: "24 Hours"
+			selectedTime: "1 Hour"
 		};
 	}
 	setSort(sort) {
@@ -64,23 +64,35 @@ export default class SortBar extends Component {
 								</Text>
 							</View>
 						</View>
-						<View style={{ flex: 1, flexDirection: "row" }}>
-							<View
-								style={{
-									flex: 1,
-									alignItems: "center"
-								}}
-							>
-								<Text style={{ color: colors.text }}>
-									<MDIcon name="clock-outline" size={15} />
-								</Text>
+						{this.state.selectedSort != "New" ? (
+							<View style={{ flex: 1, flexDirection: "row" }}>
+								<View
+									style={{
+										flex: 1,
+										alignItems: "center"
+									}}
+								>
+									<Text style={{ color: colors.text }}>
+										<MDIcon
+											name="clock-outline"
+											size={15}
+										/>
+									</Text>
+								</View>
+								<View
+									style={{
+										flex: 1,
+										justifyContent: "center"
+									}}
+								>
+									<Text style={{ color: colors.text }}>
+										{this.state.selectedTime}
+									</Text>
+								</View>
 							</View>
-							<View style={{ flex: 1, justifyContent: "center" }}>
-								<Text style={{ color: colors.text }}>
-									{this.state.selectedTime}
-								</Text>
-							</View>
-						</View>
+						) : (
+							<View style={{ flex: 1 }} />
+						)}
 					</TouchableOpacity>
 				)}
 				{this.state.open && (
@@ -171,7 +183,9 @@ export default class SortBar extends Component {
 										})}
 									</View>
 								</View>
-							):<View style={{flex:1}}/>}
+							) : (
+								<View style={{ flex: 1 }} />
+							)}
 						</View>
 						<TouchableOpacity
 							onPress={() => {

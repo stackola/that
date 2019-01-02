@@ -167,14 +167,73 @@ class TopBar extends React.Component {
 							onPress={() => {
 								this.setState({ open: false }, () => {
 									this.props.navigate &&
-										this.props.navigate("Group", {
-											group: "general"
-										});
+										this.props.navigate("Home");
 								});
 							}}
+							style={{
+								height: 50,
+								borderBottomWidth: 2,
+								flexDirection: "row",
+								borderColor: colors.textMinor
+							}}
 						>
-							<View>
-								<Text>General</Text>
+							<View style={{ flex: 1 }} />
+							<View style={{ flex: 5, justifyContent: "center" }}>
+								<Text
+									style={{ color: colors.text, fontSize: 16 }}
+								>
+									Home
+								</Text>
+							</View>
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								this.setState({ open: false }, () => {
+									this.props.navigate &&
+										this.props.navigate("Group", {
+											group: "general"
+										}, "general");
+								});
+							}}
+							style={{
+								height: 60,
+								borderBottomWidth: 2,
+								flexDirection: "row",
+								borderColor: colors.textMinor
+							}}
+						>
+							<View style={{ flex: 1 }} />
+							<View style={{ flex: 5, justifyContent: "center" }}>
+								<Text
+									style={{ color: colors.text, fontSize: 16 }}
+								>
+									General
+								</Text>
+							</View>
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								this.setState({ open: false }, () => {
+									this.props.navigate &&
+										this.props.navigate("Group", {
+											group: "cars"
+										}, "cars");
+								});
+							}}
+							style={{
+								height: 60,
+								borderBottomWidth: 2,
+								flexDirection: "row",
+								borderColor: colors.textMinor
+							}}
+						>
+							<View style={{ flex: 1 }} />
+							<View style={{ flex: 5, justifyContent: "center" }}>
+								<Text
+									style={{ color: colors.text, fontSize: 16 }}
+								>
+									Cars
+								</Text>
 							</View>
 						</TouchableOpacity>
 					</View>

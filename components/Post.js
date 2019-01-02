@@ -4,7 +4,8 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import HeaderDropdown from "that/components/HeaderDropdown";
 import VoteButtons from "that/components/VoteButtons";
-
+import Link from "that/components/Link";
+import { withNavigation } from "react-navigation";
 import { vote } from "that/lib";
 
 import Icon from "react-native-vector-icons/Ionicons";
@@ -21,7 +22,7 @@ import {
 	Text
 } from "react-native";
 
-export default class Post extends Component {
+class Post extends Component {
 	constructor(p) {
 		super(p);
 		this.state = { user: {} };
@@ -38,8 +39,7 @@ export default class Post extends Component {
 			console.log("NO GET USER");
 		}
 	}
-	componentWillUnmount() {
-	}
+	componentWillUnmount() {}
 	render() {
 		let data = this.props.data || {};
 		return (
@@ -60,10 +60,26 @@ export default class Post extends Component {
 							upvoters={data.upvoters}
 							downvoters={data.downvoters}
 							onUpvote={() => {
-								vote({path:"/groups/"+data.group+"/posts/"+data.id, id:data.id, vote:"up"})
+								vote({
+									path:
+										"/groups/" +
+										data.group +
+										"/posts/" +
+										data.id,
+									id: data.id,
+									vote: "up"
+								});
 							}}
-							onDownvote={()=>{
-								vote({path:"/groups/"+data.group+"/posts/"+data.id, id:data.id, vote:"down"})
+							onDownvote={() => {
+								vote({
+									path:
+										"/groups/" +
+										data.group +
+										"/posts/" +
+										data.id,
+									id: data.id,
+									vote: "down"
+								});
 							}}
 						/>
 					</View>
@@ -89,10 +105,13 @@ export default class Post extends Component {
 					</View>
 				</View>
 				<TouchableOpacity
+					disabled={!this.props.isButton}
 					style={{ flex: 5, padding: 8 }}
 					onPress={() => {
-						if (this.props.onPress) {
+						if (this.props.isButton && this.props.onPress) {
 							this.props.onPress();
+						} else {
+							return false;
 						}
 					}}
 				>
@@ -145,18 +164,45 @@ export default class Post extends Component {
 								flex: 1,
 								marginBottom: 0,
 								marginTop: 8,
-								justifyContent: "center"
+								justifyContent: "flex-end",
+								flexDirection: "row"
 							}}
 						>
-							<Text
-								style={{
-									textAlign: "right",
-									color: colors.textMinor,
-									fontSize: 12
-								}}
+							<View>
+								<Text
+									style={{
+										color: colors.textMinor,
+										fontSize: 11
+									}}
+								/>
+							</View>
+							<Link
+								to={"User"}
+								params={{ username: this.state.user.username }}
+								key={this.state.user.username}
+								textStyle={{ color: colors.text, fontSize: 11 }}
 							>
-								Von @{this.state.user.username} in /{data.group}
-							</Text>
+								@{this.state.user.username}
+							</Link>
+							<View>
+								<Text
+									style={{
+										color: colors.textMinor,
+										fontSize: 11
+									}}
+								>
+									{" "}
+									in{" "}
+								</Text>
+							</View>
+							<Link
+								to={"Group"}
+								params={{ group: data.group }}
+								key={data.group}
+								textStyle={{ color: colors.text, fontSize: 11 }}
+							>
+								/{data.group}
+							</Link>
 						</View>
 					</View>
 				</TouchableOpacity>
@@ -164,3 +210,5 @@ export default class Post extends Component {
 		);
 	}
 }
+
+export default withNavigation(Post);

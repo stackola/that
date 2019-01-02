@@ -7,6 +7,7 @@ import { vote } from "that/lib";
 import { SwipeRow } from "react-native-swipe-list-view";
 import colors from "that/colors";
 import VoteButtons from "that/components/VoteButtons";
+import Link from "that/components/Link";
 import ExpandingTextInput from "that/components/ExpandingTextInput";
 
 import Icon from "react-native-vector-icons/Entypo";
@@ -173,16 +174,32 @@ export default class Comment extends Component {
 										{this.props.data.text}
 									</Text>
 								</View>
-								<Text
+							
+
+								<View
 									style={{
 										textAlign: "right",
 										paddingRight: 8,
-										color: colors.textMinor,
-										fontSize: 12
+										paddingBottom:4,
+										justifyContent: "flex-end",
+										flexDirection: "row"
 									}}
 								>
-									vor 6 min von @{this.state.user.username}
-								</Text>
+									<View>
+										<Text style={{ color: colors.textMinor, fontSize:11 }}>x minutes ago | </Text>
+									</View>
+									<Link
+										to={"User"}
+										params={{ username: this.state.user.username }}
+										key={this.state.user.username}
+										textStyle={{ color: colors.text, fontSize:11 }}
+									>
+										@{this.state.user.username}
+									</Link>
+									
+								</View>
+
+
 							</View>
 						</SwipeRow>
 					</View>

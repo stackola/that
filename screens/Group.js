@@ -71,21 +71,40 @@ export default class Group extends React.Component {
   render() {
     let group = this.props.navigation.getParam("group", null);
     return (
-      <View style={{ backgroundColor: colors.background, flex: 1 }}>
-        <TopBar title={this.state.group.name} back={()=>{this.props.navigation.goBack()}} />
+      <View key={group} style={{ backgroundColor: colors.background, flex: 1 }}>
+        <TopBar
+          navigate={(a, b, c) => {
+            this.props.navigation.navigate({
+              routeName: a,
+              params: b,
+              key: c
+            });
+          }}
+          title={this.state.group.name}
+          back={() => {
+            this.props.navigation.goBack();
+          }}
+        />
         <PostList
-          navigate={(a, b) => {
-            this.props.navigation.navigate(a, b);
+          navigate={(a, b, c) => {
+            this.props.navigation.navigate({
+              routeName: a,
+              params: b,
+              key: c
+            });
           }}
           posts={this.state.posts}
+          key={"postList" + group}
         />
         <FloatButton
+          key={"floatButton" + group}
           onPress={() => {
             this.setState({ creating: true });
           }}
         />
         {this.state.creating && (
           <CreationForm
+            key={"createForm" + group}
             group={group}
             onClose={() => {
               this.setState({ creating: false });

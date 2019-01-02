@@ -30,17 +30,19 @@ export default class Header extends Component {
 				ListHeaderComponent={<SortBar/>}
 				closeOnRowBeginSwipe={true}
 				style={{zIndex:1}}
+
 				swipeToOpenPercent={20}
 				swipeToClosePercent={20}
 				renderItem={(data, rowMap) => {
 					return (
 						<Post
 							data={data.item}
+							isButton={true}
 							onPress={() => {
 								this.props.navigate("Details", {
 									postId: data.item.id,
 									group: data.item.group
-								});
+								}, data.item.id);
 							}}
 							margin={true}
 						/>

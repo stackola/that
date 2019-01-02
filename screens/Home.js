@@ -32,55 +32,21 @@ export default class HomeScreen extends React.Component {
   }
   componentDidMount() {
     //subscribe to a sub.
-    this.sub1=firebase
-      .firestore()
-      .collection("groups")
-      .doc("cars")
-      .onSnapshot(doc => {
-        console.log("got group snap!!!!!!!!!!!!!!");
-        console.log(doc);
-      });
-    this.sub2=firebase
-      .firestore()
-      .collection("groups")
-      .doc("cars")
-      .collection("posts")
-      .onSnapshot(posts => {
-        console.log("oh yea, home updated!");
-        this.setState(
-          {
-            posts: posts._docs.map(d => {
-              return d._data;
-            })
-          },
-          () => {
-            console.log(this.state);
-            console.log("oh yea, home updated!");
-          }
-        );
-      });
   }
-  componentWillUnmount() {
-    this.sub1 && this.sub1();
-    this.sub2 && this.sub2();
-  }
+  componentWillUnmount() {}
   render() {
     return (
       <View style={{ backgroundColor: colors.background, flex: 1 }}>
-        <TopBar title={"Home"} navigate={(a,b)=>{this.props.navigation.navigate(a,b)}}/>
-        <PostList navigate={(a,b)=>{this.props.navigation.navigate(a,b)}} posts={this.state.posts}/>
-        <FloatButton
-          onPress={() => {
-            this.setState({ creating: true });
+        <TopBar
+          title={"Home"}
+          navigate={(a, b, c) => {
+            this.props.navigation.navigate({
+              routeName: a,
+              params: b,
+              key: c
+            });
           }}
         />
-        {this.state.creating && (
-          <CreationForm
-            onClose={() => {
-              this.setState({ creating: false });
-            }}
-          />
-        )}
       </View>
     );
   }

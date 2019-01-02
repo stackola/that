@@ -17,9 +17,8 @@ service cloud.firestore {
       allow read: if true;
     }
 
-    match /art/{artId} {
-      allow read: if request.auth.uid != null;
-      allow update: if false;
+    match /userUploads/{userId}/{allDocuments=**} {
+      allow write, update: if request.auth.uid == userId;
     }
   }
 }
