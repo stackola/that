@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from "react-redux";
+import { ActionCreators } from "that/redux/actions";
+import { bindActionCreators } from "redux";
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -9,7 +12,7 @@ import {
 
 import firebase from 'react-native-firebase';
 
-export default class AuthLoadingScreen extends React.Component {
+class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -17,7 +20,8 @@ export default class AuthLoadingScreen extends React.Component {
   componentDidMount() {
       firebase.auth().signInAnonymously()
         .then(() => {
-        	this.props.navigation.navigate('Details');          
+          this.props.userSubscribe();
+        	this.props.navigation.navigate('EditProfile');          
         });
     }
 
@@ -32,3 +36,16 @@ export default class AuthLoadingScreen extends React.Component {
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthLoadingScreen);

@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import HeaderDropdown from "that/components/HeaderDropdown";
 import VoteButtons from "that/components/VoteButtons";
 
+import { vote } from "that/lib";
+
 import Icon from "react-native-vector-icons/Ionicons";
 import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "that/colors";
@@ -20,21 +22,50 @@ import {
 } from "react-native";
 
 export default class Post extends Component {
+	constructor(p) {
+		super(p);
+		this.state = { user: {} };
+	}
+	componentDidMount() {
+		let data = this.props.data || {};
+		if (data.user) {
+			console.log("GETTING USER");
+			data.user.get().then(d => {
+				this.setState({ user: d.data() });
+			});
+		} else {
+			console.log(this.props.data);
+			console.log("NO GET USER");
+		}
+	}
+	componentWillUnmount() {
+	}
 	render() {
+		let data = this.props.data || {};
 		return (
 			<View
 				style={{
 					width: "100%",
 					backgroundColor: colors.backgroundOffset,
-					minHeight: 170,
+					minHeight: 150,
 					flexDirection: "row",
-					borderBottomWidth:4,
-					borderColor:colors.seperator
+					borderBottomWidth: 4,
+					borderColor: colors.seperator
 				}}
 			>
 				<View style={{ flex: 1 }}>
 					<View style={{ flex: 1, alignItems: "center" }}>
-						<VoteButtons />
+						<VoteButtons
+							points={data.upvotes - data.downvotes}
+							upvoters={data.upvoters}
+							downvoters={data.downvoters}
+							onUpvote={() => {
+								vote({path:"/groups/"+data.group+"/posts/"+data.id, id:data.id, vote:"up"})
+							}}
+							onDownvote={()=>{
+								vote({path:"/groups/"+data.group+"/posts/"+data.id, id:data.id, vote:"down"})
+							}}
+						/>
 					</View>
 					<View style={{ marginBottom: 8, alignItems: "center" }}>
 						<Text
@@ -53,17 +84,7 @@ export default class Post extends Component {
 								color: colors.textMinor
 							}}
 						>
-							<MDIcon size={9} name={"eye"} /> 452
-						</Text>
-					</View>
-					<View style={{ marginBottom: 8, alignItems: "center" }}>
-						<Text
-							style={{
-								fontSize: 10,
-								color: colors.textMinor
-							}}
-						>
-							<MDIcon size={9} name={"message"} /> 4
+							<MDIcon size={9} name={"message"} /> {data.comments}
 						</Text>
 					</View>
 				</View>
@@ -84,8 +105,7 @@ export default class Post extends Component {
 								paddingRight: 12
 							}}
 						>
-							Saw this sweet thing a few days ago! What do you
-							think?
+							{this.props.data.title}
 						</Text>
 					</View>
 					{this.props.type == "image" && (
@@ -109,8 +129,7 @@ export default class Post extends Component {
 					)}
 					<View style={{ flex: 1 }}>
 						<Text style={{ color: colors.text }}>
-							Ein Balloon flieg einfach so vorbei{"\n"}ich denke
-							so, was?
+							{this.props.data.text}
 						</Text>
 					</View>
 
@@ -136,7 +155,7 @@ export default class Post extends Component {
 									fontSize: 12
 								}}
 							>
-								Von @admin in /lustig
+								Von @{this.state.user.username} in /{data.group}
 							</Text>
 						</View>
 					</View>

@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import HeaderDropdown from "that/components/HeaderDropdown";
 import ExpandingTextInput from "that/components/ExpandingTextInput";
 import colors from "that/colors";
-
+import {createPost} from "that/lib";
 import ImagePicker from 'react-native-image-picker';
 import { RNCamera } from "react-native-camera";
 
@@ -33,6 +33,13 @@ const options = {
 };
 
 export default class CreationForm extends Component {
+	constructor(p) {
+		super(p);
+		this.state = { inputs: { title: "", text: "", group: "cars"} };
+	}
+	setInput(key, value) {
+		this.setState({ inputs: { ...this.state.inputs, [key]: value } });
+	}
 	render() {
 		return (
 			<View>
@@ -56,6 +63,10 @@ export default class CreationForm extends Component {
 							multiline={false}
 							placeholder={"Title"}
 							placeholderTextColor={colors.placeholder}
+							value={this.state.inputs.title}
+							onChangeText={text =>
+								this.setInput("title", text)
+							}
 							style={{
 								color: colors.text,
 								backgroundColor: null,
@@ -69,6 +80,10 @@ export default class CreationForm extends Component {
 							placeholder={"Text"}
 							min={120}
 							max={600}
+							value={this.state.inputs.text}
+							onChangeText={text =>
+								this.setInput("text", text)
+							}
 							numberOfLines={4}
 							placeholderTextColor={colors.placeholder}
 							style={{
@@ -136,7 +151,10 @@ export default class CreationForm extends Component {
 						<TextInput
 							multiline={false}
 							placeholder={"Wohin"}
-							value={"/lustig"}
+							value={this.state.inputs.group}
+							onChangeText={text =>
+								this.setInput("group", text)
+							}
 							placeholderTextColor={colors.placeholder}
 							style={{
 								color: colors.text,
@@ -172,6 +190,7 @@ export default class CreationForm extends Component {
 								alignItems: "center",
 								justifyContent: "center"
 							}}
+							onPress={()=>{createPost({title:this.state.inputs.title, text:this.state.inputs.text, group:this.state.inputs.group })}}
 						>
 							<Text style={{ color: colors.text }}>Feuer</Text>
 						</TouchableOpacity>

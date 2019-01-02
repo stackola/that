@@ -16,10 +16,7 @@ export default class Comments extends Component {
 	render() {
 		return (
 			<View>
-				<Comment />
-				<Comment />
-				<Comment />
-				<Comment />
+			{this.props.comments.map((c)=>{return <Comment key={c.id} level={0} data={c}/>})}
 			</View>
 		);
 	}
