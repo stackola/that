@@ -22,42 +22,46 @@ import {
   View,
   Text
 } from "react-native";
-export default class HomeScreen extends React.Component {
+export default class Group extends React.Component {
   static navigationOptions = {
     header: null
   };
   constructor(p) {
     super(p);
-    this.state = { creating: false, posts: [] };
+    this.state = { creating: false, posts: [], group: {} };
   }
   componentDidMount() {
     //subscribe to a sub.
-    this.sub1=firebase
+    let group = this.props.navigation.getParam("group", null);
+
+    this.sub1 = firebase
       .firestore()
       .collection("groups")
-      .doc("cars")
+      .doc(group)
       .onSnapshot(doc => {
         console.log("got group snap!!!!!!!!!!!!!!");
         console.log(doc);
-      });
-    this.sub2=firebase
-      .firestore()
-      .collection("groups")
-      .doc("cars")
-      .collection("posts")
-      .onSnapshot(posts => {
-        console.log("oh yea, home updated!");
-        this.setState(
-          {
-            posts: posts._docs.map(d => {
-              return d._data;
-            })
-          },
-          () => {
-            console.log(this.state);
-            console.log("oh yea, home updated!");
-          }
-        );
+        this.setState({ group: doc.data() }, () => {
+          this.sub2 = firebase
+            .firestore()
+            .collection("groups")
+            .doc(group)
+            .collection("posts")
+            .onSnapshot(posts => {
+              console.log("oh yea, group updated!");
+              this.setState(
+                {
+                  posts: posts._docs.map(d => {
+                    return d._data;
+                  })
+                },
+                () => {
+                  console.log(this.state);
+                  console.log("oh yea, group updated!");
+                }
+              );
+            });
+        });
       });
   }
   componentWillUnmount() {
@@ -65,10 +69,16 @@ export default class HomeScreen extends React.Component {
     this.sub2 && this.sub2();
   }
   render() {
+    let group = this.props.navigation.getParam("group", null);
     return (
       <View style={{ backgroundColor: colors.background, flex: 1 }}>
-        <TopBar title={"Home"} navigate={(a,b)=>{this.props.navigation.navigate(a,b)}}/>
-        <PostList navigate={(a,b)=>{this.props.navigation.navigate(a,b)}} posts={this.state.posts}/>
+        <TopBar title={this.state.group.name} back={()=>{this.props.navigation.goBack()}} />
+        <PostList
+          navigate={(a, b) => {
+            this.props.navigation.navigate(a, b);
+          }}
+          posts={this.state.posts}
+        />
         <FloatButton
           onPress={() => {
             this.setState({ creating: true });
@@ -76,6 +86,7 @@ export default class HomeScreen extends React.Component {
         />
         {this.state.creating && (
           <CreationForm
+            group={group}
             onClose={() => {
               this.setState({ creating: false });
             }}

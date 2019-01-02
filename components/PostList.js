@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
-import HeaderDropdown from "that/components/HeaderDropdown";
+import SortBar from "that/components/SortBar";
 import colors from "that/colors";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { comment } from "that/lib";
@@ -27,7 +27,9 @@ export default class Header extends Component {
 				keyExtractor={item => {
 					return item.id;
 				}}
+				ListHeaderComponent={<SortBar/>}
 				closeOnRowBeginSwipe={true}
+				style={{zIndex:1}}
 				swipeToOpenPercent={20}
 				swipeToClosePercent={20}
 				renderItem={(data, rowMap) => {

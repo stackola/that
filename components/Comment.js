@@ -148,8 +148,8 @@ export default class Comment extends Component {
 										}}
 									>
 										<Text style={{ color: colors.text }}>
-											<Ant
-												name="exclamationcircleo"
+											<Icon
+												name="flag"
 												size={20}
 											/>
 										</Text>

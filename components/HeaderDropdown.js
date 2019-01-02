@@ -78,7 +78,6 @@ export default class HeaderDropdown extends Component {
 				<View style={{ width: "100%" }}>
 					<TouchableOpacity
 						onPress={() => {
-
 							this.setState({ open: !this.state.open });
 						}}
 						style={{
@@ -114,7 +113,6 @@ export default class HeaderDropdown extends Component {
 						<View>
 							<TouchableOpacity
 								onPress={() => {
-									
 									this.setState({ open: false });
 								}}
 								style={{

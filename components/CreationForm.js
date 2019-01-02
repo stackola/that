@@ -35,10 +35,13 @@ const options = {
 export default class CreationForm extends Component {
 	constructor(p) {
 		super(p);
-		this.state = { inputs: { title: "", text: "", group: "cars"} };
+		this.state = { inputs: { title: "", text: "", group: ""} };
 	}
 	setInput(key, value) {
 		this.setState({ inputs: { ...this.state.inputs, [key]: value } });
+	}
+	componentDidMount() {
+		this.setState({inputs:{...this.state.inputs, group:this.props.group}});
 	}
 	render() {
 		return (
@@ -48,6 +51,7 @@ export default class CreationForm extends Component {
 						position: "absolute",
 						width: "96%",
 						marginLeft: "2%",
+						zIndex:5,
 						marginRight: "2%",
 						borderTopRightRadius: 14,
 						borderTopLeftRadius: 14,

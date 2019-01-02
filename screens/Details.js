@@ -9,6 +9,8 @@ import FloatButton from "that/components/FloatButton";
 import CommentBox from "that/components/CommentBox";
 import colors from "that/colors";
 import firebase from "react-native-firebase";
+
+import TopBar from "that/components/TopBar";
 import {
 	ActivityIndicator,
 	AsyncStorage,
@@ -27,7 +29,8 @@ class Details extends Component {
 		headerStyle: {
 			backgroundColor: colors.headerBackground
 		},
-		headerTintColor: colors.headerFont
+		headerTintColor: colors.headerFont,
+		title:false
 	};
 	constructor(props) {
 		super(props);
@@ -79,6 +82,7 @@ class Details extends Component {
 		//We can access the redux store via our props. The available variables are defined in mapStateToProps() in this file
 		return (
 			<View style={{ flex: 1, backgroundColor: colors.background }}>
+
 				<FlatList
 
 					data={this.state.comments}

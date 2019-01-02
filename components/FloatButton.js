@@ -33,7 +33,8 @@ export default class FloatButton extends Component {
 					position: "absolute",
 					right: 10,
 					bottom: 10,
-					borderRadius: 60
+					borderRadius: 60,
+					zIndex:2,
 				}}
 			>
 				<MDIcon name="plus" size={25} color={"white"} />
