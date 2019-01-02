@@ -128,7 +128,6 @@ class Details extends Component {
 						);
 					}}
 				/>
-				<FloatButton />
 			</View>
 		);
 	}
