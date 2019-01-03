@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator, createSwitchNavigator, createStackNavigator,createAppContainer } from 'react-navigation';
-
+import ImagePicker from "react-native-image-picker";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
@@ -16,6 +16,7 @@ import Home from "that/screens/Home";
 import Details from "that/screens/Details";
 import Create from "that/screens/Create";
 import Group from "that/screens/Group";
+import ImageView from "that/screens/ImageView";
 import EditProfile from "that/screens/EditProfile";
 
 
@@ -52,7 +53,7 @@ class OtherScreen extends React.Component {
 
 
 
-const AppStack = createStackNavigator({ Home: Home, Details: Details,Create:Create, EditProfile:EditProfile,Group:Group});
+const AppStack = createStackNavigator({ Home: Home, Details: Details,Create:Create, EditProfile:EditProfile,Group:Group, ImageView:ImageView});
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 
 let Navigator = createAppContainer(createSwitchNavigator(

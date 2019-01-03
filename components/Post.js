@@ -53,6 +53,7 @@ class Post extends Component {
 					borderColor: colors.seperator
 				}}
 			>
+				
 				<View style={{ flex: 1 }}>
 					<View style={{ flex: 1, alignItems: "center" }}>
 						<VoteButtons
@@ -105,8 +106,9 @@ class Post extends Component {
 					</View>
 				</View>
 				<TouchableOpacity
+					activeOpacity={0.7}
 					disabled={!this.props.isButton}
-					style={{ flex: 5, padding: 8 }}
+					style={{ flex: 5, padding: 8, paddingTop: 0 }}
 					onPress={() => {
 						if (this.props.isButton && this.props.onPress) {
 							this.props.onPress();
@@ -115,37 +117,44 @@ class Post extends Component {
 						}
 					}}
 				>
-					<View style={{ minHeight: "auto", paddingBottom: 8 }}>
-						<Text
-							style={{
-								fontSize: 15,
-								color: colors.text,
-								fontWeight: "500",
-								paddingRight: 12
-							}}
-						>
-							{this.props.data.title}
-						</Text>
-					</View>
-					{this.props.type == "image" && (
-						<View
-							style={{
-								overflow: "hidden",
-								alignItems: "center",
-								justifyContent: "center",
-								flex: 1,
-								paddingBottom: 8
-							}}
-						>
-							<Image
-								source={{
-									uri: "https://i.imgur.com/GA5T5S9.jpg"
+					{this.props.data.title ? (
+						<View style={{ minHeight: "auto", paddingBottom: 8 }}>
+							<Text
+								style={{
+									fontSize: 15,
+									color: colors.text,
+									fontWeight: "500",
+									paddingRight: 12,
+									paddingTop: 4
 								}}
-								style={{ width: "100%", height: 400 }}
-								resizeMode="cover"
-							/>
+							>
+								{this.props.data.title}
+							</Text>
 						</View>
-					)}
+					) : null}
+					{this.props.data.image &&
+						this.props.data.image.url && (
+							<View
+								style={{
+									overflow: "hidden",
+									alignItems: "center",
+									justifyContent: "center",
+									height:400
+								}}
+							>
+								<Image
+									source={{
+										uri: this.props.data.image.url
+									}}
+									style={{position: 'absolute',
+						  top: 8,
+						  left: 8,
+						  bottom: 8,
+						  right: 8}}
+									resizeMode="contain"
+								/>
+							</View>
+						)}
 					<View style={{ flex: 1 }}>
 						<Text style={{ color: colors.text }}>
 							{this.props.data.text}

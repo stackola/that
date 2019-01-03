@@ -67,7 +67,7 @@ class TopBar extends React.Component {
 						style={{ flex: 3, justifyContent: "center" }}
 					>
 						<Text style={{ color: colors.text }}>
-							{this.props.title || "No Title?"}
+							{this.props.title || ""}
 						</Text>
 					</TouchableOpacity>
 					<View style={{ flex: 2, flexDirection: "row" }}>

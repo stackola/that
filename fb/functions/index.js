@@ -24,6 +24,7 @@ exports.post = functions.https.onCall((data, context) => {
 	// TODO: Check ban list. Check allow anonymous. Check if either home town or in raidus.
 	const title = data.title;
 	const text = data.text;
+	const image = data.image;
 	const group = data.group;
 	var db = admin.firestore();
 	let newPost = db
@@ -37,6 +38,7 @@ exports.post = functions.https.onCall((data, context) => {
 			id: newPost.id,
 			title,
 			text,
+			image,
 			comments: 0,
 			downvotes: 0,
 			upvotes: 0,
@@ -142,6 +144,7 @@ exports.comment = functions.https.onCall((data, context) => {
 	// TODO: Check ban list. Check allow anonymous. Check if either home town or in raidus.
 	const text = data.text;
 	const path = data.path;
+	const image = data.image;
 	var db = admin.firestore();
 	let newComment = db
 		.doc(path)
@@ -152,6 +155,7 @@ exports.comment = functions.https.onCall((data, context) => {
 		.set({
 			id: newComment.id,
 			text,
+			image,
 			downvotes: 0,
 			upvotes: 0,
 			user: db.collection("users").doc(uid)
@@ -162,7 +166,7 @@ exports.comment = functions.https.onCall((data, context) => {
 				.runTransaction(t => {
 					return t.get(ref).then(doc => {
 						// Add one person to the city population
-						var comments = doc.data().comments + 1;
+						var comments = (doc.data().comments||0) + 1;
 
 						t.update(ref, { comments: comments });
 					});

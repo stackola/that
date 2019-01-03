@@ -28,7 +28,7 @@ export default class Group extends React.Component {
   };
   constructor(p) {
     super(p);
-    this.state = { creating: false, posts: [], group: {} };
+    this.state = { creating: false, posts: [], group: {}};
   }
   componentDidMount() {
     //subscribe to a sub.

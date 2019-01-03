@@ -36,7 +36,7 @@ export default class CreationForm extends Component {
 		super(p);
 		this.state = {
 			inputs: { title: "", text: "", group: "" },
-			picture: null,
+			image: null,
 			imageLoading: false
 		};
 	}
@@ -113,7 +113,7 @@ export default class CreationForm extends Component {
 									margin: 4
 								}}
 							/>
-							{!this.state.imageLoading && this.state.picture ? (
+							{!this.state.imageLoading && this.state.image ? (
 								<View style={{ alignItems: "center" }}>
 									<View
 										style={{
@@ -124,16 +124,16 @@ export default class CreationForm extends Component {
 									>
 										<Image
 											source={{
-												uri: this.state.picture.url
+												uri: this.state.image.url
 											}}
-											style={{ flex: 1, height: 200 }}
+											style={{ flex: 1, height: 200}}
 											resizeMode={"contain"}
 										/>
 									</View>
 									<TouchableOpacity
 										onPress={() => {
 											this.setState({
-												picture: null,
+												image: null,
 												imageLoading: false
 											});
 										}}
@@ -154,10 +154,9 @@ export default class CreationForm extends Component {
 									</TouchableOpacity>
 								</View>
 							) : null}
-							{this.state.imageLoading && !this.state.picture ? (
+							{this.state.imageLoading && !this.state.image ? (
 								<View
 									style={{
-										height: 200,
 										alignItems: "center",
 										justifyContent: "center",
 										marginTop: 8,
@@ -178,7 +177,7 @@ export default class CreationForm extends Component {
 									</View>
 								</View>
 							) : null}
-							{!this.state.imageLoading && !this.state.picture ? (
+							{!this.state.imageLoading && !this.state.image ? (
 								<View style={{ flexDirection: "row" }}>
 									<TouchableOpacity
 										onPress={() => {
@@ -197,6 +196,8 @@ export default class CreationForm extends Component {
 															) {
 																uploadImage(
 																	response.path,
+																	response.width,
+																	response.height,
 																	d => {
 																		console.log(
 																			"got response",
@@ -204,11 +205,12 @@ export default class CreationForm extends Component {
 																		);
 																		this.setState(
 																			{
-																				picture: d,
+																				image: d,
 																				imageLoading: false
 																			}
 																		);
-																	}
+																	},
+
 																);
 															} else {
 																this.setState({
@@ -256,7 +258,7 @@ export default class CreationForm extends Component {
 																		);
 																		this.setState(
 																			{
-																				picture: d,
+																				image: d,
 																				imageLoading: false
 																			}
 																		);
@@ -336,7 +338,8 @@ export default class CreationForm extends Component {
 								createPost({
 									title: this.state.inputs.title,
 									text: this.state.inputs.text,
-									group: this.state.inputs.group
+									group: this.state.inputs.group,
+									image: this.state.image
 								});
 							}}
 						>

@@ -26,11 +26,7 @@ import {
 
 class Details extends Component {
 	static navigationOptions = {
-		headerStyle: {
-			backgroundColor: colors.headerBackground
-		},
-		headerTintColor: colors.headerFont,
-		title:false
+		header: null
 	};
 	constructor(props) {
 		super(props);
@@ -46,7 +42,7 @@ class Details extends Component {
 		console.log("the post is");
 		let postId = this.props.navigation.getParam("postId", null);
 		let group = this.props.navigation.getParam("group", null);
-		this.sub1=firebase
+		this.sub1 = firebase
 			.firestore()
 			.collection("groups")
 			.doc(group)
@@ -56,8 +52,8 @@ class Details extends Component {
 				console.log("got post snapsnappyty", snap);
 				this.setState({ post: snap._data, path: snap._ref.path });
 			});
-
-		this.sub2=firebase
+		//Auslagern!
+		this.sub2 = firebase
 			.firestore()
 			.collection("groups")
 			.doc(group)
@@ -81,57 +77,67 @@ class Details extends Component {
 	render() {
 		//We can access the redux store via our props. The available variables are defined in mapStateToProps() in this file
 		return (
-			<View style={{ flex: 1, backgroundColor: colors.background }}>
-
-				<FlatList
-
-					data={this.state.comments}
-					keyExtractor={item => {
-						return item.id;
-					}}
-					keyboardShouldPersistTaps={"handled"}
-					renderItem={(c, rowMap) => {
-						return (
-							<Comment key={c.item.id} level={0} data={c.item} />
-						);
-					}}
-					ListHeaderComponent={() => {
-						return (
-							<View style={{ flex: 1, marginBottom: 12 }}>
-								{this.state.path && (
-									<Post data={this.state.post} />
-								)}
-								<CommentBox path={this.state.path}/>								
-								{!this.state.commentsLoading &&
-									this.state.comments.length == 0 && (
-										<View
-											style={{
-												height: 80,
-												alignItems: "center",
-												justifyContent: "center"
-											}}
-										>
-											<Text
-												style={{ color: colors.text }}
-											>
-												No comments
-											</Text>
-										</View>
-									)}
-								{this.state.commentsLoading && (
-									<View
-										style={{
-											marginTop: 12,
-											marginBottom: 12
-										}}
-									>
-										<ActivityIndicator />
-									</View>
-								)}
-							</View>
-						);
+			<View style={{ flex: 1 }}>
+				<TopBar
+					title={""}
+					back={()=>{this.props.navigation.goBack()}}
+					navigate={(a, b, c) => {
+						this.props.navigation.navigate({
+							routeName: a,
+							params: b,
+							key: c
+						});
 					}}
 				/>
+				<View style={{ flex: 1 }}>
+					<ScrollView
+						style={{ flex: 1, backgroundColor: colors.background }}
+						keyboardShouldPersistTaps={"handled"}
+					>
+						<View style={{ flex: 1, marginBottom: 12 }}>
+							{this.state.path && <Post data={this.state.post} />}
+							<CommentBox path={this.state.path} />
+							{!this.state.commentsLoading &&
+								this.state.comments.length == 0 && (
+									<View
+										style={{
+											height: 80,
+											alignItems: "center",
+											justifyContent: "center"
+										}}
+									>
+										<Text style={{ color: colors.text }}>
+											No comments
+										</Text>
+									</View>
+								)}
+							{this.state.commentsLoading && (
+								<View
+									style={{
+										marginTop: 12,
+										marginBottom: 12
+									}}
+								>
+									<ActivityIndicator />
+								</View>
+							)}
+						</View>
+						<View>
+							{this.state.comments.map(c => {
+								return (
+									<Comment
+										key={c.id}
+										level={0}
+										data={c}
+										navigate={d => {
+											this.props.navigation.navigate(d);
+										}}
+									/>
+								);
+							})}
+						</View>
+					</ScrollView>
+				</View>
 			</View>
 		);
 	}

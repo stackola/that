@@ -38,12 +38,14 @@ export default class Header extends Component {
 						<Post
 							data={data.item}
 							isButton={true}
+							id={data.item.id}
 							onPress={() => {
 								this.props.navigate("Details", {
 									postId: data.item.id,
 									group: data.item.group
 								}, data.item.id);
 							}}
+
 							margin={true}
 						/>
 					);
