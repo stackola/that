@@ -22,13 +22,13 @@ import {
   View,
   Text
 } from "react-native";
-export default class Group extends React.Component {
+class Group extends React.Component {
   static navigationOptions = {
     header: null
   };
   constructor(p) {
     super(p);
-    this.state = { creating: false, posts: [], group: {}};
+    this.state = { creating: false, posts: [], group: {} };
   }
   componentDidMount() {
     //subscribe to a sub.
@@ -96,12 +96,14 @@ export default class Group extends React.Component {
           posts={this.state.posts}
           key={"postList" + group}
         />
-        <FloatButton
-          key={"floatButton" + group}
-          onPress={() => {
-            this.setState({ creating: true });
-          }}
-        />
+        {this.props.user && this.props.user.id ? (
+          <FloatButton
+            key={"floatButton" + group}
+            onPress={() => {
+              this.setState({ creating: true });
+            }}
+          />
+        ) : null}
         {this.state.creating && (
           <CreationForm
             key={"createForm" + group}
@@ -115,3 +117,15 @@ export default class Group extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Group);

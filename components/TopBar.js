@@ -28,6 +28,11 @@ class TopBar extends React.Component {
 		};
 	}
 	render() {
+		let eventCount = this.props.events && this.props.events.length >0 
+			? this.props.events.filter(e => {
+					return !e.read;
+			  }).length
+			: 0;
 		return (
 			<View>
 				<View
@@ -70,91 +75,120 @@ class TopBar extends React.Component {
 							{this.props.title || ""}
 						</Text>
 					</TouchableOpacity>
-					<View style={{ flex: 2, flexDirection: "row" }}>
-						<View
-							style={{
-								alignItems: "center",
-								borderLeftWidth: 0,
-								borderColor: colors.seperator,
-								flex: 1
-							}}
-						>
-							<View
+					{this.props.user && this.props.user.id ? (
+						<View style={{ flex: 2, flexDirection: "row" }}>
+							<TouchableOpacity
 								style={{
-									flex: 1,
 									alignItems: "center",
-									justifyContent: "center"
+									borderLeftWidth: 0,
+									borderColor: colors.seperator,
+									flex: 1
+								}}
+								onPress={() => {
+									this.props.navigate("Events");
 								}}
 							>
-								<MIcon
-									name="coin"
-									size={20}
-									color={colors.upvote}
-								/>
-							</View>
-							<Text
-								style={{
-									fontSize: 12,
-									color: colors.text,
-									paddingBottom: 8
+								<View
+									style={{
+										flex: 1,
+										alignItems: "center",
+										justifyContent: "center"
+									}}
+								>
+									<MIcon
+										name="coin"
+										size={20}
+										color={colors.upvote}
+									/>
+								</View>
+								<Text
+									style={{
+										fontSize: 12,
+										color: colors.text,
+										paddingBottom: 8
+									}}
+								>
+									1.523
+									{/*this.props.user.points+1500000 || 0*/}
+								</Text>
+								{eventCount > 0 && (
+									<View
+										style={{
+											backgroundColor: "red",
+											zIndex: 1,
+											height: 15,
+											width: 15,
+											borderRadius: 15,
+											position: "absolute",
+											top: 5,
+											left: 36,
+											alignItems: "center",
+											justifyContent: "center"
+										}}
+									>
+										<Text
+											numberOfLines={1}
+											style={{
+												color: colors.text,
+												flex: 1,
+												fontSize: 9
+											}}
+										>
+											{eventCount}
+										</Text>
+									</View>
+								)}
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={{ flex: 1, alignItems: "center" }}
+								onPress={() => {
+									this.props.navigate("EditProfile");
 								}}
 							>
-								1.523
-								{/*this.props.user.points+1500000 || 0*/}
-							</Text>
-						</View>
-						<View style={{ flex: 1, alignItems: "center" }}>
-							<View
-								style={{
-									backgroundColor: "red",
-									zIndex: 1,
-									height: 15,
-									width: 15,
-									borderRadius: 15,
-									position: "absolute",
-									top: 5,
-									left: 36,
-									alignItems: "center",
-									justifyContent: "center"
-								}}
-							>
+								<View
+									style={{
+										flex: 1,
+										alignItems: "center",
+										justifyContent: "center"
+									}}
+								>
+									<Icon
+										name="user"
+										size={25}
+										color={colors.text}
+									/>
+								</View>
 								<Text
 									numberOfLines={1}
 									style={{
 										color: colors.text,
-										flex: 1,
-										fontSize: 9
+										paddingBottom: 8,
+										fontSize: 12
 									}}
 								>
-									99
+									{this.props.user.username || "Anon"}
 								</Text>
-							</View>
-							<View
-								style={{
-									flex: 1,
-									alignItems: "center",
-									justifyContent: "center"
-								}}
-							>
-								<Icon
-									name="user"
-									size={25}
-									color={colors.text}
-								/>
-							</View>
-							<Text
-								numberOfLines={1}
-								style={{
-									color: colors.text,
-									paddingBottom: 8,
-									fontSize: 12
-								}}
-							>
-								{this.props.user.username + "ihinterseer" ||
-									"Anon"}
-							</Text>
+							</TouchableOpacity>
 						</View>
-					</View>
+					) : (
+						<TouchableOpacity
+							style={{
+								flex: 2,
+								alignItems: "center",
+								justifyContent: "center",
+								backgroundColor: colors.upvote
+							}}
+							onPress={() => {
+								this.props.navigate("EditProfile");
+							}}
+						>
+							<MIcon
+								name="login-variant"
+								color={colors.text}
+								size={25}
+							/>
+						</TouchableOpacity>
+					)}
 				</View>
 				{this.state.open && (
 					<View
@@ -190,9 +224,13 @@ class TopBar extends React.Component {
 							onPress={() => {
 								this.setState({ open: false }, () => {
 									this.props.navigate &&
-										this.props.navigate("Group", {
-											group: "general"
-										}, "general");
+										this.props.navigate(
+											"Group",
+											{
+												group: "general"
+											},
+											"general"
+										);
 								});
 							}}
 							style={{
@@ -215,9 +253,13 @@ class TopBar extends React.Component {
 							onPress={() => {
 								this.setState({ open: false }, () => {
 									this.props.navigate &&
-										this.props.navigate("Group", {
-											group: "cars"
-										}, "cars");
+										this.props.navigate(
+											"Group",
+											{
+												group: "cars"
+											},
+											"cars"
+										);
 								});
 							}}
 							style={{
@@ -245,7 +287,8 @@ class TopBar extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		user: state.user
+		user: state.user,
+		events: state.events
 	};
 }
 

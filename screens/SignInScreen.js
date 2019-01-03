@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { ActionCreators } from 'that/redux/actions';
-import { bindActionCreators } from 'redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { ActionCreators } from "that/redux/actions";
+import { bindActionCreators } from "redux";
 
 import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  StyleSheet,
-  View,
-  Text
-} from 'react-native';
+	ActivityIndicator,
+	AsyncStorage,
+	StatusBar,
+	StyleSheet,
+	View,
+	Text
+} from "react-native";
 
 class AppContainer extends Component {
 	constructor(props) {
@@ -32,10 +32,9 @@ class AppContainer extends Component {
 
 function mapStateToProps(state) {
 	return {
-		user: state.user,
+		user: state.user
 	};
 }
-
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators(ActionCreators, dispatch);

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 
-import { vote } from "that/lib";
+import { vote, genderColor } from "that/lib";
 import { SwipeRow } from "react-native-swipe-list-view";
 import colors from "that/colors";
 import VoteButtons from "that/components/VoteButtons";
@@ -23,7 +23,8 @@ import {
 	Image,
 	StyleSheet,
 	View,
-	Text
+	Text,
+	Alert
 } from "react-native";
 
 import { comment } from "that/lib";
@@ -108,6 +109,24 @@ export default class Comment extends Component {
 			);
 		});
 	}
+	notLoggedIn() {
+		Alert.alert(
+			"Not logged in",
+			"Please log in to participate",
+			[
+				{
+					text: "Not now",
+					onPress: () => console.log("not now"),
+					style: "cancel"
+				},
+				{
+					text: "Log in",
+					onPress: () => this.props.navigate("EditProfile")
+				}
+			],
+			{ cancelable: true }
+		);
+	}
 	render() {
 		return (
 			<View style={{ marginBottom: 4 }}>
@@ -122,18 +141,26 @@ export default class Comment extends Component {
 							upvoters={this.props.data.upvoters}
 							downvoters={this.props.data.downvoters}
 							onUpvote={() => {
-								vote({
-									path: this.props.data.path,
-									id: this.props.data.id,
-									vote: "up"
-								});
+								if (this.props.canVote) {
+									vote({
+										path: this.props.data.path,
+										id: this.props.data.id,
+										vote: "up"
+									});
+								} else {
+									this.notLoggedIn();
+								}
 							}}
 							onDownvote={() => {
-								vote({
-									path: this.props.data.path,
-									id: this.props.data.id,
-									vote: "down"
-								});
+								if (this.props.canVote) {
+									vote({
+										path: this.props.data.path,
+										id: this.props.data.id,
+										vote: "down"
+									});
+								} else {
+									this.notLoggedIn();
+								}
 							}}
 						/>
 					</View>
@@ -150,6 +177,7 @@ export default class Comment extends Component {
 							swipeToClosePercent={20}
 							leftOpenValue={155}
 							rightOpenValue={0}
+							enabled={this.props.canVote}
 							style={{ minHeight: 80 }}
 							ref={ref => {
 								this.ref = ref;
@@ -191,8 +219,15 @@ export default class Comment extends Component {
 											backgroundColor: colors.upvote
 										}}
 										onPress={() => {
-											this.setState({ replying: true });
-											this.ref.closeRow();
+											if (this.props.canVote) {
+												this.setState({
+													replying: true
+												});
+												this.ref.closeRow();
+											} else {
+												this.notLoggedIn();
+												this.ref.closeRow();
+											}
 										}}
 									>
 										<Text style={{ color: colors.text }}>
@@ -221,14 +256,14 @@ export default class Comment extends Component {
 									this.props.data.image.url ? (
 										<TouchableOpacity
 											onPress={() => {
-												this.props.navigate({
-													routeName: "ImageView",
-													key: this.props.data.path,
-													params: {
+												this.props.navigate(
+													"ImageView",
+													{
 														image: this.props.data
 															.image
-													}
-												});
+													},
+													this.props.data.path
+												);
 											}}
 										>
 											<Image
@@ -239,7 +274,7 @@ export default class Comment extends Component {
 												style={{
 													width: 100,
 													height: 100,
-													marginLeft:12
+													marginLeft: 12
 												}}
 											/>
 										</TouchableOpacity>
@@ -265,27 +300,33 @@ export default class Comment extends Component {
 											x minutes ago |{" "}
 										</Text>
 									</View>
-									<Link
-										to={"User"}
-										params={{
-											username: this.state.user.username
-										}}
-										key={this.state.user.username}
-										textStyle={{
-											color:
-												this.state.user.gender == "D" ||
-												!this.state.user ||
-												!this.state.user.gender
-													? colors.otherGenders
-													: this.state.user.gender ==
-													  "M"
-														? colors.male
-														: colors.female,
-											fontSize: 11
-										}}
-									>
-										@{this.state.user.username}
-									</Link>
+									{this.state.user &&
+									this.state.user.public ? (
+										<Link
+											to={"Profile"}
+											params={{
+												userId: this.state.user.id
+											}}
+											key={this.state.user.id}
+											textStyle={{
+												color: genderColor(
+													this.state.user.gender
+												),
+												fontSize: 11
+											}}
+										>
+											@{this.state.user.username}
+										</Link>
+									) : (
+										<Text
+											style={{
+												fontSize: 11,
+												color: colors.otherGenders
+											}}
+										>
+											Anon
+										</Text>
+									)}
 								</View>
 							</View>
 						</SwipeRow>
@@ -293,29 +334,27 @@ export default class Comment extends Component {
 				</View>
 				{this.state.replying && (
 					<View style={{ flexDirection: "row" }}>
-				
-					<View style={{ width:35 }}>
-
-						<TouchableOpacity
-							onPress={() => {
-								this.setState({
-									replying: false,
-									image: null
-								});
-							}}
-							style={{
-								backgroundColor: colors.downvote,
-								flex: 1,
-								alignItems: "center",
-								justifyContent: "center"
-							}}
-						>
-							<Text style={{ color: colors.text }}>
-								<Icon name="cross" size={15} />
-							</Text>
-						</TouchableOpacity>
-					</View>
-					<View style={{ flex: 1 }}>
+						<View style={{ width: 35 }}>
+							<TouchableOpacity
+								onPress={() => {
+									this.setState({
+										replying: false,
+										image: null
+									});
+								}}
+								style={{
+									backgroundColor: colors.downvote,
+									flex: 1,
+									alignItems: "center",
+									justifyContent: "center"
+								}}
+							>
+								<Text style={{ color: colors.text }}>
+									<Icon name="cross" size={15} />
+								</Text>
+							</TouchableOpacity>
+						</View>
+						<View style={{ flex: 1 }}>
 							<ExpandingTextInput
 								multiline={true}
 								placeholder={"Text"}
@@ -342,10 +381,9 @@ export default class Comment extends Component {
 							/>
 						</View>
 						<View style={{ width: 60 }}>
-							
 							<View
 								style={{
-									flex:1,
+									flex: 1,
 									backgroundColor: colors.hidden
 								}}
 							>
@@ -369,18 +407,19 @@ export default class Comment extends Component {
 									</TouchableOpacity>
 								) : null}
 
-
 								{this.state.imageLoading &&
 								!this.state.image ? (
 									<View
 										style={{
 											alignItems: "center",
 											justifyContent: "center",
-											flex:1
-
+											flex: 1
 										}}
 									>
-										<ActivityIndicator size={10} style={{height:15}} />
+										<ActivityIndicator
+											size={10}
+											style={{ height: 15 }}
+										/>
 									</View>
 								) : null}
 
@@ -392,25 +431,31 @@ export default class Comment extends Component {
 											}}
 											style={{ flex: 1 }}
 										>
-										<View style={{minHeight:15, flex:1}}>
-											<Image
-												source={{
-													uri: this.state.image.url
-												}}
+											<View
 												style={{
-													flex: 1,
-													alignItems: "center",
-													justifyContent: "center"
+													minHeight: 15,
+													flex: 1
 												}}
-												resizeMode="cover"
-											/>
+											>
+												<Image
+													source={{
+														uri: this.state.image
+															.url
+													}}
+													style={{
+														flex: 1,
+														alignItems: "center",
+														justifyContent: "center"
+													}}
+													resizeMode="cover"
+												/>
 											</View>
 										</TouchableOpacity>
 									</View>
 								) : null}
 							</View>
 
-							<View style={{ flex:1}}>
+							<View style={{ flex: 1 }}>
 								<TouchableOpacity
 									onPress={() => {
 										console.log(this.props.data.path);
@@ -418,17 +463,19 @@ export default class Comment extends Component {
 											this.state.input ||
 											this.state.image
 										) {
-											
-											comment({
-												text: this.state.input,
-												path: this.props.data.path,
-												image: this.state.image
-											},()=>{
-												this.setState({
-													replying: false,
-													input: ""
-												});
-											});
+											comment(
+												{
+													text: this.state.input,
+													path: this.props.data.path,
+													image: this.state.image
+												},
+												() => {
+													this.setState({
+														replying: false,
+														input: ""
+													});
+												}
+											);
 										}
 									}}
 									style={{
@@ -442,7 +489,12 @@ export default class Comment extends Component {
 										justifyContent: "center"
 									}}
 								>
-									<Text style={{ color: colors.text, height:15 }}>
+									<Text
+										style={{
+											color: colors.text,
+											height: 15
+										}}
+									>
 										<Feather name="send" size={15} />
 									</Text>
 								</TouchableOpacity>
@@ -471,46 +523,76 @@ export default class Comment extends Component {
 						/>
 					</TouchableOpacity>
 				)}
-				{!this.state.collapsed && (
-					<View style={{ flexDirection: "row" }}>
+				{!this.state.collapsed &&
+					this.props.level < 3 && (
+						<View style={{ flexDirection: "row" }}>
+							<TouchableOpacity
+								style={{
+									width: 35,
+									alignItems: "center"
+								}}
+								onPress={() => {
+									this.setState({
+										collapsed: true,
+										replying: false,
+										input: ""
+									});
+								}}
+							>
+								<View
+									style={{
+										flex: 1,
+										width: 4,
+										backgroundColor: colors.seperator
+									}}
+								/>
+							</TouchableOpacity>
+							<View style={{ flex: 1 }}>
+								{this.state.comments &&
+									this.state.comments.map(c => {
+										return (
+											<Comment
+												key={c.id}
+												level={this.props.level + 1}
+												data={c}
+												canVote={this.props.canVote}
+												navigate={(a, b, c) => {
+													this.props.navigate(
+														a,
+														b,
+														c
+													);
+												}}
+											/>
+										);
+									})}
+							</View>
+						</View>
+					)}
+				{!this.state.collapsed &&
+					this.props.level == 3 &&
+					this.state.comments &&
+					this.state.comments.length > 0 && (
 						<TouchableOpacity
-							style={{
-								width: 35,
-								alignItems: "center"
-							}}
 							onPress={() => {
-								this.setState({
-									collapsed: true,
-									replying: false,
-									input: ""
-								});
+								this.props.navigate(
+									"SingleComment",
+									{ commentPath: this.props.data.path },
+									this.props.data.path
+								);
+							}}
+							style={{
+								backgroundColor: colors.seperator,
+								height: 40,
+								alignItems: "center",
+								justifyContent: "center"
 							}}
 						>
-							<View
-								style={{
-									flex: 1,
-									width: 4,
-									backgroundColor: colors.seperator
-								}}
-							/>
+							<Text style={{ color: colors.text }}>
+								Read more
+							</Text>
 						</TouchableOpacity>
-						<View style={{ flex: 1 }}>
-							{this.state.comments &&
-								this.state.comments.map(c => {
-									return (
-										<Comment
-											key={c.id}
-											level={this.props.level + 1}
-											data={c}
-											navigate={d => {
-												this.props.navigate(d);
-											}}
-										/>
-									);
-								})}
-						</View>
-					</View>
-				)}
+					)}
 			</View>
 		);
 	}

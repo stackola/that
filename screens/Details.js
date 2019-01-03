@@ -36,7 +36,7 @@ class Details extends Component {
 			path: null,
 			comments: [],
 			commentsLoading: true,
-			isPanning:false,
+			isPanning: false
 		};
 	}
 	componentDidMount() {
@@ -81,7 +81,9 @@ class Details extends Component {
 			<View style={{ flex: 1 }}>
 				<TopBar
 					title={""}
-					back={()=>{this.props.navigation.goBack()}}
+					back={() => {
+						this.props.navigation.goBack();
+					}}
 					navigate={(a, b, c) => {
 						this.props.navigation.navigate({
 							routeName: a,
@@ -95,16 +97,22 @@ class Details extends Component {
 						style={{ flex: 1, backgroundColor: colors.background }}
 						keyboardShouldPersistTaps={"handled"}
 						scrollEnabled={!this.state.isPanning}
-
 					>
 						<View style={{ flex: 1 }}>
-							{this.state.path && <Post data={this.state.post} updatePan={(d)=>{
-								console.log("set pan to ",d);
-								if (this.state.isPanning!=d){
-									this.setState({isPanning:d});
-								}
-							}} />}
-							<CommentBox path={this.state.path} />
+							{this.state.path && (
+								<Post
+									data={this.state.post}
+									updatePan={d => {
+										console.log("set pan to ", d);
+										if (this.state.isPanning != d) {
+											this.setState({ isPanning: d });
+										}
+									}}
+								/>
+							)}
+							{this.props.user && this.props.user.id ? (
+								<CommentBox path={this.state.path} />
+							) : null}
 							{!this.state.commentsLoading &&
 								this.state.comments.length == 0 && (
 									<View
@@ -131,15 +139,23 @@ class Details extends Component {
 								</View>
 							)}
 						</View>
-						<View style={{backgroundColor:colors.background}}>
+						<View style={{ backgroundColor: colors.background }}>
 							{this.state.comments.map(c => {
 								return (
 									<Comment
 										key={c.id}
 										level={0}
 										data={c}
-										navigate={d => {
-											this.props.navigation.navigate(d);
+										canVote={
+											this.props.user &&
+											this.props.user.id
+										}
+										navigate={(a, b, c) => {
+											this.props.navigation.navigate({
+												routeName: a,
+												params: b,
+												key: c
+											});
 										}}
 									/>
 								);

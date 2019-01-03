@@ -24,9 +24,9 @@ exports.post = functions.https.onCall((data, context) => {
 	}
 
 	// TODO: Check ban list. Check allow anonymous. Check if either home town or in raidus.
-	const title = data.title||"";
-	const text = data.text||"";
-	const image = data.image||null;
+	const title = data.title || "";
+	const text = data.text || "";
+	const image = data.image || null;
 	const group = data.group;
 	var db = admin.firestore();
 
@@ -46,11 +46,12 @@ exports.post = functions.https.onCall((data, context) => {
 			downvotes: 0,
 			upvotes: 0,
 			group,
-			user: db.collection("users").doc(uid)
+			user: db.collection("users").doc(uid),
+			time: admin.firestore.FieldValue.serverTimestamp()
 		})
 		.then(() => {
 			console.log(newPost.path.toString());
-			addPostToUser(newPost.path.toString(), uid)
+			addPostToUser(newPost.path.toString(), uid);
 			return { status: "ok" };
 		});
 });
@@ -72,14 +73,15 @@ exports.vote = functions.https.onCall((data, context) => {
 	let ref = db.doc(path);
 	return db
 		.runTransaction(t => {
-			return t.get(ref).then((s)=>{
+			return t.get(ref).then(s => {
 				let snap = s.data();
 				let hasUpped = snap.upvoters && snap.upvoters.includes(uid);
-				let hasDowned = snap.downvoters && snap.downvoters.includes(uid);
-				let upvotes = snap.upvotes||0;
-				let upvoters = snap.upvoters||[];
-				let downvotes = snap.downvotes||0;
-				let downvoters = snap.downvoters||[];
+				let hasDowned =
+					snap.downvoters && snap.downvoters.includes(uid);
+				let upvotes = snap.upvotes || 0;
+				let upvoters = snap.upvoters || [];
+				let downvotes = snap.downvotes || 0;
+				let downvoters = snap.downvoters || [];
 				if (vote == "up") {
 					//console.log("voting up");
 					if (hasDowned == true) {
@@ -87,13 +89,17 @@ exports.vote = functions.https.onCall((data, context) => {
 						//applyVote(data.path, 1, -1);
 						upvotes++;
 						downvotes--;
-						downvoters=downvoters.filter((u)=>{return u!=uid});
+						downvoters = downvoters.filter(u => {
+							return u != uid;
+						});
 						upvoters.push(uid);
 					} else if (hasUpped == true) {
 						//remove upvote
 						//applyVote(data.path, -1, 0);
 						upvotes--;
-						upvoters=upvoters.filter((u)=>{return u!=uid});
+						upvoters = upvoters.filter(u => {
+							return u != uid;
+						});
 					} else {
 						//add upvote
 						//applyVote(data.path, 1, 0);
@@ -108,13 +114,17 @@ exports.vote = functions.https.onCall((data, context) => {
 					if (hasDowned) {
 						//remove downvote
 						downvotes--;
-						downvoters=downvoters.filter((u)=>{return u!=uid});
+						downvoters = downvoters.filter(u => {
+							return u != uid;
+						});
 					} else if (hasUpped) {
 						//remove upvote, add downvote
 						//applyVote(data.path, -1, +1);
 						upvotes--;
 						downvotes++;
-						upvoters=upvoters.filter((u)=>{return u!=uid});
+						upvoters = upvoters.filter(u => {
+							return u != uid;
+						});
 						downvoters.push(uid);
 					} else {
 						//add downvote
@@ -136,6 +146,7 @@ exports.vote = functions.https.onCall((data, context) => {
 
 exports.comment = functions.https.onCall((data, context) => {
 	// Authentication / user information is automatically added to the request.
+
 	const uid = context.auth.uid;
 	const name = context.auth.token.name || null;
 	const picture = context.auth.token.picture || null;
@@ -149,8 +160,9 @@ exports.comment = functions.https.onCall((data, context) => {
 	// TODO: Check ban list. Check allow anonymous. Check if either home town or in raidus.
 	const text = data.text;
 	const path = data.path;
-	const image = data.image;
+	const image = data.image || {};
 	var db = admin.firestore();
+	console.log(path);
 	let newComment = db
 		.doc(path)
 		.collection("comments")
@@ -163,7 +175,8 @@ exports.comment = functions.https.onCall((data, context) => {
 			image,
 			downvotes: 0,
 			upvotes: 0,
-			user: db.collection("users").doc(uid)
+			user: db.collection("users").doc(uid),
+			time: admin.firestore.FieldValue.serverTimestamp() || 0
 		})
 		.then(() => {
 			let ref = db.doc(path);
@@ -171,13 +184,24 @@ exports.comment = functions.https.onCall((data, context) => {
 				.runTransaction(t => {
 					return t.get(ref).then(doc => {
 						// Add one person to the city population
-						var comments = (doc.data().comments||0) + 1;
+						var comments = (doc.data().comments || 0) + 1;
 
 						t.update(ref, { comments: comments });
 					});
 				})
 				.then(result => {
 					//console.log("Transaction success!");
+					dispatchEvent(
+						{
+							type: "commentReply",
+							data: {
+								parent: ref,
+								child: newComment,
+								otherUser: db.collection("users").doc(uid)
+							}
+						},
+						ref
+					);
 					addCommentToUser(newComment.path.toString(), uid);
 					return { status: "ok" };
 				})
@@ -187,12 +211,51 @@ exports.comment = functions.https.onCall((data, context) => {
 		});
 });
 
-function addPostToUser(path, userId){
+function addPostToUser(path, userId) {
 	var db = admin.firestore();
 	console.log(path);
-	db.collection("users").doc(userId).collection("posts").doc().set({post:db.doc(path)});
+	db
+		.collection("users")
+		.doc(userId)
+		.collection("posts")
+		.doc()
+		.set({
+			post: db.doc(path),
+			time: admin.firestore.FieldValue.serverTimestamp()
+		});
 }
-function addCommentToUser(path, userId){
+function addCommentToUser(path, userId) {
 	var db = admin.firestore();
-	db.collection("users").doc(userId).collection("comments").doc().set({comment:db.doc(path)});
+	db
+		.collection("users")
+		.doc(userId)
+		.collection("comments")
+		.doc()
+		.set({
+			comment: db.doc(path),
+			time: admin.firestore.FieldValue.serverTimestamp()
+		});
+}
+
+function dispatchEvent(event, ref) {
+	//Possibly do some notification stuff ayyy
+	var db = admin.firestore();
+	ref.get().then(doc => {
+		console.log("adding", doc.data());
+		db
+			.collection("users")
+			.doc(doc.data().user.id)
+			.collection("events")
+			.doc()
+			.set({
+				event: event,
+				read: false,
+				time: admin.firestore.FieldValue.serverTimestamp()
+			});
+	});
+	/*
+		.collection("users")
+		.doc(userId)
+		
+		*/
 }

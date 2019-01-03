@@ -16,12 +16,13 @@ import {
 	TouchableOpacity,
 	ScrollView,
 	TextInput,
+	Switch,
 	View,
 	Picker,
 	Text
 } from "react-native";
 
-export default class EditProfile extends React.Component {
+class EditProfile extends React.Component {
 	static navigationOptions = {
 		headerStyle: {
 			backgroundColor: colors.headerBackground
@@ -31,7 +32,20 @@ export default class EditProfile extends React.Component {
 	};
 	constructor(p) {
 		super(p);
-		this.state = { inputs: { username: "", location: "", gender: "D" } };
+		this.state = {
+			inputs: { username: "", location: "", gender: "D", public: false }
+		};
+	}
+	componentDidMount() {
+		let user = this.props.user || {};
+		this.setState({
+			inputs: {
+				username: user.username,
+				location: user.location,
+				gender: user.gender,
+				public: user.public == true
+			}
+		});
 	}
 	setInput(key, value) {
 		this.setState({ inputs: { ...this.state.inputs, [key]: value } });
@@ -72,7 +86,7 @@ export default class EditProfile extends React.Component {
 				</View>
 				<View style={{ flexDirection: "row", marginBottom: 12 }}>
 					<View style={{ flex: 1, justifyContent: "center" }}>
-						<Text style={{ color: colors.text }}>Stadt</Text>
+						<Text style={{ color: colors.text }}>City</Text>
 					</View>
 					<View style={{ flex: 2 }}>
 						<TextInput
@@ -94,7 +108,7 @@ export default class EditProfile extends React.Component {
 				</View>
 				<View style={{ flexDirection: "row", marginBottom: 12 }}>
 					<View style={{ flex: 1, justifyContent: "center" }}>
-						<Text style={{ color: colors.text }}>Geschlecht</Text>
+						<Text style={{ color: colors.text }}>Sex</Text>
 					</View>
 					<View style={{ flex: 2 }}>
 						<Picker
@@ -112,6 +126,21 @@ export default class EditProfile extends React.Component {
 							<Picker.Item label="M" value="M" />
 							<Picker.Item label="W" value="W" />
 						</Picker>
+					</View>
+				</View>
+				<View style={{ flexDirection: "row", marginBottom: 12 }}>
+					<View style={{ flex: 1, justifyContent: "center" }}>
+						<Text style={{ color: colors.text }}>
+							Public profile
+						</Text>
+					</View>
+					<View style={{ flex: 2, alignItems: "flex-start" }}>
+						<Switch
+							value={this.state.inputs.public}
+							onValueChange={v => {
+								this.setInput("public", v);
+							}}
+						/>
 					</View>
 				</View>
 				<View style={{ flexDirection: "row" }}>
@@ -142,3 +171,15 @@ export default class EditProfile extends React.Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		user: state.user
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

@@ -27,10 +27,9 @@ export default class Header extends Component {
 				keyExtractor={item => {
 					return item.id;
 				}}
-				ListHeaderComponent={<SortBar/>}
+				ListHeaderComponent={<SortBar />}
 				closeOnRowBeginSwipe={true}
-				style={{zIndex:1}}
-
+				style={{ zIndex: 1 }}
 				swipeToOpenPercent={20}
 				swipeToClosePercent={20}
 				renderItem={(data, rowMap) => {
@@ -38,14 +37,18 @@ export default class Header extends Component {
 						<Post
 							data={data.item}
 							isButton={true}
+							condensed={true}
 							id={data.item.id}
 							onPress={() => {
-								this.props.navigate("Details", {
-									postId: data.item.id,
-									group: data.item.group
-								}, data.item.id);
+								this.props.navigate(
+									"Details",
+									{
+										postId: data.item.id,
+										group: data.item.group
+									},
+									data.item.id
+								);
 							}}
-
 							margin={true}
 						/>
 					);

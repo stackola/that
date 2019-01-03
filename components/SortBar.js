@@ -28,7 +28,7 @@ export default class SortBar extends Component {
 		};
 	}
 	setSort(sort) {
-		this.setState({ selectedSort: sort });
+		this.setState({ selectedSort: sort, open:this.props.noTime?false:this.state.open });
 	}
 	setTime(time) {
 		this.setState({ selectedTime: time });
@@ -64,7 +64,7 @@ export default class SortBar extends Component {
 								</Text>
 							</View>
 						</View>
-						{this.state.selectedSort != "New" ? (
+						{this.state.selectedSort != "New" && this.props.noTime!=true? (
 							<View style={{ flex: 1, flexDirection: "row" }}>
 								<View
 									style={{
@@ -142,7 +142,7 @@ export default class SortBar extends Component {
 									})}
 								</View>
 							</View>
-							{this.state.selectedSort != "New" ? (
+							{this.state.selectedSort != "New" && this.props.noTime!=true ? (
 								<View style={{ flex: 1, flexDirection: "row" }}>
 									<View
 										style={{

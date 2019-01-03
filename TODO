@@ -1,5 +1,4 @@
 Pages:
-profile page
 home screen
 edit profile
 
@@ -10,18 +9,20 @@ Features:
 distinguish?
 report
 mod
-allow settings per sub
+create group
+allow & respect settings per sub
 sync app config
 maintainance
 invite friends
 share
 website muss
-events/notifications
+notifications
+hightlight own
+remove own posts/comments
 
 Fixes:
 username unique
 punkte verteilen
 login flow
-login/logout/anonymous
-Timestamps
+logout
 Loadings

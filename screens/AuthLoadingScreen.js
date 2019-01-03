@@ -21,7 +21,8 @@ class AuthLoadingScreen extends React.Component {
       firebase.auth().signInAnonymously()
         .then(() => {
           this.props.userSubscribe();
-        	this.props.navigation.navigate('EditProfile');          
+          this.props.eventsSubscribe();
+        	this.props.navigation.navigate('Home');          
         });
     }
 

@@ -8,6 +8,15 @@ service cloud.firestore {
       allow create, update: if request.auth.uid == user;
       allow read: if true;
     }
+    match /users/{user}/events/{allDocuments=**} {
+      allow read, update: if request.auth.uid == user;
+    }
+    match /users/{user}/posts/{allDocuments=**} {
+      allow read: if true;
+    }
+    match /users/{user}/comments/{allDocuments=**} {
+      allow read: if true;
+    }
     
     match /groups/{group} {
       allow read: if true;

@@ -30,7 +30,9 @@ class Link extends Component {
 					});
 				}}
 			>
-				<Text style={{fontWeight:"bold", ...this.props.textStyle}}>{this.props.children}</Text>
+				<Text style={{ fontWeight: "bold", ...this.props.textStyle }}>
+					{this.props.children}
+				</Text>
 			</TouchableOpacity>
 		);
 	}
