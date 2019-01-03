@@ -35,7 +35,8 @@ class Details extends Component {
 			post: {},
 			path: null,
 			comments: [],
-			commentsLoading: true
+			commentsLoading: true,
+			isPanning:false,
 		};
 	}
 	componentDidMount() {
@@ -93,9 +94,16 @@ class Details extends Component {
 					<ScrollView
 						style={{ flex: 1, backgroundColor: colors.background }}
 						keyboardShouldPersistTaps={"handled"}
+						scrollEnabled={!this.state.isPanning}
+
 					>
 						<View style={{ flex: 1 }}>
-							{this.state.path && <Post data={this.state.post} />}
+							{this.state.path && <Post data={this.state.post} updatePan={(d)=>{
+								console.log("set pan to ",d);
+								if (this.state.isPanning!=d){
+									this.setState({isPanning:d});
+								}
+							}} />}
 							<CommentBox path={this.state.path} />
 							{!this.state.commentsLoading &&
 								this.state.comments.length == 0 && (

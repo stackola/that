@@ -238,7 +238,8 @@ export default class Comment extends Component {
 												}}
 												style={{
 													width: 100,
-													height: 100
+													height: 100,
+													marginLeft:12
 												}}
 											/>
 										</TouchableOpacity>
@@ -292,7 +293,29 @@ export default class Comment extends Component {
 				</View>
 				{this.state.replying && (
 					<View style={{ flexDirection: "row" }}>
-						<View style={{ flex: 1, paddingLeft: 35 }}>
+				
+					<View style={{ width:35 }}>
+
+						<TouchableOpacity
+							onPress={() => {
+								this.setState({
+									replying: false,
+									image: null
+								});
+							}}
+							style={{
+								backgroundColor: colors.downvote,
+								flex: 1,
+								alignItems: "center",
+								justifyContent: "center"
+							}}
+						>
+							<Text style={{ color: colors.text }}>
+								<Icon name="cross" size={15} />
+							</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={{ flex: 1 }}>
 							<ExpandingTextInput
 								multiline={true}
 								placeholder={"Text"}
@@ -319,29 +342,10 @@ export default class Comment extends Component {
 							/>
 						</View>
 						<View style={{ width: 60 }}>
-							<View style={{ height: 35 }}>
-								<TouchableOpacity
-									onPress={() => {
-										this.setState({
-											replying: false,
-											image: null
-										});
-									}}
-									style={{
-										backgroundColor: colors.downvote,
-										flex: 1,
-										alignItems: "center",
-										justifyContent: "center"
-									}}
-								>
-									<Text style={{ color: colors.text }}>
-										<Icon name="cross" size={15} />
-									</Text>
-								</TouchableOpacity>
-							</View>
+							
 							<View
 								style={{
-									height: 44,
+									flex:1,
 									backgroundColor: colors.hidden
 								}}
 							>
@@ -365,16 +369,18 @@ export default class Comment extends Component {
 									</TouchableOpacity>
 								) : null}
 
+
 								{this.state.imageLoading &&
 								!this.state.image ? (
 									<View
 										style={{
 											alignItems: "center",
 											justifyContent: "center",
-											height: 44
+											flex:1
+
 										}}
 									>
-										<ActivityIndicator size={10} />
+										<ActivityIndicator size={10} style={{height:15}} />
 									</View>
 								) : null}
 
@@ -386,24 +392,25 @@ export default class Comment extends Component {
 											}}
 											style={{ flex: 1 }}
 										>
+										<View style={{minHeight:15, flex:1}}>
 											<Image
 												source={{
 													uri: this.state.image.url
 												}}
 												style={{
 													flex: 1,
-													height: 44,
 													alignItems: "center",
 													justifyContent: "center"
 												}}
 												resizeMode="cover"
 											/>
+											</View>
 										</TouchableOpacity>
 									</View>
 								) : null}
 							</View>
 
-							<View style={{ height: 44 }}>
+							<View style={{ flex:1}}>
 								<TouchableOpacity
 									onPress={() => {
 										console.log(this.props.data.path);
@@ -411,14 +418,16 @@ export default class Comment extends Component {
 											this.state.input ||
 											this.state.image
 										) {
-											this.setState({
-												replying: false,
-												input: ""
-											});
+											
 											comment({
 												text: this.state.input,
 												path: this.props.data.path,
 												image: this.state.image
+											},()=>{
+												this.setState({
+													replying: false,
+													input: ""
+												});
 											});
 										}
 									}}
@@ -433,7 +442,7 @@ export default class Comment extends Component {
 										justifyContent: "center"
 									}}
 								>
-									<Text style={{ color: colors.text }}>
+									<Text style={{ color: colors.text, height:15 }}>
 										<Feather name="send" size={15} />
 									</Text>
 								</TouchableOpacity>

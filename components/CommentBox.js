@@ -32,7 +32,7 @@ const pickerOptions = {
 export default class Header extends Component {
 	constructor(p) {
 		super(p);
-		this.state = { comment: "", imageLoading: false, image: null };
+		this.state = { comment: "", imageLoading: false, image: null, commentLoading:false };
 	}
 	pickPicture(showRemove) {
 		this.setState({ imageLoading: true }, () => {
@@ -159,6 +159,9 @@ export default class Header extends Component {
 									text: this.state.comment,
 									path: this.props.path,
 									image: this.state.image
+								},()=>{
+									//comment success!
+									this.setState({image:null, comment:""});
 								});
 						}}
 					>

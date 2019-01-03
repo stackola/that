@@ -7,7 +7,7 @@ import VoteButtons from "that/components/VoteButtons";
 import Link from "that/components/Link";
 import { withNavigation } from "react-navigation";
 import { vote } from "that/lib";
-import PinchZoomView from 'react-native-pinch-zoom-view';
+import Pinchzoom from "that/components/Pinchzoom";
 import Icon from "react-native-vector-icons/Ionicons";
 import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "that/colors";
@@ -133,12 +133,24 @@ class Post extends Component {
 					) : null}
 					{this.props.data.image &&
 						this.props.data.image.url && (
-
-							<PinchZoomView maxScale={3} style={{overflow: "hidden",
+							<Pinchzoom
+								maxScale={3}
+								panStart={() => {
+									this.props.updatePan &&
+										this.props.updatePan(true);
+								}}
+								panEnd={() => {
+									this.props.updatePan &&
+										this.props.updatePan(false);
+								}}
+								style={{
+									overflow: "hidden",
 									alignItems: "center",
-									zIndex:1,
+									zIndex: 1,
 									justifyContent: "center",
-									height: 300}}>
+									height: 300
+								}}
+							>
 								<Image
 									source={{
 										uri: this.props.data.image.url
@@ -152,7 +164,7 @@ class Post extends Component {
 									}}
 									resizeMode="contain"
 								/>
-							</PinchZoomView>
+							</Pinchzoom>
 						)}
 					<View style={{ flex: 1 }}>
 						<Text style={{ color: colors.text }}>
