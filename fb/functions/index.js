@@ -11,6 +11,8 @@ admin.initializeApp(functions.config().firebase);
 
 exports.post = functions.https.onCall((data, context) => {
 	// Authentication / user information is automatically added to the request.
+	// const uid ="mntjlOUpd6SjfQmE1GhF820Ass62";
+
 	const uid = context.auth.uid;
 	const name = context.auth.token.name || null;
 	const picture = context.auth.token.picture || null;
@@ -22,11 +24,12 @@ exports.post = functions.https.onCall((data, context) => {
 	}
 
 	// TODO: Check ban list. Check allow anonymous. Check if either home town or in raidus.
-	const title = data.title;
-	const text = data.text;
-	const image = data.image;
+	const title = data.title||"";
+	const text = data.text||"";
+	const image = data.image||null;
 	const group = data.group;
 	var db = admin.firestore();
+
 	let newPost = db
 		.collection("groups")
 		.doc(group)
@@ -46,6 +49,8 @@ exports.post = functions.https.onCall((data, context) => {
 			user: db.collection("users").doc(uid)
 		})
 		.then(() => {
+			console.log(newPost.path.toString());
+			addPostToUser(newPost.path.toString(), uid)
 			return { status: "ok" };
 		});
 });
@@ -76,7 +81,7 @@ exports.vote = functions.https.onCall((data, context) => {
 				let downvotes = snap.downvotes||0;
 				let downvoters = snap.downvoters||[];
 				if (vote == "up") {
-					console.log("voting up");
+					//console.log("voting up");
 					if (hasDowned == true) {
 						//remove downvote, add upvote
 						//applyVote(data.path, 1, -1);
@@ -122,7 +127,7 @@ exports.vote = functions.https.onCall((data, context) => {
 			});
 		})
 		.then(result => {
-			console.log("Transaction success!");
+			//console.log("Transaction success!");
 		})
 		.catch(err => {
 			console.log("Transaction failure:", err);
@@ -172,7 +177,8 @@ exports.comment = functions.https.onCall((data, context) => {
 					});
 				})
 				.then(result => {
-					console.log("Transaction success!");
+					//console.log("Transaction success!");
+					addCommentToUser(newComment.path.toString(), uid);
 					return { status: "ok" };
 				})
 				.catch(err => {
@@ -180,3 +186,13 @@ exports.comment = functions.https.onCall((data, context) => {
 				});
 		});
 });
+
+function addPostToUser(path, userId){
+	var db = admin.firestore();
+	console.log(path);
+	db.collection("users").doc(userId).collection("posts").doc().set({post:db.doc(path)});
+}
+function addCommentToUser(path, userId){
+	var db = admin.firestore();
+	db.collection("users").doc(userId).collection("comments").doc().set({comment:db.doc(path)});
+}

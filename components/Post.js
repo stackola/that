@@ -7,7 +7,7 @@ import VoteButtons from "that/components/VoteButtons";
 import Link from "that/components/Link";
 import { withNavigation } from "react-navigation";
 import { vote } from "that/lib";
-
+import PinchZoomView from 'react-native-pinch-zoom-view';
 import Icon from "react-native-vector-icons/Ionicons";
 import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "that/colors";
@@ -53,7 +53,6 @@ class Post extends Component {
 					borderColor: colors.seperator
 				}}
 			>
-				
 				<View style={{ flex: 1 }}>
 					<View style={{ flex: 1, alignItems: "center" }}>
 						<VoteButtons
@@ -134,26 +133,26 @@ class Post extends Component {
 					) : null}
 					{this.props.data.image &&
 						this.props.data.image.url && (
-							<View
-								style={{
-									overflow: "hidden",
+
+							<PinchZoomView maxScale={3} style={{overflow: "hidden",
 									alignItems: "center",
+									zIndex:1,
 									justifyContent: "center",
-									height:400
-								}}
-							>
+									height: 300}}>
 								<Image
 									source={{
 										uri: this.props.data.image.url
 									}}
-									style={{position: 'absolute',
-						  top: 8,
-						  left: 8,
-						  bottom: 8,
-						  right: 8}}
+									style={{
+										position: "absolute",
+										top: 8,
+										left: 8,
+										bottom: 8,
+										right: 8
+									}}
 									resizeMode="contain"
 								/>
-							</View>
+							</PinchZoomView>
 						)}
 					<View style={{ flex: 1 }}>
 						<Text style={{ color: colors.text }}>
@@ -186,10 +185,20 @@ class Post extends Component {
 								/>
 							</View>
 							<Link
-								to={"User"}
+								to={"Profile"}
 								params={{ username: this.state.user.username }}
 								key={this.state.user.username}
-								textStyle={{ color: colors.text, fontSize: 11 }}
+								textStyle={{
+									color:
+										this.state.user.gender == "D" ||
+										!this.state.user ||
+										!this.state.user.gender
+											? colors.otherGenders
+											: this.state.user.gender == "M"
+												? colors.male
+												: colors.female,
+									fontSize: 11
+								}}
 							>
 								@{this.state.user.username}
 							</Link>

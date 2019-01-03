@@ -68,7 +68,7 @@ export default class Header extends Component {
 	}
 	render() {
 		return (
-			<View style={{ flexDirection: "row" }}>
+			<View style={{ flexDirection: "row", backgroundColor:colors.background}}>
 				<ExpandingTextInput
 					multiline={true}
 					min={this.state.comment ? 100 : 60}

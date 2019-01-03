@@ -5,7 +5,7 @@ import { combineReducers } from "redux";
 
 //Define name and default value
 export const user = createReducer(
-	{ username: "Peter" },
+	{ username: "Anon" },
 	{
 		[types.SET_USER_OBJECT](state, action) {
 			return action.payload;

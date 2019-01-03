@@ -28,7 +28,7 @@ import {
 
 const options = {
 	mediaType: "photo",
-	quality: 0.4
+	quality: 0.8
 };
 
 export default class CreationForm extends Component {
@@ -126,7 +126,7 @@ export default class CreationForm extends Component {
 											source={{
 												uri: this.state.image.url
 											}}
-											style={{ flex: 1, height: 200}}
+											style={{ flex: 1, height: 200 }}
 											resizeMode={"contain"}
 										/>
 									</View>
@@ -209,8 +209,7 @@ export default class CreationForm extends Component {
 																				imageLoading: false
 																			}
 																		);
-																	},
-
+																	}
 																);
 															} else {
 																this.setState({
@@ -251,6 +250,8 @@ export default class CreationForm extends Component {
 															) {
 																uploadImage(
 																	response.path,
+																	response.width,
+																	response.height,
 																	d => {
 																		console.log(
 																			"got response",

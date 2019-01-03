@@ -14,6 +14,7 @@ import AuthLoadingScreen from "that/screens/AuthLoadingScreen";
 import SignInScreen from "that/screens/SignInScreen";
 import Home from "that/screens/Home";
 import Details from "that/screens/Details";
+import Profile from "that/screens/Profile";
 import Create from "that/screens/Create";
 import Group from "that/screens/Group";
 import ImageView from "that/screens/ImageView";
@@ -53,7 +54,7 @@ class OtherScreen extends React.Component {
 
 
 
-const AppStack = createStackNavigator({ Home: Home, Details: Details,Create:Create, EditProfile:EditProfile,Group:Group, ImageView:ImageView});
+const AppStack = createStackNavigator({ Home: Home, Details: Details,Create:Create, EditProfile:EditProfile,Group:Group, ImageView:ImageView, Profile:Profile});
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 
 let Navigator = createAppContainer(createSwitchNavigator(

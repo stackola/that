@@ -1,8 +1,27 @@
-comment collapse
-pictures
+Pages:
 profile page
-name colors
+home screen
+edit profile
+
+Components:
+behind in group view
+
+Features:
 distinguish?
-username unique
 report
 mod
+allow settings per sub
+sync app config
+maintainance
+invite friends
+share
+website muss
+events/notifications
+
+Fixes:
+username unique
+punkte verteilen
+login flow
+login/logout/anonymous
+Timestamps
+Loadings

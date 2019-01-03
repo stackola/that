@@ -15,5 +15,8 @@ var colors={
 	seperator:'#252525',
 	overlayBackground:'#0d0d0df5',
 	placeholder:"#808084",
+	male:"#479aff",
+	female:"#ff479a",
+	otherGenders:"#a3a3a3",
 };
 export default colors;

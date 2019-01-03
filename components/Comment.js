@@ -158,7 +158,7 @@ export default class Comment extends Component {
 								return false;
 							}}
 						>
-							<View style={{flex:1}}>
+							<View style={{ flex: 1 }}>
 								<View
 									style={{
 										minHeight: 80,
@@ -167,7 +167,6 @@ export default class Comment extends Component {
 										flex: 1
 									}}
 								>
-									
 									<TouchableOpacity
 										style={{
 											flex: 1,
@@ -272,7 +271,15 @@ export default class Comment extends Component {
 										}}
 										key={this.state.user.username}
 										textStyle={{
-											color: colors.text,
+											color:
+												this.state.user.gender == "D" ||
+												!this.state.user ||
+												!this.state.user.gender
+													? colors.otherGenders
+													: this.state.user.gender ==
+													  "M"
+														? colors.male
+														: colors.female,
 											fontSize: 11
 										}}
 									>

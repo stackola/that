@@ -94,7 +94,7 @@ class Details extends Component {
 						style={{ flex: 1, backgroundColor: colors.background }}
 						keyboardShouldPersistTaps={"handled"}
 					>
-						<View style={{ flex: 1, marginBottom: 12 }}>
+						<View style={{ flex: 1 }}>
 							{this.state.path && <Post data={this.state.post} />}
 							<CommentBox path={this.state.path} />
 							{!this.state.commentsLoading &&
@@ -103,7 +103,8 @@ class Details extends Component {
 										style={{
 											height: 80,
 											alignItems: "center",
-											justifyContent: "center"
+											justifyContent: "center",
+											backgroundColor: colors.background
 										}}
 									>
 										<Text style={{ color: colors.text }}>
@@ -122,7 +123,7 @@ class Details extends Component {
 								</View>
 							)}
 						</View>
-						<View>
+						<View style={{backgroundColor:colors.background}}>
 							{this.state.comments.map(c => {
 								return (
 									<Comment

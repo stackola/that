@@ -16,7 +16,7 @@ import {
 	Text
 } from "react-native";
 
-export default class HomeScreen extends React.Component {
+export default class Profile extends React.Component {
 	render(){
 		return <View><Text>Hi</Text></View>
 	}
