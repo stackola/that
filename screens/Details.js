@@ -146,6 +146,7 @@ class Details extends Component {
 										key={c.id}
 										level={0}
 										data={c}
+										op={this.state.post.user.id}
 										canVote={
 											this.props.user &&
 											this.props.user.id

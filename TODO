@@ -1,28 +1,31 @@
 Pages:
-home screen
 edit profile
+home screen
 
 Components:
 behind in group view
 
 Features:
-distinguish?
-report
-mod
 create group
 allow & respect settings per sub
-sync app config
-maintainance
-invite friends
-share
-website muss
 notifications
-hightlight own
+share
 remove own posts/comments
+report
+invite friends
+location
+mod
+website muss
+distinguish?
 
 Fixes:
-username unique
-punkte verteilen
-login flow
 logout
+login flow
+punkte verteilen
 Loadings
+username unique
+
+
+nice to have:
+maintainance
+sync app config

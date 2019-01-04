@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import Ant from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 
+import {getUID} from "that/lib";
 import {
 	ActivityIndicator,
 	AsyncStorage,
@@ -49,6 +50,7 @@ export default class Comment extends Component {
 		};
 	}
 	componentDidMount() {
+		console.log(this.props);
 		let data = this.props.data || {};
 		if (data.user) {
 			data.user.get().then(d => {
@@ -67,6 +69,9 @@ export default class Comment extends Component {
 					})
 				});
 			});
+	}
+	isOwnComment(){
+		return this.state.user && getUID()==this.state.user.id
 	}
 	componentWillUnmount() {
 		this.sub1 && this.sub1();
@@ -239,15 +244,17 @@ export default class Comment extends Component {
 							<View
 								style={{
 									minHeight: 80,
-									backgroundColor: colors.background
+									backgroundColor: colors.background,
+									borderRightWidth: 2,
+									borderColor: this.isOwnComment()?colors.hidden:colors.background,
 								}}
 							>
 								<View style={{ flex: 1 }}>
 									<Text
 										style={{
 											color: colors.text,
-											paddingRight: 12,
-											padding: 4
+											paddingRight: 4,
+											padding: 8
 										}}
 									>
 										{this.props.data.text}
@@ -284,7 +291,7 @@ export default class Comment extends Component {
 								<View
 									style={{
 										textAlign: "right",
-										paddingRight: 8,
+										paddingRight: 4,
 										paddingBottom: 4,
 										justifyContent: "flex-end",
 										flexDirection: "row"
@@ -315,7 +322,7 @@ export default class Comment extends Component {
 												fontSize: 11
 											}}
 										>
-											@{this.state.user.username}
+											{this.props.op==this.state.user.id?"OP":null} @{this.state.user.username}
 										</Link>
 									) : (
 										<Text
@@ -324,7 +331,7 @@ export default class Comment extends Component {
 												color: colors.otherGenders
 											}}
 										>
-											Anon
+											{this.props.op==this.state.user.id?"OP ":null}Anon
 										</Text>
 									)}
 								</View>
@@ -555,6 +562,7 @@ export default class Comment extends Component {
 												key={c.id}
 												level={this.props.level + 1}
 												data={c}
+												op={this.props.op}
 												canVote={this.props.canVote}
 												navigate={(a, b, c) => {
 													this.props.navigate(

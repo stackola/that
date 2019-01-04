@@ -6,7 +6,7 @@ import HeaderDropdown from "that/components/HeaderDropdown";
 import VoteButtons from "that/components/VoteButtons";
 import Link from "that/components/Link";
 import { withNavigation } from "react-navigation";
-import { vote, genderColor } from "that/lib";
+import { vote, genderColor, getUID } from "that/lib";
 import Pinchzoom from "that/components/Pinchzoom";
 import Icon from "react-native-vector-icons/Ionicons";
 import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -39,6 +39,9 @@ class Post extends Component {
 			console.log(this.props.data);
 			console.log("NO GET USER");
 		}
+	}
+	isOwnPost(){
+		return this.state.user && getUID()==this.state.user.id
 	}
 	componentWillUnmount() {}
 	noLoggedIn() {
@@ -135,7 +138,10 @@ class Post extends Component {
 					<TouchableOpacity
 						activeOpacity={0.7}
 						disabled={!this.props.isButton}
-						style={{ flex: 5, padding: 0, paddingTop: 0 }}
+						style={{ flex: 5, padding: 0, paddingTop: 0,
+							borderRightWidth: 2,
+							borderColor: this.isOwnPost()?colors.hidden:colors.background,
+						 }}
 						onPress={() => {
 							if (this.props.isButton && this.props.onPress) {
 								this.props.onPress();
@@ -379,7 +385,7 @@ class Post extends Component {
 										}}
 										key={this.state.user.id}
 										textStyle={{
-											color: genderColor(this.state.user),
+											color: genderColor(this.state.user.gender),
 											fontSize: 11,
 											lineHeight: 40
 										}}
