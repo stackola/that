@@ -4,10 +4,11 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import HeaderDropdown from "that/components/HeaderDropdown";
 import colors from "that/colors";
-import Icon from "react-native-vector-icons/EvilIcons";
+
 import firebase from "react-native-firebase";
 import Link from "that/components/Link";
-import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
+
+import Icon from "react-native-vector-icons/Foundation";
 import { withNavigation } from "react-navigation";
 import { getUID, genderColor } from "that/lib";
 const uid = getUID();
@@ -24,10 +25,10 @@ import {
 
 class Notification extends React.Component {
 	isPostReply() {
-		return this.props.data.data.parent.path.split("/").length == 4;
+		return this.props.data.event.data.parent.path.split("/").length == 4;
 	}
 	getPath() {
-		return this.props.data.data.parent.path.split("/");
+		return this.props.data.event.data.parent.path.split("/");
 	}
 	constructor(p) {
 		super(p);
@@ -35,15 +36,15 @@ class Notification extends React.Component {
 	}
 	componentDidMount() {
 		//fetch user
-		console.log(this.props.data.data.otherUser);
-		this.props.data.data.otherUser.get().then(snap => {
+		console.log(this.props.data.event.data.otherUser);
+		this.props.data.event.data.otherUser.get().then(snap => {
 			console.log("got single comment snap snap", snap);
 			this.setState({ otherUser: snap.data() }, () => {
 				console.log(this.state);
 			});
 		});
 
-		//			console.log(this.props.data.data.otherUser.data().username)
+		//			console.log(this.props.data.event.data.otherUser.data().username)
 	}
 	pressed() {
 		if (this.isPostReply()) {
@@ -78,6 +79,8 @@ class Notification extends React.Component {
 				}}
 				style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}
 			>
+			{this.props.data.read==false && <View style={{position:"absolute", height:40, width:40, top:0,height:"100%", alignItems:'center', justifyContent:'center', right:4, zIndex:1}}><Icon name="burst-new" size={40} color={"#ffc800"}/></View>}
+			
 				{this.state.otherUser &&
 					this.state.otherUser.id && (
 						<Link
@@ -86,6 +89,7 @@ class Notification extends React.Component {
 								userId: this.state.otherUser.id
 							}}
 							key={this.state.otherUser.id}
+							viewKey={this.state.otherUser.id}
 							textStyle={{
 								color: genderColor(this.state.otherUser.gender),
 								fontSize: 14

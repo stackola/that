@@ -53,7 +53,10 @@ export default class CommentLoader extends React.Component {
 				level={0}
 				canVote={this.props.canVote}
 				data={this.state.comment}
+				onPress={(d)=>{this.props.onPress(d)}}
+				loadChildren={this.props.loadChildren}
 				navigate={(a, b, c) => {
+					console.log("navigat!");
 					this.props.navigate(a, b, c);
 				}}
 			/>

@@ -243,6 +243,7 @@ class Post extends Component {
 										params={{
 											userId: this.state.user.id
 										}}
+										viewKey={this.state.user.id}
 										key={this.state.user.id}
 										textStyle={{
 											color: genderColor(
@@ -280,6 +281,7 @@ class Post extends Component {
 								<Link
 									to={"Group"}
 									params={{ group: data.group }}
+									viewKey={data.group}
 									key={data.group}
 									textStyle={{
 										color: colors.text,
@@ -384,6 +386,7 @@ class Post extends Component {
 											userId: this.state.user.id
 										}}
 										key={this.state.user.id}
+										viewKey={this.state.user.id}
 										textStyle={{
 											color: genderColor(this.state.user.gender),
 											fontSize: 11,
@@ -420,6 +423,7 @@ class Post extends Component {
 									to={"Group"}
 									params={{ group: data.group }}
 									key={data.group}
+									viewKey={data.group}
 									textStyle={{
 										color: colors.text,
 										fontSize: 11,

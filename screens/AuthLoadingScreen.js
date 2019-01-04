@@ -22,6 +22,7 @@ class AuthLoadingScreen extends React.Component {
         .then(() => {
           this.props.userSubscribe();
           this.props.eventsSubscribe();
+          this.props.settingsSubscribe();
         	this.props.navigation.navigate('Home');          
         });
     }

@@ -6,7 +6,9 @@ Components:
 behind in group view
 
 Features:
-create group
+subscribe
+subscriptions
+defaults
 allow & respect settings per sub
 notifications
 share
@@ -28,4 +30,3 @@ username unique
 
 nice to have:
 maintainance
-sync app config

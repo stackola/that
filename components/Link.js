@@ -23,10 +23,11 @@ class Link extends Component {
 			<TouchableOpacity
 				style={this.props.containerStyle}
 				onPress={() => {
+					console.log("LINK", this.props);
 					this.props.navigation.navigate({
 						routeName: this.props.to,
 						params: this.props.params,
-						key: this.props.key
+						key: this.props.viewKey
 					});
 				}}
 			>

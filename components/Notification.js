@@ -4,7 +4,7 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import CommentReplyNotification from "that/components/CommentReplyNotification";
 import colors from "that/colors";
-import Icon from "react-native-vector-icons/EvilIcons";
+import Icon from "react-native-vector-icons/Foundation";
 
 import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { getUID } from "that/lib";
@@ -43,7 +43,7 @@ export default class Notification extends React.Component {
 					<MIcon name={"reply"} size={30} color={colors.text} />
 				</View>
 				<View style={{ flex: 5 }}>
-					<CommentReplyNotification data={this.props.data.event} />
+					<CommentReplyNotification data={this.props.data} />
 				</View>
 			</View>
 		);

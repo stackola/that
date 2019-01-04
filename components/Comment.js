@@ -181,6 +181,7 @@ export default class Comment extends Component {
 							swipeToOpenPercent={20}
 							swipeToClosePercent={20}
 							leftOpenValue={155}
+
 							rightOpenValue={0}
 							enabled={this.props.canVote}
 							style={{ minHeight: 80 }}
@@ -188,6 +189,7 @@ export default class Comment extends Component {
 								this.ref = ref;
 							}}
 							onRowPress={() => {
+								this.props.onPress && this.props.onPress(this.props.data.path);
 								return false;
 							}}
 						>
@@ -315,6 +317,7 @@ export default class Comment extends Component {
 												userId: this.state.user.id
 											}}
 											key={this.state.user.id}
+											viewKey={this.state.user.id}
 											textStyle={{
 												color: genderColor(
 													this.state.user.gender
@@ -555,7 +558,7 @@ export default class Comment extends Component {
 								/>
 							</TouchableOpacity>
 							<View style={{ flex: 1 }}>
-								{this.state.comments &&
+								{this.state.comments && this.props.loadChildren!==false &&
 									this.state.comments.map(c => {
 										return (
 											<Comment
