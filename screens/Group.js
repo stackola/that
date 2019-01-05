@@ -97,7 +97,17 @@ class Group extends React.Component {
         {this.state.creating && (
           <CreationForm
             key={"createForm" + group}
+            rules={this.state.group}
             group={group}
+            navigate={(a, b, c) => {
+              this.setState({ creating: false });
+              this.props.navigation.navigate({
+                routeName: a,
+                params: b,
+                key: c
+              });
+            }}
+            groupName={this.state.group.name}
             onClose={() => {
               this.setState({ creating: false });
             }}

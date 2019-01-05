@@ -12,6 +12,7 @@ class HeaderNotificationButton extends Component {
             return !e.read;
           }).length
         : 0;
+    return eventCount;
   }
   render() {
     return (
@@ -45,7 +46,7 @@ class HeaderNotificationButton extends Component {
           1.523
           {/*this.props.user.points+1500000 || 0*/}
         </Text>
-        {this.eventCount > 0 && (
+        {this.getEventCount() > 0 && (
           <View
             style={{
               backgroundColor: "red",

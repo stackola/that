@@ -6,15 +6,15 @@ Components:
 behind in group view
 
 Features:
-create group (color)
-highlight read posts
 subscribe
+mark noti as read on click
 subscriptions
 defaults
 allow & respect settings per sub
 notifications
 messages + event7
 share
+highlight read posts (locally?)
 remove own posts/comments
 report
 invite friends

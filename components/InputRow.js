@@ -8,17 +8,18 @@ import tinycolor from "tinycolor2";
 export default function InputRow(props) {
   return (
     <View style={{ flexDirection: "row", marginBottom: 12 }}>
-      <View style={{ flex: 1, justifyContent: "center" }}>
+      <View style={{ flex: 2, justifyContent: "center", paddingRight: 8 }}>
         <Text style={{ color: colors.text }}>{props.title}</Text>
       </View>
-      <View style={{ flex: 2 }}>
+      <View style={{ flex: 3 }}>
         {props.type == "text" && (
           <TextInput
             multiline={false}
             value={props.value}
             placeholder={props.placeholder}
-            onChangeText={text => props.onChange(text)}
+            onChangeText={text => props.onChange && props.onChange(text)}
             placeholderTextColor={colors.placeholder}
+            editable={!props.readOnly == true}
             style={{
               color: colors.text,
               backgroundColor: null,
@@ -30,26 +31,27 @@ export default function InputRow(props) {
         )}
 
         {props.type == "switch" && (
-          <View style={{ flex: 2, alignItems: "flex-start" }}>
+          <View style={{ flex: 3, alignItems: "flex-start" }}>
             <Switch
               value={props.value}
               onValueChange={v => {
-                props.onChange(v);
+                props.onChange && props.onChange(v);
               }}
             />
           </View>
         )}
 
         {props.type == "color" && (
-          <View style={{ flex: 2, alignItems: "flex-start" }}>
+          <View style={{ flex: 3, alignItems: "flex-start" }}>
             <HueSlider
               gradientSteps={40}
               style={{ alignSelf: "stretch", marginLeft: 12, marginTop: 12 }}
               value={tinycolor(props.value || "#000").toHsl().h}
               onValueChange={v => {
-                props.onChange(
-                  tinycolor({ h: v, s: 100, l: 50 }).toHexString()
-                );
+                props.onChange &&
+                  props.onChange(
+                    tinycolor({ h: v, s: 100, l: 50 }).toHexString()
+                  );
               }}
             />
           </View>
@@ -63,7 +65,7 @@ export default function InputRow(props) {
               backgroundColor: colors.seperator,
               color: colors.text
             }}
-            onValueChange={value => props.onChange(value)}
+            onValueChange={value => props.onChange && props.onChange(value)}
           >
             {props.items.map(i => {
               return (

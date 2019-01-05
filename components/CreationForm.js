@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
+import Buttons from "./Buttons";
 
 const options = {
   mediaType: "photo",
@@ -57,6 +58,7 @@ export default class CreationForm extends Component {
           style={{
             position: "absolute",
             width: "96%",
+            height: "98%",
             marginLeft: "2%",
             zIndex: 5,
             marginRight: "2%",
@@ -64,43 +66,59 @@ export default class CreationForm extends Component {
             borderTopLeftRadius: 14,
             bottom: 0,
             backgroundColor: colors.overlayBackground,
-            paddingTop: 4,
-            height: "95%"
+            paddingTop: 4
           }}
         >
           <ScrollView keyboardShouldPersistTaps={"handled"}>
             <View style={{ paddingLeft: 12, paddingRight: 12 }}>
-              <TextInput
-                multiline={false}
-                placeholder={"Title"}
-                placeholderTextColor={colors.placeholder}
-                value={this.state.inputs.title}
-                onChangeText={text => this.setInput("title", text)}
+              <Text
                 style={{
                   color: colors.text,
-                  backgroundColor: null,
-                  borderColor: colors.seperator,
+                  marginTop: 4,
+                  fontSize: 20,
                   borderBottomWidth: 2,
-                  margin: 4
-                }}
-              />
-              <ExpandingTextInput
-                multiline={true}
-                placeholder={"Text"}
-                min={120}
-                max={600}
-                value={this.state.inputs.text}
-                onChangeText={text => this.setInput("text", text)}
-                numberOfLines={4}
-                placeholderTextColor={colors.placeholder}
-                style={{
-                  color: colors.text,
-                  backgroundColor: null,
                   borderColor: colors.seperator,
-                  borderBottomWidth: 2,
-                  margin: 4
+                  paddingBottom: 8,
+                  textAlign: "center"
                 }}
-              />
+              >
+                Post to {this.props.groupName}
+              </Text>
+              {this.props.rules.allowText && (
+                <View>
+                  <TextInput
+                    multiline={false}
+                    placeholder={"Title"}
+                    placeholderTextColor={colors.placeholder}
+                    value={this.state.inputs.title}
+                    onChangeText={text => this.setInput("title", text)}
+                    style={{
+                      color: colors.text,
+                      backgroundColor: null,
+                      borderColor: colors.seperator,
+                      borderBottomWidth: 2,
+                      margin: 4
+                    }}
+                  />
+                  <ExpandingTextInput
+                    multiline={true}
+                    placeholder={"Text"}
+                    min={120}
+                    max={600}
+                    value={this.state.inputs.text}
+                    onChangeText={text => this.setInput("text", text)}
+                    numberOfLines={4}
+                    placeholderTextColor={colors.placeholder}
+                    style={{
+                      color: colors.text,
+                      backgroundColor: null,
+                      borderColor: colors.seperator,
+                      borderBottomWidth: 2,
+                      margin: 4
+                    }}
+                  />
+                </View>
+              )}
               {!this.state.imageLoading && this.state.image ? (
                 <View style={{ alignItems: "center" }}>
                   <View
@@ -165,136 +183,117 @@ export default class CreationForm extends Component {
               ) : null}
               {!this.state.imageLoading && !this.state.image ? (
                 <View style={{ flexDirection: "row" }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({ imageLoading: true }, () => {
-                        ImagePicker.launchCamera(options, response => {
-                          console.log(response);
-                          if (response && response.path) {
-                            uploadImage(
-                              response.path,
-                              response.width,
-                              response.height,
-                              d => {
-                                console.log("got response", d);
-                                this.setState({
-                                  image: d,
-                                  imageLoading: false
-                                });
-                              }
-                            );
-                          } else {
-                            this.setState({
-                              imageLoading: false
-                            });
-                          }
+                  {this.props.rules.allowPhotos && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({ imageLoading: true }, () => {
+                          ImagePicker.launchCamera(options, response => {
+                            console.log(response);
+                            if (response && response.path) {
+                              uploadImage(
+                                response.path,
+                                response.width,
+                                response.height,
+                                d => {
+                                  console.log("got response", d);
+                                  this.setState({
+                                    image: d,
+                                    imageLoading: false
+                                  });
+                                }
+                              );
+                            } else {
+                              this.setState({
+                                imageLoading: false
+                              });
+                            }
+                          });
                         });
-                      });
-                    }}
-                    style={{
-                      flex: 1,
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <Icon
-                      name="ios-camera"
-                      color={colors.textMinor}
-                      size={50}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({ imageLoading: true }, () => {
-                        ImagePicker.launchImageLibrary(options, response => {
-                          console.log(response);
-                          if (response && response.path) {
-                            uploadImage(
-                              response.path,
-                              response.width,
-                              response.height,
-                              d => {
-                                console.log("got response", d);
-                                this.setState({
-                                  image: d,
-                                  imageLoading: false
-                                });
-                              }
-                            );
-                          } else {
-                            this.setState({
-                              imageLoading: false
-                            });
-                          }
+                      }}
+                      style={{
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <Icon
+                        name="ios-camera"
+                        color={colors.textMinor}
+                        size={50}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  {this.props.rules.allowUploaded && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({ imageLoading: true }, () => {
+                          ImagePicker.launchImageLibrary(options, response => {
+                            console.log(response);
+                            if (response && response.path) {
+                              uploadImage(
+                                response.path,
+                                response.width,
+                                response.height,
+                                d => {
+                                  console.log("got response", d);
+                                  this.setState({
+                                    image: d,
+                                    imageLoading: false
+                                  });
+                                }
+                              );
+                            } else {
+                              this.setState({
+                                imageLoading: false
+                              });
+                            }
+                          });
                         });
-                      });
-                    }}
-                    style={{
-                      flex: 1,
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <Icon name="md-images" color={colors.textMinor} size={50} />
-                  </TouchableOpacity>
+                      }}
+                      style={{
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <Icon
+                        name="md-images"
+                        color={colors.textMinor}
+                        size={50}
+                      />
+                    </TouchableOpacity>
+                  )}
                 </View>
               ) : null}
-
-              <TextInput
-                multiline={false}
-                placeholder={"Wohin"}
-                value={this.state.inputs.group}
-                onChangeText={text => this.setInput("group", text)}
-                placeholderTextColor={colors.placeholder}
-                style={{
-                  color: colors.text,
-                  backgroundColor: null,
-                  borderColor: colors.seperator,
-                  borderBottomWidth: 2,
-                  margin: 4
-                }}
-              />
             </View>
           </ScrollView>
-          <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.onClose();
-              }}
-              style={{
-                backgroundColor: colors.downvote,
-                height: 40,
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <Text style={{ color: colors.background }}>
-                <Entypo name="cross" size={20} />
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: colors.upvote,
-                height: 40,
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-              onPress={() => {
-                createPost({
+          <Buttons
+            onClose={() => {
+              this.props.onClose();
+            }}
+            onSend={() => {
+              createPost(
+                {
                   title: this.state.inputs.title,
                   text: this.state.inputs.text,
                   group: this.state.inputs.group,
                   image: this.state.image
-                });
-              }}
-            >
-              <Text style={{ color: colors.text }}>
-                <Feather name="send" size={20} />
-              </Text>
-            </TouchableOpacity>
-          </View>
+                },
+                res => {
+                  console.log("GOT THAT CALLBACK YO", res);
+                  if (res && res.data && res.data.status == "ok") {
+                    console.log("din done that shit");
+                    this.props.navigate("Details", {
+                      group: this.props.group,
+                      postId: res.data.postId
+                    });
+                  } else {
+                    console.log("failed posting");
+                  }
+                }
+              );
+            }}
+          />
         </View>
       </View>
     );
