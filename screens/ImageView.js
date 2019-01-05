@@ -23,6 +23,7 @@ export default class ImageView extends Component {
       <View style={{ flex: 1, backgroundColor: colors.background }}>
         <TopBar
           title={""}
+          hasDropdown={false}
           back={() => {
             this.props.navigation.goBack();
           }}

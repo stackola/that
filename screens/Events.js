@@ -20,6 +20,7 @@ class Events extends React.Component {
     return (
       <View style={{ flex: 1, backgroundColor: colors.background }}>
         <TopBar
+          hasDropdown={false}
           title={"Notifications"}
           back={() => {
             markAllEventsRead();

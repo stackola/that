@@ -78,6 +78,7 @@ class Comment extends Component {
           back={() => {
             this.props.navigation.goBack();
           }}
+          hasDropdown={false}
           navigate={(a, b, c) => {
             this.props.navigation.navigate({
               routeName: a,

@@ -51,6 +51,7 @@ class TopBar extends React.Component {
             onPress={() => {
               this.setState({ open: !this.state.open });
             }}
+            disabled={this.props.hasDropdown === false}
             style={{ flex: 3, justifyContent: "center" }}
           >
             <Text style={{ color: colors.text }}>{this.props.title || ""}</Text>
@@ -64,7 +65,13 @@ class TopBar extends React.Component {
             <HeaderLoginButton />
           )}
         </View>
-        {this.state.open && <GroupSelector />}
+        {this.state.open && (
+          <GroupSelector
+            leaving={() => {
+              this.setState({ open: false });
+            }}
+          />
+        )}
       </View>
     );
   }

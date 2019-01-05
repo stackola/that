@@ -79,6 +79,7 @@ class GroupSelector extends Component {
               title={"Home"}
               icon={"home"}
               onPress={() => {
+                this.props.leaving();
                 this.props.navigation.navigate({ routeName: "Home" });
               }}
             />
@@ -91,6 +92,7 @@ class GroupSelector extends Component {
                     icon={g.icon}
                     color={g.color}
                     onPress={() => {
+                      this.props.leaving();
                       this.props.navigation.navigate({
                         routeName: "Group",
                         params: { group: g.slug },
@@ -104,6 +106,7 @@ class GroupSelector extends Component {
               title={"Create a group!"}
               icon={"plus"}
               onPress={() => {
+                this.props.leaving();
                 this.props.navigation.navigate({ routeName: "CreateGroup" });
               }}
             />

@@ -59,6 +59,7 @@ class CreateGroup extends Component {
         <TopBar
           title={"Create a group"}
           color={this.state.inputs.color}
+          hasDropdown={false}
           back={() => {
             this.props.navigation.goBack();
           }}
