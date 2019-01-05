@@ -25,6 +25,10 @@ service cloud.firestore {
       allow read: if true;
     }
     
+    match /groups {
+      allow read: if true;
+    }
+    
     match /groups/{group} {
       allow read: if true;
     }

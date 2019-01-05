@@ -26,7 +26,7 @@ export function eventsSubscribe() {
 					dispatch(
 						setEvents(
 							doc._docs.map(d => {
-								return d.data();
+								return {...d.data(), id:d.id}
 							})
 						)
 					);

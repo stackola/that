@@ -16,7 +16,9 @@ class AuthLoadingScreen extends React.Component {
       .auth()
       .signInAnonymously()
       .then(() => {
-        this.props.userSubscribe();
+        this.props.userSubscribe(() => {
+          this.props.subHomePosts();
+        });
         this.props.eventsSubscribe();
         this.props.settingsSubscribe();
         this.props.navigation.navigate("Home");

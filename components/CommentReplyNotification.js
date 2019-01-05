@@ -5,7 +5,7 @@ import Link from "that/components/Link";
 
 import Icon from "react-native-vector-icons/Foundation";
 import { withNavigation } from "react-navigation";
-import { genderColor } from "that/lib";
+import { genderColor, markNotification } from "that/lib";
 import { View, TouchableOpacity, Text } from "react-native";
 
 class Notification extends React.Component {
@@ -32,6 +32,9 @@ class Notification extends React.Component {
     //			console.log(this.props.data.event.data.otherUser.data().username)
   }
   pressed() {
+    if (!this.props.data.read){
+      markNotification(this.props.data.id)
+    }
     if (this.isPostReply()) {
       console.log(this.getPath());
       let tp = this.getPath();

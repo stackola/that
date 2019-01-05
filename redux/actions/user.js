@@ -1,6 +1,7 @@
 import * as types from "./types";
 import firebase from "react-native-firebase";
 import { getUID } from "that/lib";
+import { combineReducers } from "redux";
 //We have to define action types in types.js, here we make them available as functions that can be mapped to props.
 export function setUserObject(user) {
 	return {
@@ -17,7 +18,7 @@ export function setSubs(subs) {
 	};
 }
 
-export function userSubscribe() {
+export function userSubscribe(cb) {
 	return (dispatch, getState) => {
 		firebase
 			.firestore()
@@ -45,6 +46,7 @@ export function userSubscribe() {
 					dispatch(setSubs([]));
 				} else {
 					dispatch(setSubs(doc._docs.map((d)=>{return d._data.group})));
+					cb();
 				}
 			});
 		}
