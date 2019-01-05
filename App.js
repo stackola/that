@@ -25,6 +25,7 @@ import Events from "that/screens/Events";
 import ImageView from "that/screens/ImageView";
 import EditProfile from "that/screens/EditProfile";
 import SingleComment from "that/screens/SingleComment";
+import CreateGroup from "that/screens/CreateGroup";
 
 const loggerMiddleware = createLogger({
   predicate: (getState, action) => true
@@ -60,7 +61,8 @@ const AppStack = createStackNavigator({
   EditProfile: EditProfile,
   Group: Group,
   ImageView: ImageView,
-  Profile: Profile
+  Profile: Profile,
+  CreateGroup:CreateGroup
 });
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 

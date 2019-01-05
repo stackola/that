@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
 
 import { vote, genderColor } from "that/lib";
 import { SwipeRow } from "react-native-swipe-list-view";
@@ -12,7 +9,6 @@ import ExpandingTextInput from "that/components/ExpandingTextInput";
 import { createPost, uploadImage } from "that/lib";
 import ImagePicker from "react-native-image-picker";
 import Icon from "react-native-vector-icons/Entypo";
-import Ant from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 
 import {getUID} from "that/lib";
