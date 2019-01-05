@@ -6,11 +6,9 @@ Components:
 behind in group view
 
 Features:
-subscribe
 mark noti as read on click
-subscriptions
 sort
-allow & respect settings per sub
+allow & respect settings (display & comments!)
 notifications
 messages + event7
 share

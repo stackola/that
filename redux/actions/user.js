@@ -9,6 +9,14 @@ export function setUserObject(user) {
 	};
 }
 
+
+export function setSubs(subs) {
+	return {
+		type: types.SET_SUBS,
+		payload: subs
+	};
+}
+
 export function userSubscribe() {
 	return (dispatch, getState) => {
 		firebase
@@ -24,7 +32,22 @@ export function userSubscribe() {
 					dispatch(setUserObject(doc._data));
 				}
 			});
-	};
+
+		firebase
+			.firestore()
+			.collection("users")
+			.doc(getUID())
+			.collection("subscriptions")
+			.onSnapshot(doc => {
+				console.log("DATA SUB FOR USER: ");
+				console.log(doc);
+				if (!doc._docs) {
+					dispatch(setSubs([]));
+				} else {
+					dispatch(setSubs(doc._docs.map((d)=>{return d._data.group})));
+				}
+			});
+		}
 }
 
 /*

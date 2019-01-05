@@ -23,7 +23,6 @@ class Group extends React.Component {
   componentDidMount() {
     //subscribe to a sub.
     let group = this.props.navigation.getParam("group", null);
-
     this.sub1 = firebase
       .firestore()
       .collection("groups")
@@ -84,12 +83,15 @@ class Group extends React.Component {
               key: c
             });
           }}
+          group={this.state.group}
           posts={this.state.posts}
+          subs={this.props.user&&this.props.user.subs}
           key={"postList" + group}
         />
         {this.props.user && this.props.user.id ? (
           <FloatButton
             key={"floatButton" + group}
+            color={this.state.group ? this.state.group.color : colors.seperator}
             onPress={() => {
               this.setState({ creating: true });
             }}

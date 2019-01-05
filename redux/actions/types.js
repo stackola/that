@@ -7,6 +7,7 @@ export const SET_USER_OBJECT = "SET_USER_OBJECT";
 export const SET_EVENTS = "SET_EVENTS";
 export const SET_PARTS = "SET_PARTS";
 export const SET_SETTINGS = "SET_SETTINGS";
+export const SET_SUBS = "SET_SUBS";
 
 //Notis
 export const SHOW_NOTI = "SHOW_NOTI";

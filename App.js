@@ -1,18 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
 import {
-  createBottomTabNavigator,
   createSwitchNavigator,
   createStackNavigator,
   createAppContainer
 } from "react-navigation";
-import ImagePicker from "react-native-image-picker";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, combineReducers, compose } from "redux";
-import thunkMiddleware from "redux-thunk";
-import { createLogger } from "redux-logger";
 
-import reducer from "that/redux/reducers";
 
 import AuthLoadingScreen from "that/screens/AuthLoadingScreen";
 import SignInScreen from "that/screens/SignInScreen";
@@ -26,17 +20,7 @@ import EditProfile from "that/screens/EditProfile";
 import SingleComment from "that/screens/SingleComment";
 import CreateGroup from "that/screens/CreateGroup";
 
-const loggerMiddleware = createLogger({
-  predicate: (getState, action) => true
-});
-
-function configureStorage(initialState) {
-  let enhancer = compose(applyMiddleware(thunkMiddleware, loggerMiddleware));
-  let store = createStore(reducer, initialState, enhancer);
-  return store;
-}
-
-let store = configureStorage({});
+import store from "that/redux/store";
 
 // Implementation of HomeScreen, OtherScreen, SignInScreen, AuthLoadingScreen
 // goes here.

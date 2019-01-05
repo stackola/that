@@ -11,6 +11,9 @@ service cloud.firestore {
     match /users/{user}/events/{allDocuments=**} {
       allow read, update: if request.auth.uid == user;
     }
+    match /users/{user}/subscriptions/{allDocuments=**} {
+      allow read, write: if request.auth.uid == user;
+    }
     match /users/{user}/posts/{allDocuments=**} {
       allow read: if true;
     }

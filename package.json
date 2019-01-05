@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@mdi/font": "^3.3.92",
+    "get-best-contrast-color": "^0.2.2",
     "mdi-react": "^5.1.0",
     "react": "16.5.0",
     "react-native": "0.57.1",

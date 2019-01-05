@@ -3,7 +3,9 @@ import SortBar from "that/components/SortBar";
 import colors from "that/colors";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Post from "that/components/Post";
+import GroupInfo from "that/components/GroupInfo";
 import { View, Text } from "react-native";
+
 
 export default class Header extends Component {
   render() {
@@ -14,9 +16,9 @@ export default class Header extends Component {
         keyExtractor={item => {
           return item.id;
         }}
-        ListHeaderComponent={<SortBar />}
+        ListHeaderComponent={<GroupInfo group={this.props.group} subs={this.props.subs}/>}
         closeOnRowBeginSwipe={true}
-        style={{ zIndex: 1 }}
+        style={{  }}
         swipeToOpenPercent={20}
         swipeToClosePercent={20}
         renderItem={(data, rowMap) => {

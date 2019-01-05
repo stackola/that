@@ -13,8 +13,9 @@ export default class FloatButton extends Component {
           }
         }}
         style={{
-          backgroundColor: colors.floatbutton,
+          backgroundColor: this.props.color?this.props.color:colors.floatbutton,
           width: 60,
+          opacity:0.6,
           alignItems: "center",
           justifyContent: "center",
           height: 60,

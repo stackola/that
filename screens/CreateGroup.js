@@ -21,10 +21,12 @@ class CreateGroup extends Component {
       inputs: {
         color: colors.upvote,
         name: "",
-        allowAnon: false,
-        allowPhotos: true,
+        allowText: true,
+        allowTextComments:true,
         allowUploaded: true,
-        allowText: true
+        allowPhotos: true,
+        allowAnon: false,
+        nsfw: false,
       }
     };
   }
@@ -38,11 +40,13 @@ class CreateGroup extends Component {
       if (res.data && res.data.status == "ok") {
         console.log("we made it");
         res.data.slug &&
-          this.props.navigation.navigate({
-            routeName: "Group",
-            params: { group: res.data.slug },
-            key: res.data.slug
-          });
+          console.log(
+            this.props.navigation.replace({
+              routeName: "Group",
+              params: { group: res.data.slug },
+              newKey: res.data.slug
+            })
+          );
       } else {
         console.log("error making group");
       }
@@ -122,10 +126,19 @@ class CreateGroup extends Component {
 
           <InputRow
             type={"switch"}
-            title={"Allow text"}
+            title={"Allow text posts"}
             value={this.state.inputs.allowText}
             onChange={v => {
               this.setInput("allowText", v);
+            }}
+          />
+
+          <InputRow
+            type={"switch"}
+            title={"Allow text comments"}
+            value={this.state.inputs.allowTextComments}
+            onChange={v => {
+              this.setInput("allowTextComments", v);
             }}
           />
 
@@ -144,6 +157,15 @@ class CreateGroup extends Component {
             value={this.state.inputs.allowUploaded}
             onChange={v => {
               this.setInput("allowUploaded", v);
+            }}
+          />
+
+          <InputRow
+            type={"switch"}
+            title={"18+"}
+            value={this.state.inputs.nsfw}
+            onChange={v => {
+              this.setInput("nsfw", v);
             }}
           />
         </ScrollView>
