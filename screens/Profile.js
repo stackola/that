@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
-import Post from "that/components/Post";
 import TopBar from "that/components/TopBar";
 import UserBox from "that/components/UserBox";
 import UserPosts from "that/components/UserPosts";
@@ -12,10 +11,6 @@ import colors from "that/colors";
 import firebase from "react-native-firebase";
 
 import {
-	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	StyleSheet,
 	ScrollView,
 	View,
 	Text,

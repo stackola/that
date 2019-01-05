@@ -3,34 +3,18 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 
-import { vote, genderColor } from "that/lib";
-import { SwipeRow } from "react-native-swipe-list-view";
 import colors from "that/colors";
 import TopBar from "that/components/TopBar";
-import Link from "that/components/Link";
 import SortBar from "that/components/SortBar";
 import CommentLoader from "that/components/CommentLoader";
-import { createPost, uploadImage } from "that/lib";
-import ImagePicker from "react-native-image-picker";
 import Icon from "react-native-vector-icons/Entypo";
-import Ant from "react-native-vector-icons/AntDesign";
-import Feather from "react-native-vector-icons/Feather";
 
 import {
-	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
 	TouchableOpacity,
-	Image,
-	StyleSheet,
 	View,
 	ScrollView,
 	Text,
-	Alert
 } from "react-native";
-
-import { comment } from "that/lib";
-import firebase from "react-native-firebase";
 
 class Comment extends Component {
 	static navigationOptions = {

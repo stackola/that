@@ -4,9 +4,7 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import {
   ActivityIndicator,
-  AsyncStorage,
   StatusBar,
-  StyleSheet,
   View,
 } from 'react-native';
 

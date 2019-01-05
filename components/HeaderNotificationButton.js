@@ -1,15 +1,7 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
 import colors from "that/colors";
-import HeaderDropdown from "that/components/HeaderDropdown";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  StyleSheet,
   View,
   Text,
   TouchableOpacity

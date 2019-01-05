@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
-import HeaderDropdown from "that/components/HeaderDropdown";
 import colors from "that/colors";
 
-import firebase from "react-native-firebase";
 import Link from "that/components/Link";
 
 import Icon from "react-native-vector-icons/Foundation";
 import { withNavigation } from "react-navigation";
-import { getUID, genderColor } from "that/lib";
-const uid = getUID();
+import { genderColor } from "that/lib";
 import {
-	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	Picker,
-	StyleSheet,
 	View,
 	TouchableOpacity,
 	Text

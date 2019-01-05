@@ -7,17 +7,9 @@ import HeaderLoginButton from "that/components/HeaderLoginButton";
 import HeaderNotificationButton from "that/components/HeaderNotificationButton";
 import HeaderProfileButton from "that/components/HeaderProfileButton";
 import colors from "that/colors";
-import Icon from "react-native-vector-icons/EvilIcons";
 
-import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getUID } from "that/lib";
-const uid = getUID();
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  Picker,
-  StyleSheet,
   View,
   TouchableOpacity,
   Text
@@ -54,7 +46,7 @@ class TopBar extends React.Component {
                 justifyContent: "center"
               }}
             >
-              <MIcon name="chevron-left" size={33} color={colors.text} />
+              <Icon name="chevron-left" size={33} color={colors.text} />
             </TouchableOpacity>
           ) : (
             <View style={{ flex: 1 }} />

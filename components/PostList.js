@@ -1,19 +1,9 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
 import SortBar from "that/components/SortBar";
 import colors from "that/colors";
 import { SwipeListView } from "react-native-swipe-list-view";
-import { comment } from "that/lib";
 import Post from "that/components/Post";
 import {
-	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	TextInput,
-	StyleSheet,
-	TouchableOpacity,
 	View,
 	Text
 } from "react-native";

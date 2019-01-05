@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import colors from "that/colors";
-import HeaderDropdown from "that/components/HeaderDropdown";
+
 import {
   ActivityIndicator,
   AsyncStorage,

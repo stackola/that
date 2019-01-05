@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import Post from "that/components/Post";
-import Comments from "that/components/Comments";
 import Comment from "that/components/Comment";
-import FloatButton from "that/components/FloatButton";
 import CommentBox from "that/components/CommentBox";
 import colors from "that/colors";
 import firebase from "react-native-firebase";
@@ -13,15 +11,9 @@ import firebase from "react-native-firebase";
 import TopBar from "that/components/TopBar";
 import {
 	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	StyleSheet,
-	FlatList,
 	ScrollView,
 	View,
 	Text,
-	TextInput,
-	TouchableOpacity
 } from "react-native";
 
 class Details extends Component {

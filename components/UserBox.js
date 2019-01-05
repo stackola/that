@@ -1,16 +1,9 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
 import colors from "that/colors";
 
-import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import M2Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon2 from "react-native-vector-icons/MaterialIcons";
 import {
-	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	StyleSheet,
 	View,
 	Text
 } from "react-native";
@@ -67,7 +60,7 @@ export default class UserBox extends Component {
 							textAlign: "center"
 						}}
 					>
-						<M2Icon
+						<Icon2
 							name="location-on"
 							size={15}
 							color={colors.textMinor}
@@ -86,7 +79,7 @@ export default class UserBox extends Component {
 						lineHeight: 35
 					}}
 				>
-					<MIcon name="coin" size={20} color={colors.upvote} />
+					<Icon name="coin" size={20} color={colors.upvote} />
 					{"\n"}
 					<Text
 						style={{

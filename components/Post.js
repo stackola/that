@@ -2,20 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
-import HeaderDropdown from "that/components/HeaderDropdown";
 import VoteButtons from "that/components/VoteButtons";
 import Link from "that/components/Link";
 import { withNavigation } from "react-navigation";
 import { vote, genderColor, getUID } from "that/lib";
 import Pinchzoom from "that/components/Pinchzoom";
-import Icon from "react-native-vector-icons/Ionicons";
-import MDIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "that/colors";
 import {
-	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	StyleSheet,
 	Alert,
 	View,
 	Image,
@@ -130,7 +124,7 @@ class Post extends Component {
 								color: colors.textMinor
 							}}
 						>
-							<MDIcon size={9} name={"message"} /> {data.comments}
+							<Icon size={9} name={"message"} /> {data.comments}
 						</Text>
 					</View>
 				</View>

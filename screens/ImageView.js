@@ -1,21 +1,11 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
 import PinchZoomView from 'react-native-pinch-zoom-view';
 
 import colors from "that/colors";
 import TopBar from "that/components/TopBar";
 import {
-	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	StyleSheet,
-	ScrollView,
 	Image,
 	View,
-	TextInput,
-	Text
 } from "react-native";
 
 export default class ImageView extends Component {

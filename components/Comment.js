@@ -6,7 +6,7 @@ import colors from "that/colors";
 import VoteButtons from "that/components/VoteButtons";
 import Link from "that/components/Link";
 import ExpandingTextInput from "that/components/ExpandingTextInput";
-import { createPost, uploadImage } from "that/lib";
+import { uploadImage } from "that/lib";
 import ImagePicker from "react-native-image-picker";
 import Icon from "react-native-vector-icons/Entypo";
 import Feather from "react-native-vector-icons/Feather";

@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
-import HeaderDropdown from "that/components/HeaderDropdown";
 import ExpandingTextInput from "that/components/ExpandingTextInput";
 import colors from "that/colors";
 import { createPost, uploadImage } from "that/lib";
@@ -10,17 +6,13 @@ import ImagePicker from "react-native-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import Entypo from "react-native-vector-icons/Entypo";
-import Ant from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 
 import {
 	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
 	ScrollView,
 	TextInput,
 	Image,
-	StyleSheet,
 	View,
 	TouchableOpacity,
 	Text

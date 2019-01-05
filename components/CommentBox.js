@@ -1,24 +1,15 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ActionCreators } from "that/redux/actions";
-import { bindActionCreators } from "redux";
-import HeaderDropdown from "that/components/HeaderDropdown";
 import ImagePicker from "react-native-image-picker";
 import colors from "that/colors";
-import { createPost, uploadImage } from "that/lib";
-import Icon from "react-native-vector-icons/Entypo";
-import Feather from "react-native-vector-icons/Feather";
+import { uploadImage } from "that/lib";
+import Icon from "react-native-vector-icons/Feather";
 
 import ExpandingTextInput from "that/components/ExpandingTextInput";
 
 import { comment } from "that/lib";
 import {
 	ActivityIndicator,
-	AsyncStorage,
-	StatusBar,
-	TextInput,
 	Image,
-	StyleSheet,
 	TouchableOpacity,
 	View,
 	Text
@@ -106,7 +97,7 @@ export default class Header extends Component {
 							}}
 						>
 							<Text style={{ color: colors.text }}>
-								<Feather name="camera" size={20} />
+								<Icon name="camera" size={20} />
 							</Text>
 						</TouchableOpacity>
 					) : null}
@@ -166,7 +157,7 @@ export default class Header extends Component {
 						}}
 					>
 						<Text style={{ color: colors.text }}>
-							<Feather name="send" size={20} />
+							<Icon name="send" size={20} />
 						</Text>
 					</TouchableOpacity>
 				</View>

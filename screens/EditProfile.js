@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
-import Post from "that/components/Post";
-import Comments from "that/components/Comments";
 import colors from "that/colors";
 
 import InputRow from "that/components/InputRow";
@@ -11,16 +9,9 @@ import InputRow from "that/components/InputRow";
 import { createUser } from "that/lib";
 
 import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
-  TextInput,
-  Switch,
   View,
-  Picker,
   Text
 } from "react-native";
 

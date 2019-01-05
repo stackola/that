@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
-import Header from "that/components/Header";
 
 import FloatButton from "that/components/FloatButton";
 import CreationForm from "that/components/CreationForm";
@@ -10,17 +9,10 @@ import PostList from "that/components/PostList";
 import TopBar from "that/components/TopBar";
 
 import colors from "that/colors";
-import { withRouter } from "react-navigation";
 
 import firebase from "react-native-firebase";
 import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  StyleSheet,
-  ScrollView,
   View,
-  Text
 } from "react-native";
 class Group extends React.Component {
   static navigationOptions = {
