@@ -3,6 +3,8 @@ import colors from "that/colors";
 import { TextInput, View, Switch, Picker, Text } from "react-native";
 import { HueSlider } from "react-native-color";
 
+import IconPicker from "that/components/IconPicker";
+
 import tinycolor from "tinycolor2";
 
 export default function InputRow(props) {
@@ -35,6 +37,18 @@ export default function InputRow(props) {
             <Switch
               value={props.value}
               onValueChange={v => {
+                props.onChange && props.onChange(v);
+              }}
+            />
+          </View>
+        )}
+
+        {props.type == "icon" && (
+          <View style={{ flex: 3 }}>
+            <IconPicker
+              value={props.value}
+              color={props.color}
+              onChange={v => {
                 props.onChange && props.onChange(v);
               }}
             />

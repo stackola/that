@@ -10,6 +10,7 @@ subscribe
 mark noti as read on click
 subscriptions
 defaults
+sort
 allow & respect settings per sub
 notifications
 messages + event7
@@ -33,3 +34,4 @@ username unique
 
 nice to have:
 maintainance
+gifs

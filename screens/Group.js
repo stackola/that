@@ -63,6 +63,7 @@ class Group extends React.Component {
     return (
       <View key={group} style={{ backgroundColor: colors.background, flex: 1 }}>
         <TopBar
+          color={this.state.group ? this.state.group.color : colors.seperator}
           navigate={(a, b, c) => {
             this.props.navigation.navigate({
               routeName: a,

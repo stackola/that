@@ -7,7 +7,7 @@ import TopBar from "that/components/TopBar";
 import InputRow from "that/components/InputRow";
 import { View, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Buttons from "../components/Buttons";
+import Buttons from "that/components/Buttons";
 
 import { makeGroup } from "that/lib";
 
@@ -97,6 +97,16 @@ class CreateGroup extends Component {
             title={"Color"}
             onChange={c => {
               this.setInput("color", c);
+            }}
+          />
+
+          <InputRow
+            value={this.state.inputs.icon}
+            type={"icon"}
+            title={"Icon"}
+            color={this.state.inputs.color}
+            onChange={i => {
+              this.setInput("icon", i);
             }}
           />
 
