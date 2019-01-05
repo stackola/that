@@ -9,11 +9,7 @@ import HeaderProfileButton from "that/components/HeaderProfileButton";
 import colors from "that/colors";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-  View,
-  TouchableOpacity,
-  Text
-} from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 
 class TopBar extends React.Component {
   constructor(p) {

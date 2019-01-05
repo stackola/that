@@ -8,12 +8,7 @@ import InputRow from "that/components/InputRow";
 
 import { createUser } from "that/lib";
 
-import {
-  TouchableOpacity,
-  ScrollView,
-  View,
-  Text
-} from "react-native";
+import { TouchableOpacity, ScrollView, View, Text } from "react-native";
 
 class EditProfile extends React.Component {
   static navigationOptions = {

@@ -60,7 +60,7 @@ const AppStack = createStackNavigator({
   Group: Group,
   ImageView: ImageView,
   Profile: Profile,
-  CreateGroup:CreateGroup
+  CreateGroup: CreateGroup
 });
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 

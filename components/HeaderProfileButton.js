@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import colors from "that/colors";
 import Icon from "react-native-vector-icons/EvilIcons";
-import {
-  View,
-  Text,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
 
 class HeaderProfileButton extends Component {

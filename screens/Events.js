@@ -7,10 +7,7 @@ import Notification from "that/components/Notification";
 import colors from "that/colors";
 
 import { markAllEventsRead } from "that/lib";
-import {
-  ScrollView,
-  View,
-} from "react-native";
+import { ScrollView, View } from "react-native";
 
 class Events extends React.Component {
   static navigationOptions = {

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, StyleSheet, PanResponder, ViewPropTypes } from 'react-native';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { View, StyleSheet, PanResponder, ViewPropTypes } from "react-native";
 
 // Fallback when RN version is < 0.44
 const viewPropTypes = ViewPropTypes || View.propTypes;
@@ -71,21 +71,22 @@ export default class PinchZoomView extends Component {
       let distant = Math.sqrt(dx * dx + dy * dy);
       this.distant = distant;
     }
-    this.props.panStart&&this.props.panStart();
+    this.props.panStart && this.props.panStart();
   };
 
   _handlePanResponderEnd = (e, gestureState) => {
     console.log("responder end");
-    this.setState({
-      lastX: this.state.offsetX,
-      lastY: this.state.offsetY,
-      lastScale: this.state.scale
-    },()=>{
-      this.props.panEnd&&this.props.panEnd();
-    });
+    this.setState(
+      {
+        lastX: this.state.offsetX,
+        lastY: this.state.offsetY,
+        lastScale: this.state.scale
+      },
+      () => {
+        this.props.panEnd && this.props.panEnd();
+      }
+    );
   };
-
-
 
   _handlePanResponderMove = (e, gestureState) => {
     // zoom

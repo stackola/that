@@ -11,9 +11,7 @@ import TopBar from "that/components/TopBar";
 import colors from "that/colors";
 
 import firebase from "react-native-firebase";
-import {
-  View,
-} from "react-native";
+import { View } from "react-native";
 class Group extends React.Component {
   static navigationOptions = {
     header: null
@@ -120,4 +118,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Group);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Group);

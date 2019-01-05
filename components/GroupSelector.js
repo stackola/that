@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import colors from "that/colors";
-import {
-  View,
-  TouchableOpacity,
-  Text
-} from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 
 import { withNavigation } from "react-navigation";
 import { ScrollView } from "react-native-gesture-handler";

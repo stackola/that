@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import TopBar from "that/components/TopBar";
 
 import colors from "that/colors";
-import {
-  View,
-} from "react-native";
+import { View } from "react-native";
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
