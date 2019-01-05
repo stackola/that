@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import colors from "that/colors";
 import { TextInput, View, Switch, Picker, Text } from "react-native";
+import { HueSlider } from "react-native-color";
+
+import tinycolor from "tinycolor2";
 
 export default function InputRow(props) {
   return (
@@ -32,6 +35,21 @@ export default function InputRow(props) {
               value={props.value}
               onValueChange={v => {
                 props.onChange(v);
+              }}
+            />
+          </View>
+        )}
+
+        {props.type == "color" && (
+          <View style={{ flex: 2, alignItems: "flex-start" }}>
+            <HueSlider
+              gradientSteps={40}
+              style={{ alignSelf: "stretch", marginLeft: 12, marginTop: 12 }}
+              value={tinycolor(props.value || "#000").toHsl().h}
+              onValueChange={v => {
+                props.onChange(
+                  tinycolor({ h: v, s: 100, l: 50 }).toHexString()
+                );
               }}
             />
           </View>

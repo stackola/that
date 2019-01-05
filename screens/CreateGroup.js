@@ -12,10 +12,14 @@ class CreateGroup extends Component {
   static navigationOptions = {
     header: null
   };
-  constructor(props) {
-    super(props);
-    //initialize local state
-    this.state = {};
+  constructor(p) {
+    super(p);
+    this.state = {
+      inputs: { color: colors.upvote }
+    };
+  }
+  setInput(key, value) {
+    this.setState({ inputs: { ...this.state.inputs, [key]: value } });
   }
   componentDidMount() {}
 
@@ -25,8 +29,8 @@ class CreateGroup extends Component {
       <View style={{ flex: 1, backgroundColor: colors.background }}>
         <TopBar
           title={"Create a group"}
+          color={this.state.inputs.color}
           back={() => {
-            markAllEventsRead();
             this.props.navigation.goBack();
           }}
           navigate={(a, b, c) => {
@@ -49,6 +53,15 @@ class CreateGroup extends Component {
             type={"picker"}
             items={[{ label: "M", value: "M" }, { label: "W", value: "W" }]}
             title={"Slug"}
+          />
+          <InputRow
+            value={this.state.inputs.color}
+            type={"color"}
+            title={"Color"}
+            onChange={c => {
+              this.setInput("color", c);
+              console.log(c);
+            }}
           />
           <Text>New group</Text>
         </ScrollView>

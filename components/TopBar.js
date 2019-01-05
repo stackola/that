@@ -25,7 +25,7 @@ class TopBar extends React.Component {
           style={{
             backgroundColor: colors.headerBackground,
             borderBottomWidth: 2,
-            borderColor: colors.upvote,
+            borderColor: this.props.color || colors.seperator,
             flexDirection: "row",
             zIndex: 2,
             height: 60

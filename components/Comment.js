@@ -66,6 +66,14 @@ export default class Comment extends Component {
   isOwnComment() {
     return this.state.user && getUID() == this.state.user.id;
   }
+  isOp() {
+    return (
+      this.props.op &&
+      this.state.user &&
+      this.state.user.id &&
+      this.props.op == this.state.user.id
+    );
+  }
   componentWillUnmount() {
     this.sub1 && this.sub1();
     this.sub2 && this.sub2();
@@ -305,8 +313,7 @@ export default class Comment extends Component {
                         fontSize: 11
                       }}
                     >
-                      {this.props.op == this.state.user.id ? "OP" : null} @
-                      {this.state.user.username}
+                      {this.isOp() ? "OP" : null} @{this.state.user.username}
                     </Link>
                   ) : (
                     <Text
@@ -315,7 +322,7 @@ export default class Comment extends Component {
                         color: colors.otherGenders
                       }}
                     >
-                      {this.props.op == this.state.user.id ? "OP " : null}Anon
+                      {this.isOp() ? "OP " : null}Anon
                     </Text>
                   )}
                 </View>

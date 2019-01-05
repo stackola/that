@@ -27,6 +27,7 @@
     "react": "16.5.0",
     "react-native": "0.57.1",
     "react-native-camera": "^1.6.4",
+    "react-native-color": "0.0.10",
     "react-native-firebase": "^5.1.1",
     "react-native-gesture-handler": "^1.0.12",
     "react-native-image-picker": "^0.27.2",
@@ -39,6 +40,7 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "tinycolor2": "^1.4.1",
     "uuid": "^3.3.2"
   }
 }
