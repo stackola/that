@@ -8,7 +8,7 @@ import PostContent from "that/components/PostContent";
 import PostCredit from "that/components/PostCredit";
 import PostBackside from "that/components/PostBackside";
 import { withNavigation } from "react-navigation";
-import { vote, genderColor, getUID, getAge } from "that/lib";
+import { vote, genderColor, getUID, getAge, notLoggedInAlert } from "that/lib";
 import { distanceInWordsToNow } from "date-fns";
 import { SwipeRow } from "react-native-swipe-list-view";
 
@@ -32,6 +32,11 @@ class Post extends Component {
           "/groups/" + this.props.data.group + "/posts/" + this.props.data.id,
         id: this.props.data.id,
         vote: dir == "up" ? "up" : "down"
+      });
+
+    !this.canVote() &&
+      notLoggedInAlert(r => {
+        this.props.navigation.navigate(r);
       });
   }
   canVote() {
@@ -58,6 +63,10 @@ class Post extends Component {
         <SwipeRow
           recalculateHiddenLayout={true}
           leftOpenValue={100}
+          stopLeftSwipe={200}
+          disableLeftSwipe={true}
+          swipeToOpenPercent={10}
+          swipeToClosePercent={10}
           preview={true}
           ref={ref => {
             this.ref = ref;

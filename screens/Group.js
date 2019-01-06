@@ -40,9 +40,7 @@ class Group extends React.Component {
               console.log("oh yea, group updated!");
               this.setState(
                 {
-                  posts: posts._docs.map(d => {
-                    return d._data;
-                  })
+                  posts: posts._docs
                 },
                 () => {
                   console.log(this.state);
@@ -75,19 +73,9 @@ class Group extends React.Component {
             this.props.navigation.goBack();
           }}
         />
-        <PostList
-          navigate={(a, b, c) => {
-            this.props.navigation.navigate({
-              routeName: a,
-              params: b,
-              key: c
-            });
-          }}
-          group={this.state.group}
+        <PostList         
           posts={this.state.posts}
-          subs={this.props.user&&this.props.user.subs}
-          key={"postList" + group}
-        />
+          />
         {this.props.user && this.props.user.id ? (
           <FloatButton
             key={"floatButton" + group}

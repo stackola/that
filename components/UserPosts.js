@@ -26,7 +26,7 @@ export default class UserPosts extends React.Component {
         console.log("got posts snap", snap);
         this.setState(
           {
-            loaded: 1,
+            loaded: 5,
             posts: snap.docs.map(d => {
               return d.data().post || {};
             })
@@ -40,7 +40,7 @@ export default class UserPosts extends React.Component {
   loadMore() {
     if (this.state.loaded < this.state.posts.length) {
       console.log("loading more");
-      this.setState({ loaded: this.state.loaded + 1 });
+      this.setState({ loaded: this.state.loaded + 5 });
     }
   }
   componentWillUnmount() {}
@@ -51,11 +51,10 @@ export default class UserPosts extends React.Component {
           this.state.posts.slice(0, this.state.loaded).map(r => {
             return (
               <PostLoader
-                navigate={(a, b, c) => {
-                  this.props.navigate(a, b, c);
-                }}
+                linkToSelf={true}
+                realtime={true}
                 key={r.path.toString()}
-                path={r}
+                path={r.path}
               />
             );
           })}
