@@ -4,7 +4,7 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import colors from "that/colors";
 
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconButton from "that/components/IconButton";
 
 import {
   ActivityIndicator,
@@ -16,27 +16,6 @@ import {
   Text
 } from "react-native";
 
-function IconButton(props) {
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: props.background || colors.upvote
-      }}
-    >
-      <TouchableOpacity
-        style={{
-          width: 100,
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <Icon name={props.name} size={30} color={props.color || colors.text} />
-      </TouchableOpacity>
-    </View>
-  );
-}
 export default class PostBackside extends Component {
   render() {
     return (

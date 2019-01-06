@@ -10,6 +10,7 @@ import firebase from "react-native-firebase";
 
 import TopBar from "that/components/TopBar";
 import { ActivityIndicator, ScrollView, View, Text } from "react-native";
+import CommentLoader from "../components/CommentLoader";
 
 class Details extends Component {
   static navigationOptions = {
@@ -41,14 +42,15 @@ class Details extends Component {
         this.setState({ post: snap._data, path: snap._ref.path });
       });
     //Auslagern!
-    this.sub2 = firebase
+    firebase
       .firestore()
       .collection("groups")
       .doc(group)
       .collection("posts")
       .doc(postId)
       .collection("comments")
-      .onSnapshot(d => {
+      .get()
+      .then(d => {
         this.setState({
           commentsLoading: false,
           comments: d._docs.map(d => {
@@ -126,8 +128,16 @@ class Details extends Component {
             <View style={{ backgroundColor: colors.background }}>
               {this.state.comments.map(c => {
                 return (
-                  <Comment
+                  <CommentLoader
                     key={c.id}
+                    realtime={true}
+                    canVote={this.props.user && this.props.user.id}
+                    path={c.path}
+                    level={0}
+                    op={this.state.post.user.id}
+                    rules={{}}
+                  />
+                  /*key={c.id}
                     level={0}
                     data={c}
                     op={this.state.post.user.id}
@@ -139,7 +149,7 @@ class Details extends Component {
                         key: c
                       });
                     }}
-                  />
+                  />*/
                 );
               })}
             </View>

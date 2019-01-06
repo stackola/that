@@ -15,7 +15,7 @@ import {
   View,
   Text
 } from "react-native";
-const textStyle = { color: colors.text, fontSize: 11, lineHeight: 40 };
+const textStyle = { color: colors.text, fontSize: 11, lineHeight: 25 };
 export default class PostCredit extends Component {
   render() {
     let group = this.props.group;
@@ -42,19 +42,23 @@ export default class PostCredit extends Component {
             );
           }}
         </UserLoader>
-        <Text style={{ ...textStyle, color: colors.textMinor }}> in </Text>
-        <Link
-          to={"Group"}
-          params={{ group: group }}
-          viewKey={group}
-          key={group}
-          textStyle={{
-            ...textStyle,
-            color: colors.text
-          }}
-        >
-          /{group}
-        </Link>
+        {this.props.group && (
+          <React.Fragment>
+            <Text style={{ ...textStyle, color: colors.textMinor }}> in </Text>
+            <Link
+              to={"Group"}
+              params={{ group: group }}
+              viewKey={group}
+              key={group}
+              textStyle={{
+                ...textStyle,
+                color: colors.text
+              }}
+            >
+              /{group}
+            </Link>
+          </React.Fragment>
+        )}
       </View>
     );
   }
