@@ -38,7 +38,7 @@ export default class CreationForm extends Component {
   }
   componentDidMount() {
     this.setState({
-      inputs: { ...this.state.inputs, group: this.props.group }
+      inputs: { ...this.state.inputs, group: this.props.group.slug }
     });
   }
 
@@ -82,9 +82,9 @@ export default class CreationForm extends Component {
                   textAlign: "center"
                 }}
               >
-                Post to {this.props.groupName}
+                Post to {this.props.group.name}
               </Text>
-              {this.props.rules.allowText && (
+              {this.props.group.allowText && (
                 <View>
                   <TextInput
                     multiline={false}
@@ -183,7 +183,7 @@ export default class CreationForm extends Component {
               ) : null}
               {!this.state.imageLoading && !this.state.image ? (
                 <View style={{ flexDirection: "row" }}>
-                  {this.props.rules.allowPhotos && (
+                  {this.props.group.allowPhotos && (
                     <TouchableOpacity
                       onPress={() => {
                         this.setState({ imageLoading: true }, () => {
@@ -223,7 +223,7 @@ export default class CreationForm extends Component {
                       />
                     </TouchableOpacity>
                   )}
-                  {this.props.rules.allowUploaded && (
+                  {this.props.group.allowUploaded && (
                     <TouchableOpacity
                       onPress={() => {
                         this.setState({ imageLoading: true }, () => {
@@ -284,7 +284,7 @@ export default class CreationForm extends Component {
                   if (res && res.data && res.data.status == "ok") {
                     console.log("din done that shit");
                     this.props.navigate("Details", {
-                      group: this.props.group,
+                      group: this.props.group.slug,
                       postId: res.data.postId
                     });
                   } else {

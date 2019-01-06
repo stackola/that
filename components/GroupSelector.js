@@ -63,7 +63,7 @@ class GroupSelector extends Component {
       <ScrollView
         style={{
           maxHeight: 200,
-          backgroundColor: colors.seperator
+          backgroundColor: colors.background
         }}
       >
         {!this.state.searching &&

@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 
 import FloatButton from "that/components/FloatButton";
 import CreationForm from "that/components/CreationForm";
+import Loading from "that/components/Loading";
 import PostList from "that/components/PostList";
 import TopBar from "that/components/TopBar";
 import ItemLoader from "that/components/ItemLoader";
@@ -27,7 +28,25 @@ class Group extends React.Component {
     let group = this.props.navigation.getParam("group", null);
     return (
       <View style={{ backgroundColor: colors.background, flex: 1 }}>
-        <ItemLoader key={group} path={"groups/" + group}>
+        <ItemLoader
+          key={group}
+          path={"groups/" + group}
+          loadingComponent={
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: colors.background
+              }}
+            >
+              <TopBar
+                back={() => {
+                  this.props.navigation.goBack();
+                }}
+              />
+              <Loading />
+            </View>
+          }
+        >
           {group => {
             return (
               <View style={{ flex: 1 }}>
@@ -53,6 +72,30 @@ class Group extends React.Component {
                     return <PostList posts={posts} realtime={true} />;
                   }}
                 </CollectionLoader>
+                {this.props.user && this.props.user.id ? (
+                  <FloatButton
+                    color={group.color ? group.color : colors.seperator}
+                    onPress={() => {
+                      this.setState({ creating: true });
+                    }}
+                  />
+                ) : null}
+                {this.state.creating && (
+                  <CreationForm
+                    group={group}
+                    navigate={(a, b, c) => {
+                      this.setState({ creating: false });
+                      this.props.navigation.navigate({
+                        routeName: a,
+                        params: b,
+                        key: c
+                      });
+                    }}
+                    onClose={() => {
+                      this.setState({ creating: false });
+                    }}
+                  />
+                )}
               </View>
             );
           }}
