@@ -70,6 +70,7 @@ export default class ChildComments extends PureComponent {
                         key={c.id}
                         realtime={true}
                         path={c._ref.path}
+                        linkToSelf={false}
                         level={this.props.level + 1}
                         loadingComponent={
                           <View

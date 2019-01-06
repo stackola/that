@@ -29,6 +29,7 @@ export default class Header extends Component {
               <PostLoader
                 linkToSelf={true}
                 path={i.item._ref.path}
+                marginBottom={4}
                 realtime={this.props.realtime}
               />
             );

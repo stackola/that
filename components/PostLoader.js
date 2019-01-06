@@ -22,7 +22,7 @@ export default class PostLoader extends Component {
     return (
       <ItemLoader path={this.props.path} realtime={this.props.realtime}>
         {post => {
-          return <Post linkToSelf={this.props.linkToSelf} data={post || {}} />;
+          return <Post marginBottom={this.props.marginBottom} linkToSelf={this.props.linkToSelf} data={post || {}} />;
         }}
       </ItemLoader>
     );

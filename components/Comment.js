@@ -50,12 +50,29 @@ class Comment extends Component {
   canVote() {
     return this.props.user && this.props.user.id;
   }
+  rowPress(){
+    console.log("row pressed", this.props)
+    if (this.props.linkToSelf){
+      this.props.navigation.navigate({
+        routeName: "SingleComment",
+        params: { commentPath: this.props.path },
+        key: this.props.path
+      });
+    }else{
+      if (this.canVote()){
+        this.setState({replying:true})
+      }
+    }
+  }
   slideWrapper = props => {
     return (
       <View style={{ flex: 1 }}>
         <SwipeRow
           recalculateHiddenLayout={true}
           leftOpenValue={200}
+          onRowPress={()=>{
+            this.rowPress();
+          }}
           disableLeftSwipe={true}
           swipeToOpenPercent={10}
           swipeToClosePercent={10}
@@ -123,7 +140,7 @@ class Comment extends Component {
                 }}
               />
             }
-          >
+          >              
             <CommentContent
               {...this.props}
               isOp={this.isOp()}
@@ -138,6 +155,7 @@ class Comment extends Component {
               isOwnComment={this.isOwnComment()}
               userId={this.props.user.id}
             />
+          
           </SlideWrapper>
         </View>
         {this.state.replying && (
@@ -170,7 +188,7 @@ class Comment extends Component {
             />
           </TouchableOpacity>
         )}
-        {data.comments > 0 && !this.state.collapsed && (
+        {this.props.loadChildren!==false && data.comments > 0 && !this.state.collapsed && (
           <ChildComments
             {...{ ...this.props, level: this.props.level + 1 }}
             onCollapse={() => {

@@ -23,7 +23,7 @@ export default class CommentList extends Component {
             return (
               <CommentLoader
                 key={c.id}
-                linkToSelf={true}
+                linkToSelf={this.props.linkToSelf}
                 path={c._ref.path}
                 realtime={this.props.realtime}
                 level={0}

@@ -55,16 +55,11 @@ export default class UserComments extends React.Component {
                 navigate={(a, b, c) => {
                   this.props.navigate(a, b, c);
                 }}
-                onPress={path => {
-                  console.log("comment pressed");
-                  this.props.navigate(
-                    "SingleComment",
-                    { commentPath: path },
-                    path
-                  );
-                }}
+               
+                linkToSelf={true}
+                realtime={true}
                 key={r.path.toString()}
-                path={r}
+                path={r.path}
                 loadChildren={false}
               />
             );

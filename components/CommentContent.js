@@ -44,6 +44,7 @@ export default class CommentContent extends PureComponent {
           <Text style={{ color: colors.text }}>{this.props.comment.text}</Text>
           {this.props.comment.image && this.props.comment.image.url ? (
             <TouchableOpacity
+                style={{width:100, height:100}}
               onPress={() => {
                 this.props.navigate(
                   "ImageView",

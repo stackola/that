@@ -14,10 +14,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
   TextComponent,
   Text
 } from "react-native";
 import { comment } from "that/lib";
+import ImagePicker from "react-native-image-picker";
+
+const pickerOptions = {
+  mediaType: "photo",
+  quality: 0.4
+};
 
 export default class NewComment extends Component {
   constructor(p) {
@@ -27,6 +34,38 @@ export default class NewComment extends Component {
       image: null,
       imageLoading: false
     };
+  }
+  pickPicture(showRemove) {
+    this.setState({ imageLoading: true }, () => {
+      ImagePicker.showImagePicker(
+        {
+          ...pickerOptions,
+          customButtons: showRemove
+            ? [
+                ...(pickerOptions.customButtons || []),
+                { name: "remove", title: "Remove image" }
+              ]
+            : [...(pickerOptions.customButtons || [])]
+        },
+        response => {
+          console.log(response);
+          if (response && response.path) {
+            uploadImage(response.path, response.width, response.height, d => {
+              console.log("got response", d);
+              this.setState({
+                image: d,
+                imageLoading: false
+              });
+            });
+          } else {
+            this.setState({
+              imageLoading: false,
+              image: null
+            });
+          }
+        }
+      );
+    });
   }
   render() {
     return (
