@@ -5,7 +5,7 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import colors from "that/colors";
 import { View } from "react-native";
-import PostLoader from "that/components/PostLoader";
+import PostList from "that/components/PostList";
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -39,16 +39,9 @@ class HomeScreen extends React.Component {
             });
           }}
         />
+
         <View style={{ flex: 1 }}>
-          <PostLoader
-            realtime={true}
-            path={"groups/funny/posts/KzSY9WhsFWCR8NtfmFc6"}
-            linkToSelf={true}
-          />
-          <PostLoader
-            realtime={true}
-            path={"groups/photos/posts/dheN7SIeeG1T6808jKlN"}
-          />
+          <PostList posts={this.props.homePosts} realtime={true} />
         </View>
       </View>
     );

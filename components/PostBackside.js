@@ -40,7 +40,13 @@ function IconButton(props) {
 export default class PostBackside extends Component {
   render() {
     return (
-      <View style={{ flex: 1, paddingRight: 100, backgroundColor:colors.background }}>
+      <View
+        style={{
+          flex: 1,
+          paddingRight: 100,
+          backgroundColor: colors.background
+        }}
+      >
         <IconButton name="share-variant" background={colors.hidden} />
         <IconButton name="flag-variant" background={colors.downvote} />
         <IconButton name="trash-can" background={"#888"} />

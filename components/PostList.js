@@ -20,13 +20,18 @@ export default class Header extends Component {
       <View style={{ flex: 1 }}>
         <FlatList
           data={this.props.posts}
-          style={{  }}
+          style={{}}
           keyExtractor={i => {
             return i.id;
           }}
           renderItem={i => {
-            console.log(i);
-            return <PostLoader linkToSelf={true} path={i.item._ref.path} />;
+            return (
+              <PostLoader
+                linkToSelf={true}
+                path={i.item._ref.path}
+                realtime={this.props.realtime}
+              />
+            );
           }}
         />
       </View>

@@ -26,7 +26,7 @@ class Item extends Component {
           borderBottomWidth: 1,
           flexDirection: "row",
           borderColor: colors.textMinor,
-          results:[],
+          results: []
         }}
       >
         <View
@@ -55,7 +55,6 @@ class GroupSelector extends Component {
   }
   componentDidMount() {
     getGroupList().then(res => {
-      console.log("received", res);
       this.setState({ groups: res });
     });
   }
@@ -114,7 +113,9 @@ class GroupSelector extends Component {
                 title={"Search"}
                 icon={"magnify"}
                 onPress={() => {
-                  searchGroup("",(r)=>{this.setState({results:r, searching:true})})
+                  searchGroup("", r => {
+                    this.setState({ results: r, searching: true });
+                  });
                 }}
               />
 
@@ -132,45 +133,51 @@ class GroupSelector extends Component {
         {this.state.searching && (
           <View style={{}}>
             <TextInput
-            onChangeText={(t)=>{searchGroup(t,(r)=>{this.setState({results:r})})}}
+              onChangeText={t => {
+                searchGroup(t, r => {
+                  this.setState({ results: r });
+                });
+              }}
               style={{
                 color: colors.text,
                 backgroundColor: null,
                 borderColor: colors.textMinor,
                 borderBottomWidth: 2,
                 margin: 4,
-                fontSize:12,
-                height:40,
+                fontSize: 12,
+                height: 40,
                 marginTop: 0
               }}
             />
             {this.state.results &&
-                this.state.results.map(g => {
-                  return (
-                    <Item
-                      title={g.name}
-                      key={g.slug}
-                      icon={g.icon}
-                      color={g.color}
-                      onPress={() => {
-                        this.props.leaving();
-                        this.props.navigation.navigate({
-                          routeName: "Group",
-                          params: { group: g.slug },
-                          key: g.slug
-                        });
-                      }}
-                    />
-                  );
-                })}
-                {this.state.results && !this.state.results.length && <Item
+              this.state.results.map(g => {
+                return (
+                  <Item
+                    title={g.name}
+                    key={g.slug}
+                    icon={g.icon}
+                    color={g.color}
+                    onPress={() => {
+                      this.props.leaving();
+                      this.props.navigation.navigate({
+                        routeName: "Group",
+                        params: { group: g.slug },
+                        key: g.slug
+                      });
+                    }}
+                  />
+                );
+              })}
+            {this.state.results && !this.state.results.length && (
+              <Item
                 title={"Create a group!"}
                 icon={"plus"}
                 onPress={() => {
                   this.props.leaving();
                   this.props.navigation.navigate({ routeName: "CreateGroup" });
                 }}
-              />}
+              />
+            )}
           </View>
         )}
       </ScrollView>

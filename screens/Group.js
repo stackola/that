@@ -7,6 +7,8 @@ import FloatButton from "that/components/FloatButton";
 import CreationForm from "that/components/CreationForm";
 import PostList from "that/components/PostList";
 import TopBar from "that/components/TopBar";
+import ItemLoader from "that/components/ItemLoader";
+import CollectionLoader from "that/components/CollectionLoader";
 
 import colors from "that/colors";
 
@@ -20,90 +22,41 @@ class Group extends React.Component {
     super(p);
     this.state = { creating: false, posts: [], group: {} };
   }
-  componentDidMount() {
-    //subscribe to a sub.
-    let group = this.props.navigation.getParam("group", null);
-    this.sub1 = firebase
-      .firestore()
-      .collection("groups")
-      .doc(group)
-      .onSnapshot(doc => {
-        console.log("got group snap!!!!!!!!!!!!!!");
-        console.log(doc);
-        this.setState({ group: doc.data() }, () => {
-          this.sub2 = firebase
-            .firestore()
-            .collection("groups")
-            .doc(group)
-            .collection("posts")
-            .onSnapshot(posts => {
-              console.log("oh yea, group updated!");
-              this.setState(
-                {
-                  posts: posts._docs
-                },
-                () => {
-                  console.log(this.state);
-                  console.log("oh yea, group updated!");
-                }
-              );
-            });
-        });
-      });
-  }
-  componentWillUnmount() {
-    this.sub1 && this.sub1();
-    this.sub2 && this.sub2();
-  }
+
   render() {
     let group = this.props.navigation.getParam("group", null);
     return (
-      <View key={group} style={{ backgroundColor: colors.background, flex: 1 }}>
-        <TopBar
-          color={this.state.group ? this.state.group.color : colors.seperator}
-          navigate={(a, b, c) => {
-            this.props.navigation.navigate({
-              routeName: a,
-              params: b,
-              key: c
-            });
+      <View style={{ backgroundColor: colors.background, flex: 1 }}>
+        <ItemLoader key={group} path={"groups/" + group}>
+          {group => {
+            return (
+              <View style={{ flex: 1 }}>
+                <TopBar
+                  color={group.color ? group.color : colors.seperator}
+                  navigate={(a, b, c) => {
+                    this.props.navigation.navigate({
+                      routeName: a,
+                      params: b,
+                      key: c
+                    });
+                  }}
+                  title={group.name}
+                  back={() => {
+                    this.props.navigation.goBack();
+                  }}
+                />
+                <CollectionLoader
+                  path={"groups/" + group.slug}
+                  collection={"posts"}
+                >
+                  {posts => {
+                    return <PostList posts={posts} realtime={true} />;
+                  }}
+                </CollectionLoader>
+              </View>
+            );
           }}
-          title={this.state.group.name}
-          back={() => {
-            this.props.navigation.goBack();
-          }}
-        />
-        <PostList         
-          posts={this.state.posts}
-          />
-        {this.props.user && this.props.user.id ? (
-          <FloatButton
-            key={"floatButton" + group}
-            color={this.state.group ? this.state.group.color : colors.seperator}
-            onPress={() => {
-              this.setState({ creating: true });
-            }}
-          />
-        ) : null}
-        {this.state.creating && (
-          <CreationForm
-            key={"createForm" + group}
-            rules={this.state.group}
-            group={group}
-            navigate={(a, b, c) => {
-              this.setState({ creating: false });
-              this.props.navigation.navigate({
-                routeName: a,
-                params: b,
-                key: c
-              });
-            }}
-            groupName={this.state.group.name}
-            onClose={() => {
-              this.setState({ creating: false });
-            }}
-          />
-        )}
+        </ItemLoader>
       </View>
     );
   }
