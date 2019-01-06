@@ -18,5 +18,6 @@ var colors={
 	male:"#479aff",
 	female:"#ff479a",
 	otherGenders:"#a3a3a3",
+	postBackground: "#171717"
 };
 export default colors;

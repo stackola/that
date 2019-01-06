@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import colors from "that/colors";
+import { sanitizeUser } from "that/lib";
 import { withNavigation } from "react-navigation";
-import Post from "that/components/Post";
-
 import firebase from "react-native-firebase";
 
 import {
@@ -17,30 +16,32 @@ import {
   Text
 } from "react-native";
 
-export default class PostLoader extends Component {
+export default class UserLoader extends Component {
   constructor(p) {
     super(p);
-    this.state = { loading: true, post: null };
+    this.state = { loading: true, user: null };
   }
   subscribeToChanges() {
-    let path = this.props.path;
+    let userId = this.props.userId;
     this.sub1 = firebase
       .firestore()
-      .doc(path)
+      .collection("users")
+      .doc(userId)
       .onSnapshot(snap => {
-        console.log("got single post snap", snap);
-        this.setState({ post: snap.data() });
+        console.log("userlaoder", snap);
+        this.setState({ user: snap.data() });
       });
   }
   updateOnce() {
-    let path = this.props.path;
+    let userId = this.props.userId;
     this.sub1 = firebase
       .firestore()
-      .doc(path)
+      .collection("users")
+      .doc(userId)
       .get()
       .then(snap => {
-        console.log("got single post snap", snap);
-        this.setState({ post: snap.data() });
+        console.log("userlaoder", snap);
+        this.setState({ user: snap.data() });
       });
   }
   componentDidMount() {
@@ -54,8 +55,10 @@ export default class PostLoader extends Component {
     }
   }
   render() {
-    return (
-      <Post linkToSelf={this.props.linkToSelf} data={this.state.post || {}} />
-    );
+    return this.state.user
+      ? this.props.children(
+          this.props.sanitize ? sanitizeUser(this.state.user) : this.state.user
+        )
+      : null;
   }
 }

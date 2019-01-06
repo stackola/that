@@ -8,6 +8,7 @@ class Link extends Component {
     return (
       <TouchableOpacity
         style={this.props.containerStyle}
+        disabled={this.props.disabled}
         onPress={() => {
           console.log("LINK", this.props);
           this.props.navigation.navigate({
