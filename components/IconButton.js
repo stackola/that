@@ -26,6 +26,9 @@ export default function IconButton(props) {
           alignItems: "center",
           justifyContent: "center"
         }}
+        onPress={() => {
+          props.onPress && props.onPress();
+        }}
       >
         <Icon name={props.name} size={30} color={props.color || colors.text} />
       </TouchableOpacity>

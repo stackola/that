@@ -35,6 +35,9 @@ export default class CommentBackside extends Component {
             name={"reply"}
             background={colors.upvote}
             horizontal={true}
+            onPress={() => {
+              this.props.onReply && this.props.onReply();
+            }}
           />
         </View>
       </View>

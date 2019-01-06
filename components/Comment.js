@@ -10,11 +10,15 @@ import { withNavigation } from "react-navigation";
 import CommentBackside from "that/components/CommentBackside";
 import CommentContent from "that/components/CommentContent";
 import ChildComments from "that/components/ChildComments";
+import NewComment from "that/components/NewComment";
+
+import Icon from "react-native-vector-icons/Entypo";
 
 import { vote, genderColor, getUID, getAge, notLoggedInAlert } from "that/lib";
 import {
   ActivityIndicator,
   AsyncStorage,
+  TouchableOpacity,
   StatusBar,
   StyleSheet,
   View,
@@ -22,16 +26,29 @@ import {
 } from "react-native";
 
 class Comment extends Component {
+  constructor(p) {
+    super(p);
+    this.state = {
+      replying: false,
+      collapsed: false
+    };
+  }
   onVote(dir) {
-    this.props.canVote
+    this.canVote()
       ? vote({
           path: this.props.path,
           id: this.props.comment.id,
           vote: dir == "up" ? "up" : "down"
         })
-      : notLoggedInAlert(r => {
-          this.props.navigation.navigate(r);
-        });
+      : this.notLoggedIn();
+  }
+  notLoggedIn() {
+    notLoggedInAlert(r => {
+      this.props.navigation.navigate(r);
+    });
+  }
+  canVote() {
+    return this.props.user && this.props.user.id;
   }
   slideWrapper = props => {
     return (
@@ -55,7 +72,6 @@ class Comment extends Component {
   };
   isOwnComment() {
     let data = this.props.comment;
-    console.log(data);
     return data.user && getUID() == data.user.id;
   }
   isOp() {
@@ -95,7 +111,7 @@ class Comment extends Component {
             backside={
               <CommentBackside
                 onReply={() => {
-                  if (this.props.canVote) {
+                  if (this.canVote()) {
                     this.setState({
                       replying: true
                     });
@@ -124,8 +140,43 @@ class Comment extends Component {
             />
           </SlideWrapper>
         </View>
-        {data.comments > 0 && (
-          <ChildComments {...{ ...this.props, level: this.props.level + 1 }} />
+        {this.state.replying && (
+          <NewComment
+            path={this.props.path}
+            rules={{}}
+            onCancel={() => {
+              this.setState({ replying: false });
+            }}
+          />
+        )}
+        {this.state.collapsed && (
+          <TouchableOpacity
+            style={{
+              alignItems: "center",
+              borderColor: colors.seperator,
+              borderBottomWidth: 1,
+              marginLeft: 35,
+              paddingBottom: 0,
+              justifyContent: "center"
+            }}
+            onPress={() => {
+              this.setState({ collapsed: false });
+            }}
+          >
+            <Icon
+              size={20}
+              name="dots-three-horizontal"
+              color={colors.textMinor}
+            />
+          </TouchableOpacity>
+        )}
+        {data.comments > 0 && !this.state.collapsed && (
+          <ChildComments
+            {...{ ...this.props, level: this.props.level + 1 }}
+            onCollapse={() => {
+              this.setState({ collapsed: true });
+            }}
+          />
         )}
       </View>
     );

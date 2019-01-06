@@ -42,7 +42,6 @@ export default class CollectionLoader extends PureComponent {
       });
   }
   process(snap) {
-    console.log("got collection!", snap);
     this.setState({ items: snap._docs, loading: false });
   }
   componentDidMount() {

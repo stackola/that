@@ -131,7 +131,9 @@ class Comment extends Component {
               });
             }}
             key={commentPath}
-            path={{ path: commentPath }}
+            realtime={true}
+            level={0}
+            path={commentPath}
           />
         </ScrollView>
       </View>
