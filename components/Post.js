@@ -6,9 +6,11 @@ import colors from "that/colors";
 import VoteButtons from "that/components/VoteButtons";
 import PostContent from "that/components/PostContent";
 import PostCredit from "that/components/PostCredit";
+import PostBackside from "that/components/PostBackside";
 import { withNavigation } from "react-navigation";
 import { vote, genderColor, getUID, getAge } from "that/lib";
 import { distanceInWordsToNow } from "date-fns";
+import { SwipeRow } from "react-native-swipe-list-view";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -50,7 +52,23 @@ class Post extends Component {
       </TouchableOpacity>
     );
   };
-
+  slideWrapper = props => {
+    return (
+      <View style={{ flex: 1 }}>
+        <SwipeRow
+          recalculateHiddenLayout={true}
+          leftOpenValue={100}
+          preview={true}
+          ref={ref => {
+            this.ref = ref;
+          }}
+        >
+          {props.backside}
+          {props.children}
+        </SwipeRow>
+      </View>
+    );
+  };
   onPress() {
     let id = this.props.data.id;
     let group = this.props.data.group;
@@ -64,11 +82,12 @@ class Post extends Component {
     return <View style={props.style}>{props.children}</View>;
   }
   render() {
-    data = this.props.data || {};
+    let data = this.props.data || {};
     let Wrapper = this.props.linkToSelf
       ? this.touchWrapper
       : this.normalWrapper;
-    console.log(data);
+
+    let SlideWrapper = this.slideWrapper;
     return (
       <View
         style={{
@@ -90,20 +109,28 @@ class Post extends Component {
             }}
           />
         </View>
-        <View style={{ flex: 1, paddingRight: 8 }}>
-          <Wrapper style={{}}>
-            <PostContent data={data} />
-          </Wrapper>
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1, justifyContent: "center" }}>
-              <PostInfo comments={data.comments} time={data.time} />
+        <SlideWrapper backside={<PostBackside />}>
+          <View
+            style={{
+              paddingRight: 8,
+              backgroundColor: colors.postBackground,
+              paddingLeft: 8
+            }}
+          >
+            <Wrapper style={{}}>
+              <PostContent data={data} />
+            </Wrapper>
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <PostInfo comments={data.comments} time={data.time} />
+              </View>
+              <View style={{ flex: 1 }} />
+              {data.user && data.user.id && (
+                <PostCredit group={data.group} userId={data.user.id} />
+              )}
             </View>
-            <View style={{ flex: 1 }} />
-            {data.user && data.user.id && (
-              <PostCredit group={data.group} userId={data.user.id} />
-            )}
           </View>
-        </View>
+        </SlideWrapper>
       </View>
     );
   }
