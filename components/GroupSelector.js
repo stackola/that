@@ -25,7 +25,7 @@ class Item extends Component {
           height: 45,
           borderBottomWidth: 1,
           flexDirection: "row",
-          borderColor: colors.textMinor,
+          borderColor: colors.seperator,
           results: []
         }}
       >
@@ -66,69 +66,69 @@ class GroupSelector extends Component {
           backgroundColor: colors.background
         }}
       >
-        {!this.state.searching &&
-          (!this.state.groups ? (
-            <View
-              style={{
-                height: 50,
-                backgroundColor: colors.background,
-                borderColor: colors.textMinor,
-                borderBottomWidth: 2,
-                alignItems: "center",
-                justifyContent: "center"
+        {!this.state.searching && (
+          <View>
+            <Item
+              title={"Home"}
+              icon={"home"}
+              onPress={() => {
+                this.props.leaving();
+                this.props.navigation.navigate({ routeName: "Home" });
               }}
-            >
-              <ActivityIndicator />
-            </View>
-          ) : (
-            <View>
-              <Item
-                title={"Home"}
-                icon={"home"}
-                onPress={() => {
-                  this.props.leaving();
-                  this.props.navigation.navigate({ routeName: "Home" });
+            />
+            {this.state.groups ? (
+              this.state.groups.map(g => {
+                return (
+                  <Item
+                    title={g.name}
+                    key={g.slug}
+                    icon={g.icon}
+                    color={g.color}
+                    onPress={() => {
+                      this.props.leaving();
+                      this.props.navigation.navigate({
+                        routeName: "Group",
+                        params: { group: g.slug },
+                        key: g.slug
+                      });
+                    }}
+                  />
+                );
+              })
+            ) : (
+              <View
+                style={{
+                  height: 45,
+                  backgroundColor: colors.background,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderBottomWidth: 1,
+                  borderBottomColor: colors.seperator
                 }}
-              />
-              {this.state.groups &&
-                this.state.groups.map(g => {
-                  return (
-                    <Item
-                      title={g.name}
-                      key={g.slug}
-                      icon={g.icon}
-                      color={g.color}
-                      onPress={() => {
-                        this.props.leaving();
-                        this.props.navigation.navigate({
-                          routeName: "Group",
-                          params: { group: g.slug },
-                          key: g.slug
-                        });
-                      }}
-                    />
-                  );
-                })}
-              <Item
-                title={"Search"}
-                icon={"magnify"}
-                onPress={() => {
-                  searchGroup("", r => {
-                    this.setState({ results: r, searching: true });
-                  });
-                }}
-              />
+              >
+                <ActivityIndicator />
+              </View>
+            )}
+            <Item
+              title={"Search"}
+              icon={"magnify"}
+              onPress={() => {
+                searchGroup("", r => {
+                  this.setState({ results: r, searching: true });
+                });
+              }}
+            />
 
-              <Item
-                title={"Create a group!"}
-                icon={"plus"}
-                onPress={() => {
-                  this.props.leaving();
-                  this.props.navigation.navigate({ routeName: "CreateGroup" });
-                }}
-              />
-            </View>
-          ))}
+            <Item
+              title={"Create a group!"}
+              icon={"plus"}
+              onPress={() => {
+                this.props.leaving();
+                this.props.navigation.navigate({ routeName: "CreateGroup" });
+              }}
+            />
+          </View>
+        )}
 
         {this.state.searching && (
           <View style={{}}>
