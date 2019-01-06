@@ -12,30 +12,30 @@ import {
   View,
   Text
 } from "react-native";
-
+let pageSize = 5;
 export default class CollectionLoader extends PureComponent {
   constructor(p) {
     super(p);
     this.state = { loading: true, items: null };
   }
-  subscribeToChanges() {
+  getRef() {
     let path = this.props.path;
     let collection = this.props.collection;
-    this.sub1 = firebase
+    return firebase
       .firestore()
       .doc(path)
       .collection(collection)
+      .orderBy("time", "DESC");
+  }
+  subscribeToChanges() {
+    this.sub1 = this.getRef()
       .onSnapshot(snap => {
         this.process(snap);
       });
   }
   updateOnce() {
-    let path = this.props.path;
-    let collection = this.props.collection;
-    firebase
-      .firestore()
-      .doc(path)
-      .collection(collection)
+    this.getRef()
+      .limit(pageSize)
       .get()
       .then(snap => {
         this.process(snap);
@@ -43,6 +43,23 @@ export default class CollectionLoader extends PureComponent {
   }
   process(snap) {
     this.setState({ items: snap._docs, loading: false });
+  }
+  addRows(rows) {
+    this.setState({
+      items: [].concat.apply([], [this.state.items, rows]),
+      loading: false
+    });
+  }
+  loadMore() {
+    if (!this.props.realtime) {
+      this.getRef()
+        .startAfter(this.state.items[this.state.items.length - 1])
+        .limit(pageSize)
+        .get()
+        .then(rows => {
+          this.addRows(rows._docs);
+        });
+    }
   }
   componentDidMount() {
     if (this.props.realtime) {
@@ -61,7 +78,10 @@ export default class CollectionLoader extends PureComponent {
       this.props.children(
         this.props.sanitize
           ? this.props.sanitize(this.state.items)
-          : this.state.items
+          : this.state.items,
+        () => {
+          this.loadMore();
+        }
       )
     ) : this.props.loading == false ? null : this.props.loadingComponent ? (
       this.props.loadingComponent

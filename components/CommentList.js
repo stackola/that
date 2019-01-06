@@ -9,6 +9,7 @@ import {
   AsyncStorage,
   StatusBar,
   StyleSheet,
+  TouchableOpacity,
   View,
   Text,
   FlatList
@@ -18,6 +19,7 @@ export default class CommentList extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
+      
         {this.props.comments &&
           this.props.comments.map(c => {
             return (
@@ -30,6 +32,7 @@ export default class CommentList extends Component {
               />
             );
           })}
+          <TouchableOpacity onPress={()=>{this.props.loadMore()}} style={{height:80, backgroundColor:'red'}}></TouchableOpacity>
       </View>
     );
   }

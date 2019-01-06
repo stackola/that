@@ -30,7 +30,7 @@ export default class UserComments extends React.Component {
                     key={c.id}
                     path={c._data.comment.path}
                     marginBottom={2}
-                    realtime={true}
+                    realtime={false}
                     linkToSelf={true}
                   />
                 );

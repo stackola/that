@@ -65,6 +65,7 @@ class Group extends React.Component {
                   }}
                 />
                 <CollectionLoader
+                  realtime={false}
                   path={"groups/" + group.slug}
                   collection={"posts"}
                 >

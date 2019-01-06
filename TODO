@@ -3,11 +3,10 @@ edit profile
 home screen
 
 Components:
-behind in group view
 
 Features:
-mark noti as read on click
 sort
+load more (collectionLoader)
 allow & respect settings (display & comments!)
 notifications
 messages + event7
@@ -19,7 +18,6 @@ invite friends
 location
 mod
 website muss
-distinguish?
 
 Fixes:
 logout
@@ -30,5 +28,6 @@ username unique
 
 
 nice to have:
+distinguish?
 maintainance
 gifs

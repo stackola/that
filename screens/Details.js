@@ -58,10 +58,11 @@ class Details extends Component {
                 );
               }}
             </ItemLoader>
-            <CollectionLoader path={path} collection="comments" realtime={true}>
-              {c => {
+            <CollectionLoader path={path} collection="comments" realtime={false}>
+              {(c,loadMore) => {
                 return (
                   <CommentList
+                    loadMore={()=>{loadMore()}}
                     comments={c}
                     realtime={true}
                     linkToSelf={false}

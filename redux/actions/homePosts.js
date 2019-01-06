@@ -27,6 +27,7 @@ export function subHomePosts() {
             });
         })
       ).then(s => {
+        console.log(s);
         console.log("got them snaps does!!", dispatch(setHomePosts(s.flat())));
         return;
       });
