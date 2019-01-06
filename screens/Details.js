@@ -60,7 +60,13 @@ class Details extends Component {
             </ItemLoader>
             <CollectionLoader path={path} collection="comments" realtime={true}>
               {c => {
-              return <CommentList comments={c} realtime={true} linkToSelf={false}/>;
+                return (
+                  <CommentList
+                    comments={c}
+                    realtime={true}
+                    linkToSelf={false}
+                  />
+                );
               }}
             </CollectionLoader>
           </ScrollView>

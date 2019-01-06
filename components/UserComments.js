@@ -55,7 +55,6 @@ export default class UserComments extends React.Component {
                 navigate={(a, b, c) => {
                   this.props.navigate(a, b, c);
                 }}
-               
                 linkToSelf={true}
                 realtime={true}
                 key={r.path.toString()}

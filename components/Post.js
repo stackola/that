@@ -102,7 +102,7 @@ class Post extends Component {
         style={{
           flexDirection: "row",
           backgroundColor: colors.postBackground,
-          marginBottom:this.props.marginBottom || 0,
+          marginBottom: this.props.marginBottom || 0
         }}
       >
         <View style={{ paddingLeft: 4, paddingRight: 4 }}>
