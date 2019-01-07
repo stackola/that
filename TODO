@@ -1,23 +1,22 @@
 Pages:
 edit profile
 home screen
+about
+tutorial
+datenschutz
 
 Components:
 
 Features:
 sort
-load more (collectionLoader)
 allow & respect settings (display & comments!)
 notifications
 messages + event7
 share
-highlight read posts (locally?)
 remove own posts/comments
-report
-invite friends
-location
-mod
-website muss
+location (mostly clientside)
+report/mod (special type of message maybe?)
+website (MINIMAL, NUR LESEN!!)
 
 Fixes:
 logout
@@ -28,6 +27,8 @@ username unique
 
 
 nice to have:
+highlight read posts (locally?)
+invite friends
 distinguish?
 maintainance
 gifs
