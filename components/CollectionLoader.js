@@ -16,7 +16,7 @@ let pageSize = 5;
 export default class CollectionLoader extends PureComponent {
   constructor(p) {
     super(p);
-    this.state = { loading: true, items: null };
+    this.state = { loading: true, items: null, adding: true, hasMore: true };
   }
   getRef() {
     let path = this.props.path;
@@ -28,10 +28,9 @@ export default class CollectionLoader extends PureComponent {
       .orderBy("time", "DESC");
   }
   subscribeToChanges() {
-    this.sub1 = this.getRef()
-      .onSnapshot(snap => {
-        this.process(snap);
-      });
+    this.sub1 = this.getRef().onSnapshot(snap => {
+      this.process(snap);
+    });
   }
   updateOnce() {
     this.getRef()
@@ -42,23 +41,34 @@ export default class CollectionLoader extends PureComponent {
       });
   }
   process(snap) {
-    this.setState({ items: snap._docs, loading: false });
+    this.setState({
+      items: snap._docs,
+      loading: false,
+      adding: false,
+      hasMore: snap._docs.length == pageSize
+    });
   }
   addRows(rows) {
     this.setState({
       items: [].concat.apply([], [this.state.items, rows]),
-      loading: false
+      adding: false,
+      hasMore: rows.length == pageSize
     });
   }
   loadMore() {
-    if (!this.props.realtime) {
-      this.getRef()
-        .startAfter(this.state.items[this.state.items.length - 1])
-        .limit(pageSize)
-        .get()
-        .then(rows => {
-          this.addRows(rows._docs);
-        });
+    if (!this.props.realtime && !this.state.adding && this.state.hasMore) {
+      console.log("adding more!!!");
+      this.setState({ adding: true }, () => {
+        this.getRef()
+          .startAfter(this.state.items[this.state.items.length - 1])
+          .limit(pageSize)
+          .get()
+          .then(rows => {
+            this.addRows(rows._docs);
+          });
+      });
+    } else {
+      console.log("wont even try");
     }
   }
   componentDidMount() {
@@ -81,7 +91,8 @@ export default class CollectionLoader extends PureComponent {
           : this.state.items,
         () => {
           this.loadMore();
-        }
+        },
+        this.state.hasMore
       )
     ) : this.props.loading == false ? null : this.props.loadingComponent ? (
       this.props.loadingComponent

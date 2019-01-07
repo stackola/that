@@ -9,36 +9,28 @@ import { TouchableOpacity, View, Text } from "react-native";
 import CommentLoader from "that/components/CommentLoader";
 
 import CollectionLoader from "that/components/CollectionLoader";
+import InfiniteList from "that/components/InfiniteList";
 
 export default class UserComments extends React.Component {
   render() {
     let userId = this.props.userId;
     return (
-      <CollectionLoader
+      <InfiniteList
         path={"users/" + userId}
-        realtime={false}
         collection={"comments"}
-      >
-        {comments => {
-          console.log(comments);
+        header={this.props.header}
+        renderItem={i => {
           return (
-            <View>
-              {comments.map(c => {
-                return (
-                  <CommentLoader
-                    loadChildren={false}
-                    key={c.id}
-                    path={c._data.comment.path}
-                    marginBottom={2}
-                    realtime={false}
-                    linkToSelf={true}
-                  />
-                );
-              })}
-            </View>
+            <CommentLoader
+              linkToSelf={true}
+              path={i.item._data.comment.path}
+              marginBottom={2}
+              loadChildren={false}
+              realtime={true}
+            />
           );
         }}
-      </CollectionLoader>
+      />
     );
   }
 }

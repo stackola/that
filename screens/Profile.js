@@ -24,6 +24,7 @@ class Profile extends React.Component {
   }
   render() {
     let userId = this.props.navigation.getParam("userId", null);
+
     return (
       <View style={{ flex: 1, backgroundColor: colors.background }}>
         <TopBar
@@ -39,27 +40,36 @@ class Profile extends React.Component {
             });
           }}
         />
-        <ScrollView style={{ flex: 1 }}>
-          <ItemLoader path={"users/" + userId}>
-            {user => {
-              console.log("got user", user);
-              return <UserBox user={user} />;
-            }}
-          </ItemLoader>
-          <Tabs
-            value={this.state.tab}
-            onChange={t => {
-              this.setState({ tab: t });
-            }}
-            tabs={[
-              { title: "Posts", value: "posts" },
-              { title: "Comments", value: "comments" }
-            ]}
-          />
-          {this.state.tab == "posts" && <UserPosts userId={userId} />}
+        <ItemLoader path={"users/" + userId}>
+          {user => {
+            let header = (
+              <View>
+                <UserBox user={user} />
 
-          {this.state.tab == "comments" && <UserComments userId={userId} />}
-        </ScrollView>
+                <Tabs
+                  value={this.state.tab}
+                  onChange={t => {
+                    this.setState({ tab: t });
+                  }}
+                  tabs={[
+                    { title: "Posts", value: "posts" },
+                    { title: "Comments", value: "comments" }
+                  ]}
+                />
+              </View>
+            );
+            return (
+              <View style={{ flex: 1 }}>
+                {this.state.tab == "posts" && (
+                  <UserPosts userId={userId} header={header} />
+                )}
+                {this.state.tab == "comments" && (
+                  <UserComments userId={userId} header={header} />
+                )}
+              </View>
+            );
+          }}
+        </ItemLoader>
       </View>
     );
   }

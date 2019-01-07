@@ -5,14 +5,13 @@ import { bindActionCreators } from "redux";
 import ItemLoader from "that/components/ItemLoader";
 import Post from "that/components/Post";
 import CommentBox from "that/components/CommentBox";
-import CommentList from "that/components/CommentList";
-import CollectionLoader from "that/components/CollectionLoader";
+import CommentLoader from "that/components/CommentLoader";
+import InfiniteList from "that/components/InfiniteList";
 import colors from "that/colors";
 import firebase from "react-native-firebase";
 
 import TopBar from "that/components/TopBar";
 import { ActivityIndicator, ScrollView, View, Text } from "react-native";
-import CommentLoader from "../components/CommentLoader";
 
 class Details extends Component {
   static navigationOptions = {
@@ -26,7 +25,7 @@ class Details extends Component {
     //We can access the redux store via our props. The available variables are defined in mapStateToProps() in this file
     let path = "groups/" + group + "/posts/" + postId;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
         <TopBar
           title={""}
           back={() => {
@@ -40,11 +39,8 @@ class Details extends Component {
             });
           }}
         />
-        <View style={{ flex: 1 }}>
-          <ScrollView
-            style={{ flex: 1, backgroundColor: colors.background }}
-            keyboardShouldPersistTaps={"handled"}
-          >
+        <InfiniteList
+          header={
             <ItemLoader path={path} realtime={true}>
               {post => {
                 console.log(post);
@@ -58,20 +54,34 @@ class Details extends Component {
                 );
               }}
             </ItemLoader>
-            <CollectionLoader path={path} collection="comments" realtime={false}>
-              {(c,loadMore) => {
-                return (
-                  <CommentList
-                    loadMore={()=>{loadMore()}}
-                    comments={c}
-                    realtime={true}
-                    linkToSelf={false}
-                  />
-                );
-              }}
-            </CollectionLoader>
-          </ScrollView>
-        </View>
+          }
+          path={path}
+          collection={"comments"}
+          renderItem={i => {
+            return (
+              <CommentLoader
+                linkToSelf={false}
+                path={i.item._ref.path}
+                marginBottom={2}
+                level={0}
+                loadChildren={true}
+                realtime={true}
+                loadingComponent={
+                  <View
+                    style={{
+                      height: 45,
+                      backgroundColor: colors.backgroundColor,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <ActivityIndicator />
+                  </View>
+                }
+              />
+            );
+          }}
+        />
       </View>
     );
   }

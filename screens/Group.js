@@ -6,15 +6,16 @@ import { bindActionCreators } from "redux";
 import FloatButton from "that/components/FloatButton";
 import CreationForm from "that/components/CreationForm";
 import Loading from "that/components/Loading";
-import PostList from "that/components/PostList";
 import TopBar from "that/components/TopBar";
 import ItemLoader from "that/components/ItemLoader";
-import CollectionLoader from "that/components/CollectionLoader";
+
+import PostLoader from "that/components/PostLoader";
 
 import colors from "that/colors";
 
 import firebase from "react-native-firebase";
 import { View } from "react-native";
+import InfiniteList from "../components/InfiniteList";
 class Group extends React.Component {
   static navigationOptions = {
     header: null
@@ -64,15 +65,21 @@ class Group extends React.Component {
                     this.props.navigation.goBack();
                   }}
                 />
-                <CollectionLoader
-                  realtime={false}
+                <InfiniteList
                   path={"groups/" + group.slug}
                   collection={"posts"}
-                >
-                  {posts => {
-                    return <PostList posts={posts} realtime={true} />;
+                  renderItem={i => {
+                    return (
+                      <PostLoader
+                        linkToSelf={true}
+                        path={i.item._ref.path}
+                        marginBottom={4}
+                        realtime={true}
+                      />
+                    );
                   }}
-                </CollectionLoader>
+                />
+
                 {this.props.user && this.props.user.id ? (
                   <FloatButton
                     color={group.color ? group.color : colors.seperator}

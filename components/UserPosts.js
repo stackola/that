@@ -6,37 +6,27 @@ import firebase from "react-native-firebase";
 
 import { TouchableOpacity, View, Text } from "react-native";
 
-import CollectionLoader from "that/components/CollectionLoader";
+import InfiniteList from "that/components/InfiniteList";
 
 export default class UserPosts extends React.Component {
   render() {
     let userId = this.props.userId;
     return (
-      <CollectionLoader
+      <InfiniteList
         path={"users/" + userId}
-        realtime={false}
         collection={"posts"}
-      >
-        {posts => {
-          console.log(posts);
+        header={this.props.header}
+        renderItem={i => {
           return (
-            <View>
-              {posts.map(p => {
-                console.log(p.id);
-                return (
-                  <PostLoader
-                    key={p.id}
-                    path={p._data.post.path}
-                    marginBottom={2}
-                    realtime={true}
-                    linkToSelf={true}
-                  />
-                );
-              })}
-            </View>
+            <PostLoader
+              linkToSelf={true}
+              path={i.item._data.post.path}
+              marginBottom={4}
+              realtime={true}
+            />
           );
         }}
-      </CollectionLoader>
+      />
     );
   }
 }
