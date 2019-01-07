@@ -237,7 +237,7 @@ exports.comment = functions.https.onCall((data, context) => {
             ref
           );
           addCommentToUser(newComment.path.toString(), uid);
-          return { status: "ok" };
+          return { status: "ok", newComment: newComment.path.toString() };
         })
         .catch(err => {
           console.log("Transaction failure:", err);

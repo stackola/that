@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import colors from "that/colors";
 import CollectionLoader from "that/components/CollectionLoader";
 import ReadMoreButton from "that/components/ReadMoreButton";
-import CommentLoader from "that/components/CommentLoader";
+import Comment from "that/components/Comment";
 
 import {
   ActivityIndicator,
@@ -65,10 +65,11 @@ export default class ChildComments extends PureComponent {
                 <View>
                   {a.map(c => {
                     return (
-                      <CommentLoader
+                      <Comment
                         {...this.props}
                         key={c.id}
-                        realtime={true}
+                        realtime={false}
+                        comment={c._data}
                         path={c._ref.path}
                         linkToSelf={false}
                         level={this.props.level + 1}

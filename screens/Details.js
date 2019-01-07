@@ -8,6 +8,7 @@ import CommentBox from "that/components/CommentBox";
 import CommentLoader from "that/components/CommentLoader";
 import InfiniteList from "that/components/InfiniteList";
 import colors from "that/colors";
+import { getItem } from "that/lib";
 import firebase from "react-native-firebase";
 
 import TopBar from "that/components/TopBar";
@@ -17,8 +18,17 @@ class Details extends Component {
   static navigationOptions = {
     header: null
   };
-  componentDidMount() {}
 
+  constructor(p) {
+    super(p);
+    this.state = { group: null };
+  }
+  componentDidMount() {
+    let group = this.props.navigation.getParam("group", null);
+    getItem("groups/" + group).then(g => {
+      this.setState({ group: g._data });
+    });
+  }
   render() {
     let postId = this.props.navigation.getParam("postId", null);
     let group = this.props.navigation.getParam("group", null);
@@ -48,7 +58,7 @@ class Details extends Component {
                   <View>
                     <Post linkToSelf={false} data={post || {}} />
                     {this.props.user && this.props.user.id ? (
-                      <CommentBox path={path} />
+                      <CommentBox group={this.state.group} path={path} />
                     ) : null}
                   </View>
                 );
@@ -64,6 +74,7 @@ class Details extends Component {
                 path={i.item._ref.path}
                 marginBottom={2}
                 level={0}
+                group={this.state.group}
                 loadChildren={true}
                 realtime={true}
                 loadingComponent={

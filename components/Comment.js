@@ -160,7 +160,7 @@ class Comment extends Component {
         {this.state.replying && (
           <NewComment
             path={this.props.path}
-            rules={{}}
+            group={this.props.group}
             onCancel={() => {
               this.setState({ replying: false });
             }}

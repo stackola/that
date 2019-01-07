@@ -8,15 +8,30 @@ import TopBar from "that/components/TopBar";
 import SortBar from "that/components/SortBar";
 import CommentLoader from "that/components/CommentLoader";
 import Icon from "react-native-vector-icons/Entypo";
-
+import { getItem } from "that/lib";
 import { TouchableOpacity, View, ScrollView, Text } from "react-native";
 
 class Comment extends Component {
   static navigationOptions = {
     header: null
   };
+  constructor(p) {
+    super(p);
+    this.state = { group: {} };
+  }
+  componentDidMount() {
+    let commentPath = this.props.navigation.getParam("commentPath", null);
+    let group = this.getGroupSlug(commentPath);
+    getItem("groups/" + group).then(g => {
+      console.log("GROUP REPLY IS THERe");
+      this.setState({ group: g._data });
+    });
+  }
   parentIsPost(path) {
     return path.split("/").length == 6;
+  }
+  getGroupSlug(path) {
+    return path.split("/")[1];
   }
   getParentPath(path) {
     let l = path.split("/").length;
@@ -131,6 +146,7 @@ class Comment extends Component {
               });
             }}
             key={commentPath}
+            group={this.state.group}
             realtime={true}
             level={0}
             path={commentPath}

@@ -23,7 +23,7 @@ import ImagePicker from "react-native-image-picker";
 
 const pickerOptions = {
   mediaType: "photo",
-  quality: 0.4
+  quality: 0.8
 };
 
 export default class NewComment extends Component {
@@ -35,11 +35,15 @@ export default class NewComment extends Component {
       imageLoading: false
     };
   }
-  pickPicture(showRemove) {
+  pickPicture(showRemove, allowUpload, allowPhotos) {
     this.setState({ imageLoading: true }, () => {
       ImagePicker.showImagePicker(
         {
           ...pickerOptions,
+          chooseFromLibraryButtonTitle: allowUpload
+            ? "Choose from library"
+            : null,
+          takePhotoButtonTitle: allowPhotos ? "Take a picture" : null,
           customButtons: showRemove
             ? [
                 ...(pickerOptions.customButtons || []),
@@ -87,101 +91,120 @@ export default class NewComment extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1 }}>
-          <ExpandingTextInput
-            multiline={true}
-            placeholder={"Text"}
-            min={120}
-            max={600}
-            numberOfLines={4}
-            ref={ref => {
-              //ref && ref.focus();
-            }}
-            onChangeText={input => {
-              this.setState({ input });
-            }}
-            value={this.state.input}
-            placeholderTextColor={colors.placeholder}
-            style={{
-              color: colors.text,
-              backgroundColor: null,
-              borderColor: colors.seperator,
-              borderBottomWidth: 2,
-              margin: 4,
-              textAlignVertical: "top",
-              marginBottom: 0
-            }}
-          />
-        </View>
-        <View style={{ width: 60 }}>
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: colors.hidden
-            }}
-          >
-            {!this.state.imageLoading && !this.state.image ? (
-              <TouchableOpacity
-                onPress={() => {
-                  this.pickPicture();
-                }}
-                style={{
-                  backgroundColor: colors.hidden,
-
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Text style={{ color: colors.text }}>
-                  <Feather name="camera" size={15} />
-                </Text>
-              </TouchableOpacity>
-            ) : null}
-
-            {this.state.imageLoading && !this.state.image ? (
+        {this.props.group.allowTextComments && (
+          <View style={{ flex: 1 }}>
+            <ExpandingTextInput
+              multiline={true}
+              placeholder={"Text"}
+              min={120}
+              max={600}
+              numberOfLines={4}
+              ref={ref => {
+                //ref && ref.focus();
+              }}
+              onChangeText={input => {
+                this.setState({ input });
+              }}
+              value={this.state.input}
+              placeholderTextColor={colors.placeholder}
+              style={{
+                color: colors.text,
+                backgroundColor: null,
+                borderColor: colors.seperator,
+                borderBottomWidth: 2,
+                margin: 4,
+                textAlignVertical: "top",
+                marginBottom: 0
+              }}
+            />
+          </View>
+        )}
+        <View
+          style={{
+            width: this.props.group.allowTextComments ? 60 : "auto",
+            flex: this.props.group.allowTextComments ? 0 : 1,
+            height: this.props.group.allowTextComments ? "auto" : 60,
+            flexDirection: this.props.group.allowTextComments ? "column" : "row"
+          }}
+        >
+          {this.props.group.allowPhotosComments ||
+            (this.props.group.allowUploadedComments && (
               <View
                 style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flex: 1
+                  flex: 1,
+                  backgroundColor: colors.hidden
                 }}
               >
-                <ActivityIndicator size={10} style={{ height: 15 }} />
-              </View>
-            ) : null}
+                {!this.state.imageLoading && !this.state.image ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.pickPicture(
+                        false,
+                        this.props.group.allowUploadedComments,
+                        this.props.group.allowPhotosComments
+                      );
+                    }}
+                    style={{
+                      backgroundColor: colors.hidden,
 
-            {this.state.image ? (
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.pickPicture(true);
-                  }}
-                  style={{ flex: 1 }}
-                >
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Text style={{ color: colors.text }}>
+                      <Feather name="camera" size={15} />
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+
+                {this.state.imageLoading && !this.state.image ? (
                   <View
                     style={{
-                      minHeight: 15,
+                      alignItems: "center",
+                      justifyContent: "center",
                       flex: 1
                     }}
                   >
-                    <Image
-                      source={{
-                        uri: this.state.image.url
-                      }}
-                      style={{
-                        flex: 1,
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                      resizeMode="cover"
-                    />
+                    <ActivityIndicator size={10} style={{ height: 15 }} />
                   </View>
-                </TouchableOpacity>
-              </View>
-            ) : null}
-          </View>
+                ) : null}
 
+                {this.state.image ? (
+                  <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.pickPicture(
+                          true,
+                          this.props.group.allowUploadedComments,
+                          this.props.group.allowPhotosComments
+                        );
+                      }}
+                      style={{ flex: 1 }}
+                    >
+                      <View
+                        style={{
+                          minHeight: 15,
+                          flex: 1
+                        }}
+                      >
+                        <Image
+                          source={{
+                            uri: this.state.image.url
+                          }}
+                          style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center"
+                          }}
+                          resizeMode="cover"
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+              </View>
+            ))}
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               onPress={() => {

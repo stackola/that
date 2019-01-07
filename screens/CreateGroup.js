@@ -22,11 +22,13 @@ class CreateGroup extends Component {
         color: colors.upvote,
         name: "",
         allowText: true,
-        allowTextComments:true,
+        allowTextComments: true,
         allowUploaded: true,
+        allowUploadedComments: true,
         allowPhotos: true,
+        allowPhotosComments: true,
         allowAnon: false,
-        nsfw: false,
+        nsfw: false
       }
     };
   }
@@ -114,31 +116,14 @@ class CreateGroup extends Component {
               this.setInput("icon", i);
             }}
           />
+          <InputRow type={"none"} title={"Posts:"} />
 
           <InputRow
             type={"switch"}
-            title={"Allow anonymous users"}
-            value={this.state.inputs.allowAnon}
-            onChange={v => {
-              this.setInput("allowAnon", v);
-            }}
-          />
-
-          <InputRow
-            type={"switch"}
-            title={"Allow text posts"}
+            title={"Allow text"}
             value={this.state.inputs.allowText}
             onChange={v => {
               this.setInput("allowText", v);
-            }}
-          />
-
-          <InputRow
-            type={"switch"}
-            title={"Allow text comments"}
-            value={this.state.inputs.allowTextComments}
-            onChange={v => {
-              this.setInput("allowTextComments", v);
             }}
           />
 
@@ -157,6 +142,43 @@ class CreateGroup extends Component {
             value={this.state.inputs.allowUploaded}
             onChange={v => {
               this.setInput("allowUploaded", v);
+            }}
+          />
+
+          <InputRow type={"none"} title={"Comments:"} />
+
+          <InputRow
+            type={"switch"}
+            title={"Allow text"}
+            value={this.state.inputs.allowTextComments}
+            onChange={v => {
+              this.setInput("allowTextComments", v);
+            }}
+          />
+
+          <InputRow
+            type={"switch"}
+            title={"Allow photos"}
+            value={this.state.inputs.allowPhotosComments}
+            onChange={v => {
+              this.setInput("allowPhotosComments", v);
+            }}
+          />
+          <InputRow
+            type={"switch"}
+            title={"Allow uploaded images"}
+            value={this.state.inputs.allowUploadedComments}
+            onChange={v => {
+              this.setInput("allowUploadedComments", v);
+            }}
+          />
+
+          <InputRow
+            type={"switch"}
+            title={"Allow anonymous users"}
+            value={this.state.inputs.allowAnon}
+            onChange={v => {
+              this.setInput("allowAnon", v);
             }}
           />
 

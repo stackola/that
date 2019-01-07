@@ -32,8 +32,8 @@ class Notification extends React.Component {
     //			console.log(this.props.data.event.data.otherUser.data().username)
   }
   pressed() {
-    if (!this.props.data.read){
-      markNotification(this.props.data.id)
+    if (!this.props.data.read) {
+      markNotification(this.props.data.id);
     }
     if (this.isPostReply()) {
       console.log(this.getPath());

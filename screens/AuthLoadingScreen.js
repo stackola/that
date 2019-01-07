@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { ActivityIndicator, StatusBar, View } from "react-native";
 
 import firebase from "react-native-firebase";
-
+import colors from "that/colors";
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -17,20 +17,19 @@ class AuthLoadingScreen extends React.Component {
       .signInAnonymously()
       .then(() => {
         this.props.userSubscribe(() => {
+          this.props.navigation.navigate("Home");
           this.props.subHomePosts();
         });
         this.props.eventsSubscribe();
         this.props.settingsSubscribe();
-        this.props.navigation.navigate("Home");
       });
   }
 
   // Render any loading content that you like here
   render() {
     return (
-      <View>
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
         <ActivityIndicator />
-        <StatusBar barStyle="default" />
       </View>
     );
   }

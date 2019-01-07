@@ -11,14 +11,23 @@ import {
   StyleSheet,
   View,
   FlatList,
+  RefreshControl,
   Text
 } from "react-native";
 import CollectionLoader from "that/components/CollectionLoader";
 
 export default class InfiniteList extends PureComponent {
+  constructor(p) {
+    super(p);
+    this.state = { refreshKey: 0 };
+  }
+  onRefresh() {
+    console.log(this.state);
+    this.setState({ refreshKey: this.state.refreshKey + 1 });
+  }
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} key={"infList" + this.state.refreshKey}>
         <CollectionLoader
           path={this.props.path}
           realtime={false}
@@ -32,6 +41,15 @@ export default class InfiniteList extends PureComponent {
                 onEndReached={() => {
                   hasMore && loadMore();
                 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={false}
+                    onRefresh={() => {
+                      this.onRefresh();
+                    }}
+                  />
+                }
+                refreshing={false}
                 keyExtractor={i => {
                   return i.id;
                 }}
