@@ -22,7 +22,6 @@ export default class InfiniteList extends PureComponent {
     this.state = { refreshKey: 0 };
   }
   onRefresh() {
-    console.log(this.state);
     this.setState({ refreshKey: this.state.refreshKey + 1 });
   }
   render() {

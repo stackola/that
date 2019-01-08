@@ -16,8 +16,6 @@ export function settingsSubscribe() {
 			.collection("configuration")
 			.doc("main")
 			.onSnapshot(doc => {
-				console.log("DATA FOR SETTINGS");
-				console.log(doc);
 				if (!doc._data) {
 					dispatch(setSettings({}));
 				} else {

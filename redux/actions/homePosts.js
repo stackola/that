@@ -14,7 +14,6 @@ export function subHomePosts() {
     return getHomePosts().then(list => {
       return Promise.all(
         list.map(g => {
-          console.log("starting subreddit query", g.slug);
           return firebase
             .firestore()
             .collection("groups")
@@ -24,17 +23,14 @@ export function subHomePosts() {
             .limit(25)
             .get()
             .then(s => {
-              console.log("sub query done!", g.slug);
               return s._docs;
             });
         })
       ).then(s => {
-        console.log(s);
         if (s) {
-          console.log(
-            "got them snaps does!!",
+          
             dispatch(setHomePosts([].concat.apply([], s)))
-          );
+          
         }
         return;
       });

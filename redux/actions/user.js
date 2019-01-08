@@ -25,8 +25,6 @@ export function userSubscribe(cb) {
 			.collection("users")
 			.doc(getUID())
 			.onSnapshot(doc => {
-				console.log("DATA FOR USER: ");
-				console.log(doc);
 				if (!doc._data) {
 					dispatch(setUserObject({}));
 				} else {
@@ -40,8 +38,6 @@ export function userSubscribe(cb) {
 			.doc(getUID())
 			.collection("subscriptions")
 			.onSnapshot(doc => {
-				console.log("DATA SUB FOR USER: ");
-				console.log(doc);
 				if (!doc._docs) {
 					dispatch(setSubs([]));
 				} else {

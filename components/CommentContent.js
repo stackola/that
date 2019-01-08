@@ -73,7 +73,7 @@ export default class CommentContent extends PureComponent {
               includeSeconds: true
             })}
           </Text>
-          <PostCredit group={false} userId={this.props.userId} />
+          
         </View>
       </View>
     );

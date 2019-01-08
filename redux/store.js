@@ -5,7 +5,7 @@ import { createLogger } from "redux-logger";
 import reducer from "that/redux/reducers";
 
 const loggerMiddleware = createLogger({
-  predicate: (getState, action) => true
+  predicate: (getState, action) => false
 });
 
 function configureStorage(initialState) {

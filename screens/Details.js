@@ -86,7 +86,7 @@ class Details extends Component {
           header={
             <ItemLoader path={path} realtime={true}>
               {post => {
-                console.log(post);
+                //console.log(post);
                 return (
                   <View>
                     <Post linkToSelf={false} data={post || {}} />

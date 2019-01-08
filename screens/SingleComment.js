@@ -23,7 +23,7 @@ class Comment extends Component {
     let commentPath = this.props.navigation.getParam("commentPath", null);
     let group = this.getGroupSlug(commentPath);
     getItem("groups/" + group).then(g => {
-      console.log("GROUP REPLY IS THERe");
+      //console.log("GROUP REPLY IS THERe");
       this.setState({ group: g._data });
     });
   }
@@ -45,9 +45,9 @@ class Comment extends Component {
   viewParentPost() {
     let commentPath = this.props.navigation.getParam("commentPath", null);
     if (commentPath) {
-      console.log("parent is post");
+      //console.log("parent is post");
       let tp = this.getParentPath(commentPath).split("/");
-      console.log(tp);
+      //console.log(tp);
       this.props.navigation.navigate({
         routeName: "Details",
         params: {
@@ -62,9 +62,9 @@ class Comment extends Component {
     let commentPath = this.props.navigation.getParam("commentPath", null);
     if (commentPath) {
       if (this.parentIsPost(commentPath)) {
-        console.log("parent is post");
+        //console.log("parent is post");
         let tp = this.getParentPath(commentPath).split("/");
-        console.log(tp);
+        //console.log(tp);
         this.props.navigation.navigate({
           routeName: "Details",
           params: {

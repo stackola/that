@@ -64,7 +64,7 @@ class Comment extends PureComponent {
     return this.props.user && this.props.user.id;
   }
   rowPress() {
-    console.log("row pressed", this.props);
+    
     if (this.props.linkToSelf) {
       this.props.navigation.navigate({
         routeName: "SingleComment",
@@ -73,6 +73,9 @@ class Comment extends PureComponent {
       });
     } else {
       if (this.canVote()) {
+        LayoutAnimation.configureNext(
+          LayoutAnimation.Presets.easeInEaseOut
+        );
         this.setState({ replying: true });
       }
     }
@@ -172,7 +175,7 @@ class Comment extends PureComponent {
                 });
               }}
               isOwnComment={this.isOwnComment()}
-              userId={this.props.user.id}
+              userId={this.props.comment.user.id}
             />
           </SlideWrapper>
         </View>

@@ -67,7 +67,7 @@ function getYearIndex(d) {
   return datestring;
 }
 
-let pageSize = 2;
+let pageSize = 5;
 export default class CollectionLoader extends PureComponent {
   constructor(p) {
     super(p);
@@ -159,13 +159,13 @@ export default class CollectionLoader extends PureComponent {
         hasMore: rows.length == pageSize
       },
       () => {
-        console.log(this.state);
+        //console.log(this.state);
       }
     );
   }
   loadMore() {
     if (!this.props.realtime && !this.state.adding && this.state.hasMore) {
-      console.log("adding more!!!", this.state);
+
       this.setState({ adding: true }, () => {
         let r = this.getRef();
         if (this.props.sort && this.props.sort == "points") {
@@ -186,7 +186,7 @@ export default class CollectionLoader extends PureComponent {
         }
       });
     } else {
-      console.log("wont even try");
+      //console.log("wont even try");
     }
   }
   componentDidMount() {
@@ -202,8 +202,6 @@ export default class CollectionLoader extends PureComponent {
     this.sub1 && this.sub1();
   }
   render() {
-    console.log("rendering collection", this.state, this.props);
-    
     return !this.state.loading ? (
       this.props.children(
         this.props.sanitize
