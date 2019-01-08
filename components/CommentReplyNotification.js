@@ -53,7 +53,8 @@ class Notification extends React.Component {
       this.props.navigation.navigate({
         routeName: "SingleComment",
         params: {
-          commentPath: tp
+          commentPath: tp,
+          sort: "time"
         },
         key: tp
       });

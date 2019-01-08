@@ -230,6 +230,7 @@ export default class Header extends Component {
                   marginBottom={2}
                   level={0}
                   key={c}
+                  sort={"time"}
                   group={this.props.group}
                   loadChildren={true}
                   realtime={true}

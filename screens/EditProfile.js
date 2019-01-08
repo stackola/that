@@ -3,13 +3,12 @@ import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import colors from "that/colors";
-
+import firebase from "react-native-firebase";
 import InputRow from "that/components/InputRow";
 
 import { createUser } from "that/lib";
 
 import { TouchableOpacity, ScrollView, View, Text } from "react-native";
-
 class EditProfile extends React.Component {
   static navigationOptions = {
     headerStyle: {
@@ -21,19 +20,51 @@ class EditProfile extends React.Component {
   constructor(p) {
     super(p);
     this.state = {
-      inputs: { username: "", location: "", gender: "D", public: false }
+      inputs: {
+        username: "",
+        location: "",
+        gender: "D",
+        public: false,
+        notifications: false,
+        token: ""
+      },
+      notificationPermissions: false
     };
   }
   componentDidMount() {
     let user = this.props.user || {};
-    this.setState({
-      inputs: {
-        username: user.username,
-        location: user.location,
-        gender: user.gender,
-        public: user.public == true
+    this.setState(
+      {
+        inputs: {
+          ...this.state.inputs,
+          username: user.username,
+          notifications: user.notifications || false,
+          location: user.location,
+          gender: user.gender || "D",
+          public: user.public == true
+        }
+      },
+      () => {
+        firebase
+          .messaging()
+          .hasPermission()
+          .then(enabled => {
+            if (enabled) {
+              this.setState({ notificationPermissions: true }, () => {
+                this.setToken();
+              });
+            }
+          });
       }
-    });
+    );
+  }
+  setToken() {
+    firebase
+      .messaging()
+      .getToken()
+      .then(t => {
+        this.setInput("token", t);
+      });
   }
   setInput(key, value) {
     this.setState({ inputs: { ...this.state.inputs, [key]: value } });
@@ -83,6 +114,57 @@ class EditProfile extends React.Component {
             this.setInput("public", v);
           }}
         />
+
+        <InputRow
+          type={"text"}
+          title={"Token"}
+          value={this.state.inputs.token}
+          onChange={v => {}}
+        />
+        {this.state.notificationPermissions && (
+          <InputRow
+            type={"switch"}
+            title={"Notifications"}
+            value={this.state.inputs.notifications}
+            onChange={v => {
+              this.setInput("notifications", v);
+            }}
+          />
+        )}
+        {!this.state.notificationPermissions && (
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#777",
+              height: 40,
+              flex: 1,
+              marginBottom: 4,
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+            onPress={() => {
+              firebase
+                .messaging()
+                .requestPermission()
+                .then(() => {
+                  console.log("got permission!");
+                  this.setState(
+                    {
+                      notificationPermissions: true,
+                      inputs: { ...this.state.inputs, notifications: true }
+                    },
+                    () => {
+                      this.getToken();
+                    }
+                  );
+                })
+                .catch(error => {
+                  // User has rejected permissions
+                });
+            }}
+          >
+            <Text style={{ color: colors.text }}>Enable Notifications</Text>
+          </TouchableOpacity>
+        )}
 
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity

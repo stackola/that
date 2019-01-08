@@ -1,7 +1,14 @@
 import React, { PureComponent } from "react";
 import colors from "that/colors";
 import Loading from "that/components/Loading";
-
+import {
+  format,
+  formatDistance,
+  formatRelative,
+  subDays,
+  subHours,
+  subMonths
+} from "date-fns";
 import firebase from "react-native-firebase";
 
 import {
@@ -10,9 +17,57 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text
+  Text,
 } from "react-native";
-let pageSize = 5;
+
+function getHourIndex(d) {
+  if (!d) {
+    d = new Date();
+  }
+  var datestring =
+    d.getUTCFullYear() +
+    "-" +
+    ("0" + (d.getUTCMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + d.getUTCDate()).slice(-2) +
+    "-" +
+    ("0" + d.getUTCHours()).slice(-2) +
+    "-";
+  return datestring;
+}
+
+function getDayIndex(d) {
+  if (!d) {
+    d = new Date();
+  }
+  var datestring =
+    d.getUTCFullYear() +
+    "-" +
+    ("0" + (d.getUTCMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + d.getUTCDate()).slice(-2) +
+    "-";
+  return datestring;
+}
+
+function getMonthIndex(d) {
+  if (!d) {
+    d = new Date();
+  }
+  var datestring =
+    d.getUTCFullYear() + "-" + ("0" + (d.getUTCMonth() + 1)).slice(-2) + "-";
+  return datestring;
+}
+
+function getYearIndex(d) {
+  if (!d) {
+    d = new Date();
+  }
+  var datestring = d.getUTCFullYear() + "-";
+  return datestring;
+}
+
+let pageSize = 2;
 export default class CollectionLoader extends PureComponent {
   constructor(p) {
     super(p);
@@ -21,14 +76,62 @@ export default class CollectionLoader extends PureComponent {
   getRef() {
     let path = this.props.path;
     let collection = this.props.collection;
+    if (this.props.sort && this.props.sort == "points") {
+      if (this.props.timeFrame == "hour") {
+        return firebase
+          .firestore()
+          .doc(path)
+          .collection(collection)
+          .where(
+            "hourIndex",
+            ">=",
+            getHourIndex(subHours(new Date(), 1)) + "99999999999"
+          )
+          .orderBy("hourIndex", "DESC")
+          .orderBy("time", "DESC");
+      }
+      if (this.props.timeFrame == "day") {
+        return firebase
+          .firestore()
+          .doc(path)
+          .collection(collection)
+          .where(
+            "dayIndex",
+            ">=",
+            getDayIndex(subDays(new Date(), 1)) + "99999999999"
+          )
+          .orderBy("dayIndex", "DESC")
+          .orderBy("time", "DESC");
+      }
+      if (this.props.timeFrame == "month") {
+        return firebase
+          .firestore()
+          .doc(path)
+          .collection(collection)
+          .where(
+            "monthIndex",
+            ">=",
+            getMonthIndex(subMonths(new Date(), 1)) + "99999999999"
+          )
+          .orderBy("monthIndex", "DESC")
+          .orderBy("time", "DESC");
+      }
+      return firebase
+        .firestore()
+        .doc(path)
+        .collection(collection)
+        .orderBy("points", "DESC")
+        .orderBy("time", "DESC");
+    }
     return firebase
       .firestore()
       .doc(path)
       .collection(collection)
-      .orderBy("time", "DESC");
+      .orderBy(this.props.sort || "time", this.props.dir || "DESC");
   }
   subscribeToChanges() {
     this.sub1 = this.getRef().onSnapshot(snap => {
+
       this.process(snap);
     });
   }
@@ -49,23 +152,38 @@ export default class CollectionLoader extends PureComponent {
     });
   }
   addRows(rows) {
-    this.setState({
-      items: [].concat.apply([], [this.state.items, rows]),
-      adding: false,
-      hasMore: rows.length == pageSize
-    });
+    this.setState(
+      {
+        items: [].concat.apply([], [this.state.items, rows]),
+        adding: false,
+        hasMore: rows.length == pageSize
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   }
   loadMore() {
     if (!this.props.realtime && !this.state.adding && this.state.hasMore) {
-      console.log("adding more!!!");
+      console.log("adding more!!!", this.state);
       this.setState({ adding: true }, () => {
-        this.getRef()
-          .startAfter(this.state.items[this.state.items.length - 1])
-          .limit(pageSize)
-          .get()
-          .then(rows => {
-            this.addRows(rows._docs);
-          });
+        let r = this.getRef();
+        if (this.props.sort && this.props.sort == "points") {
+          r.startAt(this.state.items[this.state.items.length - 1])
+            .startAfter(this.state.items[this.state.items.length - 1].time)
+            .limit(pageSize + 1)
+            .get()
+            .then(rows => {
+              this.addRows(rows._docs.slice(1));
+            });
+        } else {
+          r.startAfter(this.state.items[this.state.items.length - 1])
+            .limit(pageSize)
+            .get()
+            .then(rows => {
+              this.addRows(rows._docs);
+            });
+        }
       });
     } else {
       console.log("wont even try");
@@ -84,6 +202,8 @@ export default class CollectionLoader extends PureComponent {
     this.sub1 && this.sub1();
   }
   render() {
+    console.log("rendering collection", this.state, this.props);
+    
     return !this.state.loading ? (
       this.props.children(
         this.props.sanitize

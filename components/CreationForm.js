@@ -48,7 +48,7 @@ export default class CreationForm extends Component {
         style={{
           position: "absolute",
           zIndex: 5,
-          top: 0,
+          top: this.props.creating ? 0 : "100%",
           left: 0,
           width: "100%",
           height: "100%"

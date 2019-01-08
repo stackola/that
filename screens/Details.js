@@ -12,7 +12,36 @@ import { getItem } from "that/lib";
 import firebase from "react-native-firebase";
 
 import TopBar from "that/components/TopBar";
-import { ActivityIndicator, ScrollView, View, Text } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity
+} from "react-native";
+
+const SortButton = props => {
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        props.onPress && props.onPress();
+      }}
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: props.selected ? colors.hidden : colors.background,
+        margin: 4,
+        marginRight: 0,
+        borderRadius: 5
+      }}
+    >
+      <Text style={{ color: colors.text, textAlign: "center", fontSize: 12 }}>
+        {props.text}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 class Details extends Component {
   static navigationOptions = {
@@ -21,13 +50,17 @@ class Details extends Component {
 
   constructor(p) {
     super(p);
-    this.state = { group: null };
+
+    this.state = { group: null, sort: "new" };
   }
   componentDidMount() {
     let group = this.props.navigation.getParam("group", null);
     getItem("groups/" + group).then(g => {
       this.setState({ group: g._data });
     });
+  }
+  getSortField() {
+    return this.state.sort == "new" ? "time" : "points";
   }
   render() {
     let postId = this.props.navigation.getParam("postId", null);
@@ -57,6 +90,28 @@ class Details extends Component {
                 return (
                   <View>
                     <Post linkToSelf={false} data={post || {}} />
+                    <View
+                      style={{
+                        height: 35,
+                        flexDirection: "row",
+                        paddingRight: 4
+                      }}
+                    >
+                      <SortButton
+                        text={"New"}
+                        selected={this.state.sort == "new"}
+                        onPress={() => {
+                          this.setState({ sort: "new" });
+                        }}
+                      />
+                      <SortButton
+                        text={"Best"}
+                        selected={this.state.sort == "best"}
+                        onPress={() => {
+                          this.setState({ sort: "best" });
+                        }}
+                      />
+                    </View>
                     {this.props.user && this.props.user.id ? (
                       <CommentBox group={this.state.group} path={path} />
                     ) : null}
@@ -65,6 +120,7 @@ class Details extends Component {
               }}
             </ItemLoader>
           }
+          sort={this.getSortField()}
           path={path}
           collection={"comments"}
           renderItem={i => {
@@ -74,6 +130,7 @@ class Details extends Component {
                 path={i.item._ref.path}
                 marginBottom={2}
                 level={0}
+                sort={this.getSortField()}
                 group={this.state.group}
                 loadChildren={true}
                 realtime={true}

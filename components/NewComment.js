@@ -217,10 +217,7 @@ export default class NewComment extends Component {
                       image: this.state.image
                     },
                     () => {
-                      this.setState({
-                        replying: false,
-                        input: ""
-                      });
+                      this.props.onSend();
                     }
                   );
                 }

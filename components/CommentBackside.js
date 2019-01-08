@@ -22,6 +22,9 @@ export default class CommentBackside extends Component {
             name={"share-variant"}
             background={colors.hidden}
             horizontal={true}
+            onPress={() => {
+              this.props.onShare && this.props.onShare();
+            }}
           />
 
           <IconButton

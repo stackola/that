@@ -9,7 +9,14 @@ import HeaderProfileButton from "that/components/HeaderProfileButton";
 import colors from "that/colors";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { View, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  Platform,
+  UIManager,
+  LayoutAnimation
+} from "react-native";
 
 class TopBar extends React.Component {
   constructor(p) {
@@ -17,6 +24,9 @@ class TopBar extends React.Component {
     this.state = {
       open: false
     };
+    if (Platform.OS === "android") {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
   }
   render() {
     return (
@@ -49,6 +59,9 @@ class TopBar extends React.Component {
           )}
           <TouchableOpacity
             onPress={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut
+              );
               this.setState({ open: !this.state.open });
             }}
             disabled={this.props.hasDropdown === false}

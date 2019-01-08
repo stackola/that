@@ -14,17 +14,59 @@ import PostLoader from "that/components/PostLoader";
 import colors from "that/colors";
 
 import firebase from "react-native-firebase";
-import { View } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  UIManager,
+  LayoutAnimation
+} from "react-native";
 import InfiniteList from "../components/InfiniteList";
+
+const SortButton = props => {
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        props.onPress && props.onPress();
+      }}
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: props.selected ? colors.hidden : colors.background,
+        margin: 4,
+        marginRight: 0,
+        borderRadius: 5
+      }}
+    >
+      <Text style={{ color: colors.text, textAlign: "center", fontSize: 12 }}>
+        {props.text}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 class Group extends React.Component {
   static navigationOptions = {
     header: null
   };
   constructor(p) {
     super(p);
-    this.state = { creating: false, posts: [], group: {} };
+    this.state = { creating: false, posts: [], group: {}, sort: "day" };
+    if (Platform.OS === "android") {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
   }
-
+  getSortField() {
+    return this.state.sort == "new" ? "time" : "points";
+  }
+  getSortTimeFrame() {
+    if (this.state.sort == "new") {
+      return null;
+    }
+    return this.state.sort;
+  }
+  getSortTime() {}
   render() {
     let group = this.props.navigation.getParam("group", null);
     return (
@@ -66,7 +108,65 @@ class Group extends React.Component {
                   }}
                 />
                 <InfiniteList
+                  header={
+                    <View
+                      style={{
+                        height: 50,
+                        flexDirection: "row",
+                        paddingRight: 4
+                      }}
+                    >
+                      <SortButton
+                        text={"New"}
+                        selected={this.state.sort == "new"}
+                        onPress={() => {
+                          this.setState({ sort: "new" });
+                        }}
+                      />
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          marginLeft: 12,
+                          marginRight: 8
+                        }}
+                      >
+                        <Text style={{ color: colors.text, fontSize: 12 }}>
+                          Best off:
+                        </Text>
+                      </View>
+                      <SortButton
+                        text={"1 hour"}
+                        selected={this.state.sort == "hour"}
+                        onPress={() => {
+                          this.setState({ sort: "hour" });
+                        }}
+                      />
+                      <SortButton
+                        text={"Today"}
+                        selected={this.state.sort == "day"}
+                        onPress={() => {
+                          this.setState({ sort: "day" });
+                        }}
+                      />
+                      <SortButton
+                        text={"This month"}
+                        selected={this.state.sort == "month"}
+                        onPress={() => {
+                          this.setState({ sort: "month" });
+                        }}
+                      />
+                      <SortButton
+                        text={"All time"}
+                        selected={this.state.sort == "all"}
+                        onPress={() => {
+                          this.setState({ sort: "all" });
+                        }}
+                      />
+                    </View>
+                  }
                   path={"groups/" + group.slug}
+                  sort={this.getSortField()}
+                  timeFrame={this.getSortTimeFrame()}
                   collection={"posts"}
                   renderItem={i => {
                     return (
@@ -84,26 +184,31 @@ class Group extends React.Component {
                   <FloatButton
                     color={group.color ? group.color : colors.seperator}
                     onPress={() => {
+                      LayoutAnimation.configureNext(
+                        LayoutAnimation.Presets.easeInEaseOut
+                      );
                       this.setState({ creating: true });
                     }}
                   />
                 ) : null}
-                {this.state.creating && (
-                  <CreationForm
-                    group={group}
-                    navigate={(a, b, c) => {
-                      this.setState({ creating: false });
-                      this.props.navigation.navigate({
-                        routeName: a,
-                        params: b,
-                        key: c
-                      });
-                    }}
-                    onClose={() => {
-                      this.setState({ creating: false });
-                    }}
-                  />
-                )}
+                <CreationForm
+                  creating={this.state.creating}
+                  group={group}
+                  navigate={(a, b, c) => {
+                    this.setState({ creating: false });
+                    this.props.navigation.navigate({
+                      routeName: a,
+                      params: b,
+                      key: c
+                    });
+                  }}
+                  onClose={() => {
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.Presets.easeInEaseOut
+                    );
+                    this.setState({ creating: false });
+                  }}
+                />
               </View>
             );
           }}

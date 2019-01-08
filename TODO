@@ -8,11 +8,10 @@ datenschutz
 Components:
 
 Features:
-sort
-allow & respect settings (display & comments!)
+share (domain?)
+link shortener
 notifications
-messages + event7
-share
+messages + event
 remove own posts/comments
 location (mostly clientside)
 report/mod (special type of message maybe?)
@@ -27,6 +26,7 @@ username unique
 
 
 nice to have:
+sort user profile
 highlight read posts (locally?)
 invite friends
 distinguish?

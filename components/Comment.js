@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
@@ -14,7 +14,14 @@ import NewComment from "that/components/NewComment";
 
 import Icon from "react-native-vector-icons/Entypo";
 
-import { vote, genderColor, getUID, getAge, notLoggedInAlert } from "that/lib";
+import {
+  vote,
+  genderColor,
+  getUID,
+  getAge,
+  notLoggedInAlert,
+  shareItem
+} from "that/lib";
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -22,16 +29,22 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text
+  Text,
+  Platform,
+  UIManager,
+  LayoutAnimation
 } from "react-native";
 
-class Comment extends Component {
+class Comment extends PureComponent {
   constructor(p) {
     super(p);
     this.state = {
       replying: false,
       collapsed: false
     };
+    if (Platform.OS === "android") {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
   }
   onVote(dir) {
     this.canVote()
@@ -55,7 +68,7 @@ class Comment extends Component {
     if (this.props.linkToSelf) {
       this.props.navigation.navigate({
         routeName: "SingleComment",
-        params: { commentPath: this.props.path },
+        params: { commentPath: this.props.path, sort: "time" },
         key: this.props.path
       });
     } else {
@@ -127,12 +140,18 @@ class Comment extends Component {
           <SlideWrapper
             backside={
               <CommentBackside
+                onShare={() => {
+                  shareItem();
+                }}
                 onReply={() => {
                   if (this.canVote()) {
+                    this.ref.closeRow();
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.Presets.easeInEaseOut
+                    );
                     this.setState({
                       replying: true
                     });
-                    this.ref.closeRow();
                   } else {
                     this.notLoggedIn();
                     this.ref.closeRow();
@@ -162,6 +181,12 @@ class Comment extends Component {
             path={this.props.path}
             group={this.props.group}
             onCancel={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut
+              );
+              this.setState({ replying: false });
+            }}
+            onSend={() => {
               this.setState({ replying: false });
             }}
           />

@@ -12,6 +12,12 @@ class AuthLoadingScreen extends React.Component {
   }
 
   componentDidMount() {
+    const channel = new firebase.notifications.Android.Channel(
+      "test-channel",
+      "Test Channel",
+      firebase.notifications.Android.Importance.Max
+    ).setDescription("My apps test channel");
+    firebase.notifications().android.createChannel(channel);
     firebase
       .auth()
       .signInAnonymously()

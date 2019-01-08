@@ -77,15 +77,19 @@ class Comment extends Component {
         this.props.navigation.navigate({
           routeName: "SingleComment",
           params: {
-            commentPath: this.getParentPath(commentPath)
+            commentPath: this.getParentPath(commentPath),
+            sort: this.props.navigation.getParam("sort", "time")
           },
-          key: this.getParentPath(commentPath)
+          key:
+            this.getParentPath(commentPath) +
+            this.props.navigation.getParam("sort", "time")
         });
       }
     }
   }
   render() {
     let commentPath = this.props.navigation.getParam("commentPath", null);
+    let sort = this.props.navigation.getParam("sort", "time");
     return (
       <View style={{ flex: 1, backgroundColor: colors.background }}>
         <TopBar
@@ -135,7 +139,6 @@ class Comment extends Component {
               </Text>
             </TouchableOpacity>
           )}
-          <SortBar noTime={true} />
           <CommentLoader
             canVote={this.props.user && this.props.user.id}
             navigate={(a, b, c) => {
@@ -147,6 +150,8 @@ class Comment extends Component {
             }}
             key={commentPath}
             group={this.state.group}
+            loadChilden={true}
+            sort={sort}
             realtime={true}
             level={0}
             path={commentPath}

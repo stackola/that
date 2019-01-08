@@ -27,11 +27,22 @@ export default class InfiniteList extends PureComponent {
   }
   render() {
     return (
-      <View style={{ flex: 1 }} key={"infList" + this.state.refreshKey}>
+      <View
+        style={{ flex: 1 }}
+        key={
+          "infList" +
+          this.state.refreshKey +
+          this.props.sort +
+          this.props.timeFrame
+        }
+      >
         <CollectionLoader
           path={this.props.path}
           realtime={false}
           collection={this.props.collection}
+          sort={this.props.sort}
+          dir={this.props.dir}
+          timeFrame={this.props.timeFrame}
         >
           {(posts, loadMore, hasMore) => {
             return (

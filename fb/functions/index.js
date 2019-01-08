@@ -50,6 +50,47 @@ exports.group = functions.https.onCall((data, context) => {
   });
 });
 
+function getHourIndex(d) {
+  var datestring =
+    d.getFullYear() +
+    "-" +
+    ("0" + (d.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + d.getDate()).slice(-2) +
+    "-" +
+    ("0" + d.getHours()).slice(-2) +
+    "-";
+  return datestring;
+}
+
+function getDayIndex(d) {
+  var datestring =
+    d.getFullYear() +
+    "-" +
+    ("0" + (d.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + d.getDate()).slice(-2) +
+    "-";
+  return datestring;
+}
+
+function getMonthIndex(d) {
+  var datestring =
+    d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-";
+  return datestring;
+}
+
+function getYearIndex(d) {
+  var datestring = d.getFullYear() + "-";
+  return datestring;
+}
+
+function padPoints(n) {
+  n = 1000000 + n;
+  let pad = "00000000";
+  return (pad + n).slice(-pad.length);
+}
+
 exports.post = functions.https.onCall((data, context) => {
   // Authentication / user information is automatically added to the request.
   // const uid ="mntjlOUpd6SjfQmE1GhF820Ass62";
@@ -73,7 +114,7 @@ exports.post = functions.https.onCall((data, context) => {
     .doc(group)
     .collection("posts")
     .doc();
-
+  let now = new Date();
   return newPost
     .set({
       id: newPost.id,
@@ -83,9 +124,14 @@ exports.post = functions.https.onCall((data, context) => {
       comments: 0,
       downvotes: 0,
       upvotes: 0,
+      points: 0,
       group,
       user: db.collection("users").doc(uid),
-      time: admin.firestore.FieldValue.serverTimestamp()
+      time: now,
+      hourIndex: getHourIndex(now) + padPoints(0),
+      dayIndex: getDayIndex(now) + padPoints(0),
+      monthIndex: getMonthIndex(now) + padPoints(0),
+      yearIndex: getYearIndex(now) + padPoints(0)
     })
     .then(() => {
       console.log(newPost.path.toString());
@@ -116,6 +162,7 @@ exports.vote = functions.https.onCall((data, context) => {
         let upvoters = snap.upvoters || [];
         let downvotes = snap.downvotes || 0;
         let downvoters = snap.downvoters || [];
+        let time = snap.time;
         if (vote == "up") {
           //console.log("voting up");
           if (hasDowned == true) {
@@ -167,7 +214,17 @@ exports.vote = functions.https.onCall((data, context) => {
             downvoters.push(uid);
           }
         }
-        t.update(ref, { upvotes, downvotes, upvoters, downvoters });
+        t.update(ref, {
+          upvotes,
+          downvotes,
+          upvoters,
+          downvoters,
+          points: upvotes - downvotes,
+          hourIndex: getHourIndex(time) + padPoints(upvotes - downvotes),
+          dayIndex: getDayIndex(time) + padPoints(upvotes - downvotes),
+          monthIndex: getMonthIndex(time) + padPoints(upvotes - downvotes),
+          yearIndex: getYearIndex(time) + padPoints(upvotes - downvotes)
+        });
       });
     })
     .then(result => {
@@ -208,9 +265,10 @@ exports.comment = functions.https.onCall((data, context) => {
       text,
       image,
       downvotes: 0,
+      points: 0,
       upvotes: 0,
       user: db.collection("users").doc(uid),
-      time: admin.firestore.FieldValue.serverTimestamp() || 0
+      time: new Date()
     })
     .then(() => {
       let ref = db.doc(path);
@@ -254,7 +312,7 @@ function addPostToUser(path, userId) {
     .doc()
     .set({
       post: db.doc(path),
-      time: admin.firestore.FieldValue.serverTimestamp()
+      time: new Date()
     });
 }
 function addCommentToUser(path, userId) {
@@ -265,7 +323,7 @@ function addCommentToUser(path, userId) {
     .doc()
     .set({
       comment: db.doc(path),
-      time: admin.firestore.FieldValue.serverTimestamp()
+      time: new Date()
     });
 }
 
@@ -281,7 +339,7 @@ function dispatchEvent(event, ref) {
       .set({
         event: event,
         read: false,
-        time: admin.firestore.FieldValue.serverTimestamp()
+        time: new Date()
       });
   });
   /*

@@ -26,7 +26,13 @@ export default class PostBackside extends Component {
           backgroundColor: colors.background
         }}
       >
-        <IconButton name="share-variant" background={colors.hidden} />
+        <IconButton
+          name="share-variant"
+          background={colors.hidden}
+          onPress={() => {
+            this.props.onShare && this.props.onShare();
+          }}
+        />
         <IconButton name="flag-variant" background={colors.downvote} />
         <IconButton name="trash-can" background={"#888"} />
       </View>

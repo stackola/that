@@ -23,7 +23,10 @@ class ReadMoreButton extends PureComponent {
         onPress={() => {
           this.props.navigation.navigate({
             routeName: "SingleComment",
-            params: { commentPath: this.props.path },
+            params: {
+              commentPath: this.props.path,
+              sort: this.props.sort || "time"
+            },
             key: this.props.path
           });
         }}

@@ -62,7 +62,7 @@ class GroupSelector extends Component {
     return (
       <ScrollView
         style={{
-          maxHeight: 200,
+          height: 200,
           backgroundColor: colors.background
         }}
       >

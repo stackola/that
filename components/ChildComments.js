@@ -46,6 +46,7 @@ export default class ChildComments extends PureComponent {
           <CollectionLoader
             path={this.props.path}
             realtime={true}
+            sort={this.props.sort ? this.props.sort : "new"}
             collection={"comments"}
             loadingComponent={
               <View
@@ -95,7 +96,7 @@ export default class ChildComments extends PureComponent {
         </View>
       </View>
     ) : (
-      <ReadMoreButton path={this.props.path} />
+      <ReadMoreButton sort={this.props.sort} path={this.props.path} />
     );
   }
 }
