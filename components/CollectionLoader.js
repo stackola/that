@@ -17,7 +17,7 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text,
+  Text
 } from "react-native";
 
 function getHourIndex(d) {
@@ -131,7 +131,6 @@ export default class CollectionLoader extends PureComponent {
   }
   subscribeToChanges() {
     this.sub1 = this.getRef().onSnapshot(snap => {
-
       this.process(snap);
     });
   }
@@ -165,7 +164,6 @@ export default class CollectionLoader extends PureComponent {
   }
   loadMore() {
     if (!this.props.realtime && !this.state.adding && this.state.hasMore) {
-
       this.setState({ adding: true }, () => {
         let r = this.getRef();
         if (this.props.sort && this.props.sort == "points") {

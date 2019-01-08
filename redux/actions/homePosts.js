@@ -28,9 +28,7 @@ export function subHomePosts() {
         })
       ).then(s => {
         if (s) {
-          
-            dispatch(setHomePosts([].concat.apply([], s)))
-          
+          dispatch(setHomePosts([].concat.apply([], s)));
         }
         return;
       });

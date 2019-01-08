@@ -10,10 +10,13 @@ Components:
 Features:
 share (domain?)
 link shortener
-messages + event
+->messages + event
+  button
+  view
+  list
 remove own posts/comments
 location (mostly clientside)
-report/mod (special type of message maybe?)
+report/mod
 website (MINIMAL, NUR LESEN!!)
 
 Fixes:
@@ -21,7 +24,10 @@ logout
 login flow
 punkte verteilen
 Loadings
+events spam /lag
 username unique
+move usernames to posts
+refactor infinite scroll to realtime
 
 
 nice to have:

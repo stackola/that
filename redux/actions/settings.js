@@ -3,26 +3,26 @@ import firebase from "react-native-firebase";
 import { getUID } from "that/lib";
 //We have to define action types in types.js, here we make them available as functions that can be mapped to props.
 export function setSettings(settings) {
-	return {
-		type: types.SET_SETTINGS,
-		payload: settings
-	};
+  return {
+    type: types.SET_SETTINGS,
+    payload: settings
+  };
 }
 
 export function settingsSubscribe() {
-	return (dispatch, getState) => {
-		firebase
-			.firestore()
-			.collection("configuration")
-			.doc("main")
-			.onSnapshot(doc => {
-				if (!doc._data) {
-					dispatch(setSettings({}));
-				} else {
-					dispatch(setSettings(doc._data));
-				}
-			});
-	};
+  return (dispatch, getState) => {
+    firebase
+      .firestore()
+      .collection("configuration")
+      .doc("main")
+      .onSnapshot(doc => {
+        if (!doc._data) {
+          dispatch(setSettings({}));
+        } else {
+          dispatch(setSettings(doc._data));
+        }
+      });
+  };
 }
 
 /*

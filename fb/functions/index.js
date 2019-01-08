@@ -51,7 +51,7 @@ exports.group = functions.https.onCall((data, context) => {
 });
 
 function sendNotification(userId, title, text, data) {
-  admin
+  return admin
     .firestore()
     .collection("users")
     .doc(userId)
@@ -60,7 +60,7 @@ function sendNotification(userId, title, text, data) {
       user = user.data();
 
       if (user.notifications && user.token) {
-        admin
+        return admin
           .messaging()
           .send({
             data: data || {},
@@ -71,8 +71,12 @@ function sendNotification(userId, title, text, data) {
               body: text
             }
           })
-          .then(response => {})
-          .catch(error => {});
+          .then(() => {
+            console.log("notification dispatched!");
+            return;
+          });
+      } else {
+        return;
       }
     });
 }
@@ -262,6 +266,62 @@ exports.vote = functions.https.onCall((data, context) => {
     });
 });
 
+exports.sendMessage = functions.https.onCall((data, context) => {
+  /*
+  const uid = context.auth.uid;
+  const name = context.auth.token.name || null;
+  const picture = context.auth.token.picture || null;
+  const email = context.auth.token.email || null;
+
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    return { error: "Not authenticated" };
+  }
+  */
+
+  const from = "HJHUyMWkpUTIWLj1QDYhSBB8bDG3";
+
+  const to = "sLvcHwiox8MXBgQh4St51qIPYPd2";
+
+  let recipients = [from, to].sort();
+  const message = "Hi du ei!";
+  let id = recipients[0] + "-" + recipients[1];
+  var db = admin.firestore();
+  return db
+    .collection("chats")
+    .doc(id)
+    .set({
+      id: id,
+      users: recipients,
+      userA: recipients[0],
+      userB: recipients[1]
+    })
+    .then(() => {
+      console.log("chat created!");
+      return storeMessage(message, from, to, id);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+function storeMessage(message, from, to, id) {
+  var db = admin.firestore();
+  return db
+    .collection("chats")
+    .doc(id)
+    .collection("messages")
+    .doc()
+    .set({ from: from, message: message, time: new Date() })
+    .then(() => {
+      sendNotification(
+        to,
+        "New private message!",
+        "You got a new private message.",
+        { type: "message", id: id }
+      );
+      return { status: "ok" };
+    });
+}
 exports.comment = functions.https.onCall((data, context) => {
   // Authentication / user information is automatically added to the request.
 
