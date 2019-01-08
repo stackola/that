@@ -50,6 +50,33 @@ exports.group = functions.https.onCall((data, context) => {
   });
 });
 
+function sendNotification(userId, title, text, data) {
+  admin
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .get()
+    .then(user => {
+      user = user.data();
+
+      if (user.notifications && user.token) {
+        admin
+          .messaging()
+          .send({
+            data: data || {},
+            android: { notification: { channelId: "test-channel" } },
+            token: user.token,
+            notification: {
+              title: title,
+              body: text
+            }
+          })
+          .then(response => {})
+          .catch(error => {});
+      }
+    });
+}
+
 function getHourIndex(d) {
   var datestring =
     d.getFullYear() +
@@ -276,6 +303,14 @@ exports.comment = functions.https.onCall((data, context) => {
         .runTransaction(t => {
           return t.get(ref).then(doc => {
             // Add one person to the city population
+            let isPost = path.split("/").length <= 5;
+            console.log(path);
+            sendNotification(
+              doc.data().user.id,
+              "New " + (isPost ? "post" : "comment") + " reply!",
+              "Someone just replied to your " + (isPost ? "post." : "comment."),
+              { type: "reply", path: path }
+            );
             var comments = (doc.data().comments || 0) + 1;
 
             t.update(ref, { comments: comments });
@@ -295,6 +330,7 @@ exports.comment = functions.https.onCall((data, context) => {
             ref
           );
           addCommentToUser(newComment.path.toString(), uid);
+
           return { status: "ok", newComment: newComment.path.toString() };
         })
         .catch(err => {

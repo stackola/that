@@ -7,7 +7,6 @@ import {
 } from "react-navigation";
 import { Provider } from "react-redux";
 
-
 import AuthLoadingScreen from "that/screens/AuthLoadingScreen";
 import SignInScreen from "that/screens/SignInScreen";
 import Home from "that/screens/Home";
@@ -19,6 +18,7 @@ import ImageView from "that/screens/ImageView";
 import EditProfile from "that/screens/EditProfile";
 import SingleComment from "that/screens/SingleComment";
 import CreateGroup from "that/screens/CreateGroup";
+import { InAppNotificationProvider } from "that/components/inappnoti";
 
 import store from "that/redux/store";
 
@@ -63,9 +63,11 @@ let Navigator = createAppContainer(
 export default class MainApp extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-        <Navigator />
-      </Provider>
+      <InAppNotificationProvider height={62}>
+        <Provider store={store}>
+          <Navigator />
+        </Provider>
+      </InAppNotificationProvider>
     );
   }
 }
