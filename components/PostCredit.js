@@ -19,6 +19,7 @@ const textStyle = { color: colors.text, fontSize: 11, lineHeight: 25 };
 export default class PostCredit extends Component {
   render() {
     let group = this.props.group;
+    console.log("fetch user");
     return (
       <View style={{ flexDirection: "row" }}>
         <UserLoader sanitize={true} realtime={false} userId={this.props.userId}>

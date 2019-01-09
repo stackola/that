@@ -3,7 +3,7 @@ import colors from "that/colors";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon2 from "react-native-vector-icons/MaterialIcons";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 
 export default class UserBox extends Component {
   constructor(props) {
@@ -12,14 +12,18 @@ export default class UserBox extends Component {
     this.state = {};
   }
   componentDidMount() {}
-
+  onPress() {
+    this.props.navigate(
+      "Message",
+      { to: this.props.user.id },
+      "messageTo" + this.props.user.id
+    );
+  }
   render() {
     //We can access the redux store via our props. The available variables are defined in mapStateToProps() in this file
     return (
       <View
         style={{
-          paddingTop: 8,
-          paddingBottom: 4,
           flexDirection: "row",
           borderBottomWidth: 2,
           borderColor: colors.seperator
@@ -85,6 +89,19 @@ export default class UserBox extends Component {
             1.567
           </Text>
         </Text>
+        <TouchableOpacity
+          style={{
+            width: 80,
+            backgroundColor: colors.hidden,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+          onPress={() => {
+            this.onPress();
+          }}
+        >
+          <Icon name="message" size={30} color={colors.text} />
+        </TouchableOpacity>
       </View>
     );
   }

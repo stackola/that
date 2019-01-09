@@ -18,6 +18,8 @@ import ImageView from "that/screens/ImageView";
 import EditProfile from "that/screens/EditProfile";
 import SingleComment from "that/screens/SingleComment";
 import CreateGroup from "that/screens/CreateGroup";
+import Message from "that/screens/Message";
+import Messages from "that/screens/Messages";
 import { InAppNotificationProvider } from "that/components/inappnoti";
 
 import store from "that/redux/store";
@@ -44,7 +46,9 @@ const AppStack = createStackNavigator({
   Group: Group,
   ImageView: ImageView,
   Profile: Profile,
-  CreateGroup: CreateGroup
+  CreateGroup: CreateGroup,
+  Messages: Messages,
+  Message: Message,
 });
 const AuthStack = createStackNavigator({ SignIn: SignInScreen });
 

@@ -5,8 +5,10 @@ import { ActionCreators } from "that/redux/actions";
 import { bindActionCreators } from "redux";
 import colors from "that/colors";
 import { View, TouchableOpacity, Text } from "react-native";
-import PostList from "that/components/PostList";
+import LiveList from "that/components/LiveList";
+import TestList from "that/components/TestList";
 import { withInAppNotification } from "that/components/inappnoti";
+import Post from "that/components/Post";
 import firebase from "react-native-firebase";
 
 class HomeScreen extends React.Component {
@@ -114,7 +116,22 @@ class HomeScreen extends React.Component {
         />
 
         <View style={{ flex: 1 }}>
-          <PostList posts={this.props.homePosts} realtime={true} />
+         {/*
+
+
+          <LiveList
+            path={"groups/mems"}
+            sort={"points"}
+            timeFrame={"hour"}
+            preserveOrder={true}
+            collection={"posts"}
+            pageSize={5}
+            item={data => {
+              return <Post {...data.item.data} loggedInUser={this.props.user.id||null} linkToSelf={true}/>;
+            }}
+          />
+         */ }
+         <TestList/>
         </View>
       </View>
     );

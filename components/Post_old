@@ -28,33 +28,29 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  Text,
+  Text
 } from "react-native";
 
-export default class Post extends PureComponent {
-  constructor(props) {
-    super(props);
-    
-  }
-
+class Post extends PureComponent {
   onVote(dir) {
     this.canVote() &&
       vote({
-        path: "/groups/" + this.props.group + "/posts/" + this.props.id,
-        id: this.props.id,
+        path:
+          "/groups/" + this.props.data.group + "/posts/" + this.props.data.id,
+        id: this.props.data.id,
         vote: dir == "up" ? "up" : "down"
       });
 
     !this.canVote() &&
       notLoggedInAlert(r => {
-        //this.props.navigation.navigate(r);
+        this.props.navigation.navigate(r);
       });
   }
   canVote() {
-    return this.props.loggedInUser;
+    return this.props.user && this.props.user.id;
   }
   isOwnPost() {
-    return getUID() == this.props.user.id;
+    return this.state.user && getUID() == this.state.user.id;
   }
   touchWrapper = props => {
     return (
@@ -90,25 +86,25 @@ export default class Post extends PureComponent {
     );
   };
   onPress() {
-    let id = this.props.id;
-    let group = this.props.group;
-    /*this.props.navigation.navigate({
+    let id = this.props.data.id;
+    let group = this.props.data.group;
+    this.props.navigation.navigate({
       routeName: "Details",
       params: { postId: id, group: group },
       key: id
-    });*/
+    });
   }
   normalWrapper(props) {
     return <View style={props.style}>{props.children}</View>;
   }
   render() {
-    
-    let data = this.props || {};
+    let data = this.props.data || {};
     let Wrapper = this.props.linkToSelf
       ? this.touchWrapper
       : this.normalWrapper;
 
     let SlideWrapper = this.slideWrapper;
+    console.log("post rendering");
     return (
       <View
         style={{
@@ -154,7 +150,7 @@ export default class Post extends PureComponent {
                 <PostInfo comments={data.comments} time={data.time} />
               </View>
               <View style={{ flex: 1 }} />
-              {false && data.user && data.user.id && (
+              {data.user && data.user.id && (
                 <PostCredit group={data.group} userId={data.user.id} />
               )}
             </View>
@@ -179,3 +175,20 @@ function PostInfo(props) {
     </View>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default withNavigation(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Post)
+);

@@ -44,7 +44,7 @@ class Profile extends React.Component {
           {user => {
             let header = (
               <View>
-                <UserBox user={user} />
+                <UserBox user={user} navigate={(a,b,c)=>{this.props.navigation.navigate({routeName:a, params:b, key:c})}}/>
 
                 <Tabs
                   value={this.state.tab}

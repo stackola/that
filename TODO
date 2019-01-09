@@ -28,6 +28,7 @@ events spam /lag
 username unique
 move usernames to posts
 refactor infinite scroll to realtime
+security rules (messages!)
 
 
 nice to have:
